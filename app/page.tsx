@@ -133,7 +133,7 @@ export default function Home() {
           className="w-full max-w-[1400px] mx-auto z-50 relative bg-white/80 backdrop-blur-md"
         >
           <div className="grid grid-cols-1 md:grid-cols-12 border-x border-b border-zinc-100">
-            
+
             {/* Branding Cell */}
             <div className="md:col-span-3 p-5 md:p-6 border-b md:border-b-0 md:border-r border-zinc-100 flex items-center gap-3">
               <div className="flex items-center gap-2 font-bold tracking-tighter text-[20px] text-zinc-950">
@@ -145,32 +145,32 @@ export default function Home() {
 
             {/* Navigation Metadata Cell */}
             <div className="md:col-span-6 p-5 md:p-6 flex items-center justify-between border-b md:border-b-0 md:border-r border-zinc-100">
-               <div className="flex items-center gap-6">
-                 <div className="flex flex-col gap-0.5">
-                   <span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400 leading-none">Status</span>
-                   <div className="flex items-center gap-2">
-                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                     <span className="text-[11px] font-bold text-zinc-600 uppercase tracking-tighter">Live_stdout_ready</span>
-                   </div>
-                 </div>
-                 <div className="h-6 w-[1px] bg-zinc-100 mx-2 hidden sm:block" />
-                 <div className="flex items-center gap-6 text-[12px] font-bold text-zinc-400">
-                   <a href="https://github.com/edwinvs/cistack" target="_blank" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
-                     <GithubIcon size={14} className="opacity-40 group-hover:opacity-100 transition-opacity" />
-                     Repository
-                   </a>
-                   <a href="https://www.npmjs.com/package/cistack" target="_blank" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
-                     <Package size={14} className="opacity-40 group-hover:opacity-100 transition-opacity" />
-                     Registry
-                   </a>
-                 </div>
-               </div>
+              <div className="flex items-center gap-6">
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400 leading-none">Status</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-[11px] font-bold text-zinc-600 uppercase tracking-tighter">Live_stdout_ready</span>
+                  </div>
+                </div>
+                <div className="h-6 w-[1px] bg-zinc-100 mx-2 hidden sm:block" />
+                <div className="flex items-center gap-6 text-[12px] font-bold text-zinc-400">
+                  <a href="https://github.com/edwinvs/cistack" target="_blank" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
+                    <GithubIcon size={14} className="opacity-40 group-hover:opacity-100 transition-opacity" />
+                    Repository
+                  </a>
+                  <a href="https://www.npmjs.com/package/cistack" target="_blank" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
+                    <Package size={14} className="opacity-40 group-hover:opacity-100 transition-opacity" />
+                    Registry
+                  </a>
+                </div>
+              </div>
             </div>
 
             {/* System Identification Cell */}
             <div className="md:col-span-3 p-5 md:p-6 flex items-center justify-between md:justify-end gap-6 bg-zinc-50/20">
               <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-[0.2em]">NAV_SYSTEM // 2024_A1</span>
-              <button 
+              <button
                 onClick={() => document.getElementById('docs')?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-[11px] font-black uppercase tracking-widest text-zinc-900 px-4 py-2 border border-zinc-900 hover:bg-zinc-950 hover:text-white transition-all rounded-sm"
               >
@@ -270,7 +270,7 @@ export default function Home() {
                   <TerminalCard />
                 </motion.div>
 
-                <div className="absolute top-6 right-8 flex items-center gap-2">
+                <div className="absolute top-6 right-8 hidden sm:flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   <span className="text-[9px] font-mono text-zinc-400 tracking-widest font-black uppercase">LIVE_STDOUT</span>
                 </div>
@@ -321,7 +321,7 @@ export default function Home() {
           </div>
 
           {/* Integrated High-Density Matrix */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -330,7 +330,7 @@ export default function Home() {
           >
 
             {/* 01. Capabilities Grid (4 columns) */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -468,7 +468,7 @@ export default function Home() {
           </motion.div>
 
           {/* 03. Workflow Outputs (Bento Layout) */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -536,7 +536,7 @@ export default function Home() {
           </motion.div>
 
           {/* 04. Tactical Examples Row */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.995 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -636,7 +636,7 @@ export default function Home() {
               <div className="flex items-center gap-6">
                 <a href="https://github.com/edwinvs/cistack" target="_blank" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors">Github</a>
                 <a href="https://www.npmjs.com/package/cistack" target="_blank" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors">Npm</a>
-                <button 
+                <button
                   onClick={() => document.getElementById('docs')?.scrollIntoView({ behavior: 'smooth' })}
                   className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors"
                 >

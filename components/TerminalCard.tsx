@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Terminal, RefreshCcw, Copy, Check, Shield, Package, Globe } from "lucide-react";
 
 const COMMAND = "npx cistack";
 
@@ -54,32 +55,24 @@ const OUTPUT_LINES: OutputLine[] = [
   { text: "  ✔ Written:      .github/dependabot.yml", type: "written", delay: 3800 },
   { text: "", type: "blank", delay: 3850 },
   { text: "  Done! Your GitHub Actions pipeline is ready.", type: "done", delay: 4100 },
-  { text: "  Workflows → /Users/edwinvakayil/cistack/.github/workflows", type: "path", delay: 4300 },
-  { text: "  Dependabot → /Users/edwinvakayil/cistack/.github/dependabot.yml", type: "path", delay: 4450 },
+  { text: "  Workflows → cistack/.github/workflows", type: "path", delay: 4300 },
+  { text: "  Dependabot → cistack/.github/dependabot.yml", type: "path", delay: 4450 },
 ];
 
 const lineColor: Record<OutputLine["type"], string> = {
-  logo: "text-zinc-500", // Soft zinc for light theme
+  logo: "text-zinc-500",
   subtitle: "text-zinc-500",
-  success: "text-emerald-600", // emerald-600
-  info: "text-blue-500", // sky-500
+  success: "text-emerald-500",
+  info: "text-blue-500",
   heading: "text-zinc-900 font-bold",
   detail: "text-zinc-500",
-  merged: "text-amber-600", // amber-600
+  merged: "text-amber-500",
   bullet: "text-zinc-400",
-  written: "text-emerald-600", // emerald-600
-  done: "text-emerald-600 font-bold",
+  written: "text-emerald-500",
+  done: "text-emerald-500 font-bold",
   path: "text-zinc-400",
   blank: "",
 };
-
-const CopyIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>
-);
-
-const CheckIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
-);
 
 const CopyButton = () => {
   const [copied, setCopied] = useState(false);
@@ -92,37 +85,12 @@ const CopyButton = () => {
 
   return (
     <motion.button
-      className="text-zinc-400 hover:text-zinc-700 relative p-1"
+      className="text-zinc-400 hover:text-zinc-900 transition-colors p-1"
       onClick={handleCopy}
-      whileTap={{ scale: 0.75 }}
-      whileHover={{ scale: 1.15 }}
+      whileTap={{ scale: 0.85 }}
       aria-label="Copy command"
     >
-      <AnimatePresence mode="wait" initial={false}>
-        {copied ? (
-          <motion.span
-            key="check"
-            initial={{ opacity: 0, scale: 0.5, rotate: -90 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="text-emerald-600 block"
-          >
-            <CheckIcon />
-          </motion.span>
-        ) : (
-          <motion.span
-            key="copy"
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="block"
-          >
-            <CopyIcon />
-          </motion.span>
-        )}
-      </AnimatePresence>
+      {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
     </motion.button>
   );
 };
@@ -151,7 +119,7 @@ const TerminalCard = () => {
     }
     const t = setTimeout(() => setPhase("output"), 400);
     return () => clearTimeout(t);
-  }, [typedCommand, phase]);
+  }, [typedCommand, phase, key]);
 
   useEffect(() => {
     if (phase !== "output") return;
@@ -169,68 +137,78 @@ const TerminalCard = () => {
   }, [typedCommand, visibleLines]);
 
   return (
-    <div className="w-full h-[300px] sm:h-[350px] lg:h-[380px] flex flex-col rounded-xl overflow-hidden border border-zinc-200/60 bg-white">
-      {/* Terminal header */}
-      <div className="bg-zinc-50 border-b border-zinc-200/60 flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 shrink-0">
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-400" />
-          <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-400" />
-          <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-400" />
+    <div key={key} className="w-full h-[300px] sm:h-[350px] lg:h-[380px] flex flex-col rounded-sm border border-zinc-100 bg-white shadow-sm hover:shadow-md transition-shadow">
+      {/* Structural Terminal Header */}
+      <div className="bg-white border-b border-zinc-100 flex items-center justify-between px-4 py-3 shrink-0">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[9px] font-black uppercase text-zinc-400 tracking-[0.2em] font-mono">TERMINAL</span>
+          </div>
+          <div className="h-3 w-[1px] bg-zinc-100" />
+          <span className="text-[9px] font-mono font-bold text-zinc-300 uppercase tracking-widest hidden sm:block">CORE_MISSION // L_02</span>
         </div>
+
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 sm:gap-3 bg-white border border-zinc-200/80 rounded-md px-2 sm:px-3 py-1">
-            <span className="text-[11px] sm:text-[13px] text-zinc-600 font-mono truncate max-w-[80px] sm:max-w-none">npx cistack</span>
+          <div className="flex items-center gap-3 bg-zinc-50 border border-zinc-100 rounded-sm px-2.5 py-1">
+            <span className="text-[11px] text-zinc-700 font-mono font-bold tracking-tight">npx cistack</span>
+            <div className="w-[1px] h-3 bg-zinc-200" />
             <CopyButton />
           </div>
-          <motion.button
+          <button
             onClick={handleReplay}
-            className="bg-white border border-zinc-200/80 rounded-md p-1 sm:p-1.5 text-zinc-400 hover:text-zinc-700 transition-colors flex items-center justify-center"
-            whileHover={{ scale: 1.15 }}
-            whileTap={{ scale: 0.75 }}
+            className="p-1.5 text-zinc-300 hover:text-zinc-900 transition-colors border border-transparent hover:border-zinc-100 rounded-sm"
             aria-label="Replay animation"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" /><path d="M16 21h5v-5" /></svg>
-          </motion.button>
+            <RefreshCcw size={14} />
+          </button>
         </div>
       </div>
 
-      {/* Terminal body */}
+      {/* Terminal Content Area */}
       <div
         ref={scrollRef}
-        className="flex-1 bg-white p-3 sm:p-4 font-mono text-[10px] sm:text-[12px] tracking-tight leading-relaxed overflow-y-auto w-full custom-scrollbar selection:bg-zinc-900 selection:text-white"
-        style={{ fontFamily: "'Fira Code', monospace !important" }}
+        className="flex-1 bg-white p-6 pt-4 font-mono text-[11px] sm:text-[13px] tracking-tight leading-relaxed overflow-y-auto custom-scrollbar selection:bg-zinc-900 selection:text-white"
+        style={{ fontFamily: "'Fira Code', monospace" }}
       >
-        {/* Prompt + command */}
-        <div className="flex items-center gap-1.5">
-          <span className="text-zinc-400 font-medium">~ $</span>
-          <span className="text-zinc-800 font-medium">{typedCommand}</span>
-          {phase === "typing" && (
-            <span className="inline-block w-2 h-4 bg-zinc-400 animate-pulse" />
-          )}
-        </div>
-
-        {/* Output */}
-        {phase !== "typing" && (
-          <div className="mt-3 space-y-0.5 sm:space-y-0 text-left">
-            {OUTPUT_LINES.slice(0, visibleLines).map((line, i) => (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.15 }}
-                key={i}
-                className={`${line.type === "logo" ? "whitespace-pre text-[7px] min-[400px]:text-[8px] sm:text-[10px] md:text-[13px] leading-none" : "whitespace-pre-wrap break-words"} ${lineColor[line.type]}`}
-                style={{ minHeight: line.type === "blank" ? "0.75rem" : undefined }}
-              >
-                {line.text}
-              </motion.div>
-            ))}
-            {phase === "output" && (
-              <div className="mt-1 flex">
-                <span className="inline-block w-2 h-4 bg-zinc-300 animate-pulse" />
-              </div>
+        <div className="flex flex-col gap-1.5">
+          {/* Active Prompt */}
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-zinc-300 font-bold">$</span>
+            <span className="text-zinc-800 font-bold">{typedCommand}</span>
+            {phase === "typing" && (
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.8, repeat: Infinity }}
+                className="inline-block w-1.5 h-4 bg-emerald-500"
+              />
             )}
           </div>
-        )}
+
+          {/* Staggered Output Feed */}
+          {phase !== "typing" && (
+            <div className="space-y-0.5">
+              {OUTPUT_LINES.slice(0, visibleLines).map((line, i) => (
+                <motion.div
+                  initial={{ opacity: 0, x: -4 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2 }}
+                  key={i}
+                  className={`${line.type === "logo" ? "whitespace-pre text-[7px] min-[400px]:text-[8px] sm:text-[10px] md:text-[12px] leading-[1.1] opacity-40 mb-4" : "whitespace-pre-wrap break-words"} ${lineColor[line.type]}`}
+                  style={{ minHeight: line.type === "blank" ? "0.75rem" : undefined }}
+                >
+                  {line.text}
+                </motion.div>
+              ))}
+              {phase === "output" && (
+                <div className="flex items-center gap-2 mt-2">
+                  <div className="w-1 h-3 bg-zinc-200 animate-pulse" />
+                  <span className="text-[10px] text-zinc-300 uppercase tracking-widest font-bold">Processing Output...</span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
