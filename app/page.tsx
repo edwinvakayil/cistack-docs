@@ -321,10 +321,22 @@ export default function Home() {
           </div>
 
           {/* Integrated High-Density Matrix */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 border-t border-l border-zinc-100">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="grid grid-cols-1 lg:grid-cols-12 border-t border-l border-zinc-100"
+          >
 
             {/* 01. Capabilities Grid (4 columns) */}
-            <div className="lg:col-span-4 border-r border-b border-zinc-100 p-8 lg:p-12 bg-zinc-50/20 hover:bg-zinc-50/40 transition-colors duration-500 relative group/cell">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="lg:col-span-4 border-r border-b border-zinc-100 p-8 lg:p-12 bg-zinc-50/20 hover:bg-zinc-50/40 transition-colors duration-500 relative group/cell"
+            >
               <div className="absolute top-4 right-4 text-[10px] font-mono text-zinc-200 font-bold group-hover/cell:text-zinc-300 transition-colors">01 / 04</div>
               <div className="flex flex-col gap-10">
                 <div className="flex flex-col gap-2">
@@ -349,7 +361,7 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* 02. Setup & Compatibility (8 columns) */}
             <div className="lg:col-span-8 flex flex-col">
@@ -453,10 +465,16 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* 03. Workflow Outputs (Bento Layout) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 border-l border-r border-b border-zinc-100">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="grid grid-cols-1 lg:grid-cols-12 border-l border-r border-b border-zinc-100"
+          >
 
             <div className="lg:col-span-8 p-8 lg:p-12 border-r border-zinc-100 group/artifacts hover:bg-zinc-50/20 transition-colors duration-500">
               <div className="flex flex-col gap-10">
@@ -515,10 +533,16 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* 04. Tactical Examples Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 border-l border-r border-b border-zinc-100 bg-zinc-50/10">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.995 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="grid grid-cols-1 lg:grid-cols-12 border-l border-r border-b border-zinc-100 bg-zinc-50/10"
+          >
             <div className="lg:col-span-12 p-8 lg:p-12">
               <div className="flex flex-col gap-8">
                 <div className="flex flex-col gap-2">
@@ -543,7 +567,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
         </section>
 
