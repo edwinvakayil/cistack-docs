@@ -210,24 +210,31 @@ export default function Home() {
                   <span className="text-[10px] font-mono text-zinc-300 font-bold tracking-widest uppercase">L_01 // CORE_MISSION</span>
                 </div>
 
-                <h1 className="text-[3.4rem] min-[1445px]:text-[4.6rem] font-bold tracking-tight text-zinc-900 leading-[1.05] flex flex-col gap-2">
-                  <div className="flex flex-col sm:flex-row sm:items-baseline gap-x-4 flex-wrap">
-                    <span className="italic font-black text-zinc-950 tracking-tighter whitespace-nowrap">Your stack.</span>
-                    <div className="relative whitespace-nowrap">
-                      <CanvasText
-                        text="Your pipeline."
-                        className="text-[3.4rem] min-[1445px]:text-[4.6rem] font-bold tracking-tight"
-                        backgroundClassName="bg-[#1d4ed8]"
-                        colors={["#3b82f6", "#2563eb", "#60a5fa", "#93c5fd"]}
-                        animationDuration={4}
-                        lineWidth={2.5}
-                      />
-                    </div>
+                <div className="flex flex-col gap-6 md:gap-8">
+                  {/* H_01: Input Stage */}
+                  <div className="flex items-baseline gap-4 group/h1">
+                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-200 group-hover/h1:text-zinc-400 transition-colors">H_01 // STAGE_INPUT</span>
+                    <h1 className="text-[3.2rem] md:text-[4.8rem] font-black tracking-tighter text-zinc-950 leading-none">
+                      YOUR STACK.
+                    </h1>
                   </div>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-br from-zinc-950 via-zinc-800 to-zinc-500">
-                    engineered in seconds.
-                  </span>
-                </h1>
+
+                  {/* H_02: Transformation Stage */}
+                  <div className="flex items-baseline gap-4 ml-6 md:ml-12 group/h2">
+                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-200 group-hover/h2:text-zinc-400 transition-colors">H_02 // STAGE_PROC</span>
+                    <h1 className="text-[3.2rem] md:text-[4.8rem] font-black tracking-tighter text-zinc-900 leading-none">
+                      YOUR PIPELINE.
+                    </h1>
+                  </div>
+
+                  {/* H_03: Reification Stage */}
+                  <div className="flex items-baseline gap-4 ml-12 md:ml-24 group/h3">
+                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-200 group-hover/h3:text-zinc-400 transition-colors">H_03 // STAGE_REIFY</span>
+                    <h1 className="text-[3.2rem] md:text-[4.8rem] font-black tracking-tighter text-zinc-300 leading-none">
+                      ENGINEERED.
+                    </h1>
+                  </div>
+                </div>
 
                 <p className="text-[15px] sm:text-[17px] text-zinc-500 leading-relaxed max-w-[540px] font-medium">
                   cistack deep-scans your repository to generate production-ready
