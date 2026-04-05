@@ -3,8 +3,13 @@
 import React, { useState } from "react";
 import TerminalCard from "../components/TerminalCard";
 import { CanvasText } from "../components/CanvasText";
-import { Terminal, Copy, Check, Package, ArrowRight, Zap, Shield, Activity } from "lucide-react";
+import { Terminal, Copy, Check, Package, Shield, Globe, Box, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const GithubIcon = ({ size = 24, className = "" }) => (
   <svg
@@ -23,6 +28,60 @@ const GithubIcon = ({ size = 24, className = "" }) => (
   </svg>
 );
 
+function InstallToggle() {
+  const [mode, setMode] = useState<"npx" | "npm">("npx");
+  return (
+    <div className="flex flex-col gap-4">
+      {/* inline text switcher */}
+      <div className="flex items-center">
+        <button
+          onClick={() => setMode("npx")}
+          className={`text-[12px] font-semibold pr-4 py-1 transition-colors ${mode === "npx" ? "text-zinc-900" : "text-zinc-400 hover:text-zinc-600"
+            }`}
+        >
+          npx
+          {mode === "npx" && (
+            <span className="ml-1.5 text-zinc-400 font-normal text-[11px]">— recommended</span>
+          )}
+        </button>
+        <Separator orientation="vertical" className="h-3.5 bg-zinc-200" />
+        <button
+          onClick={() => setMode("npm")}
+          className={`text-[12px] font-semibold pl-4 py-1 transition-colors ${mode === "npm" ? "text-zinc-900" : "text-zinc-400 hover:text-zinc-600"
+            }`}
+        >
+          npm install -g
+        </button>
+      </div>
+
+      {/* dark code block */}
+      <div className="bg-zinc-950 rounded-sm px-6 pt-5 pb-6 font-mono text-sm text-zinc-300 relative overflow-hidden">
+        <div className="flex items-center justify-between mb-5">
+          {mode === "npx" ? (
+            <Badge className="text-[9px] bg-emerald-500/10 text-emerald-500 border-emerald-500/20 uppercase tracking-widest font-black px-2 py-0.5">Recommended</Badge>
+          ) : (
+            <Badge className="text-[9px] bg-zinc-500/10 text-zinc-400 border-zinc-700 uppercase tracking-widest font-black px-2 py-0.5">Global</Badge>
+          )}
+          {mode === "npx" ? (
+            <Terminal size={13} className="text-zinc-700" />
+          ) : (
+            <Package size={13} className="text-zinc-700" />
+          )}
+        </div>
+        <code className="text-[15px] text-emerald-400 tracking-tight">
+          {mode === "npx" ? "$ npx cistack" : "$ npm install -g cistack"}
+        </code>
+        <Separator className="bg-zinc-800 my-4" />
+        <p className="text-[11px] text-zinc-500 leading-relaxed font-sans">
+          {mode === "npx"
+            ? "Always fetches the latest version. No install step."
+            : "Best for developers across multiple repos."}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [copiedLocal, setCopiedLocal] = useState(false);
 
@@ -34,6 +93,29 @@ export default function Home() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Cistack",
+            "operatingSystem": "Any",
+            "applicationCategory": "DeveloperApplication",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "description": "Automated GitHub Actions generation for any project stack.",
+            "creator": {
+              "@type": "Person",
+              "name": "Edwin",
+              "url": "https://www.edwinvakayil.info/"
+            }
+          })
+        }}
+      />
       <div
         className="page-root relative flex flex-col min-h-screen text-zinc-900 selection:bg-black selection:text-white bg-white overflow-x-hidden"
         style={{
@@ -43,343 +125,501 @@ export default function Home() {
         }}
       >
         {/* Navigation */}
-        <motion.nav 
-          initial={{ opacity: 0, y: -20 }}
+        {/* Redesigned Technical Navbar */}
+        <motion.nav
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="w-full flex justify-between items-center px-4 sm:px-6 md:px-8 py-4 sm:py-5 max-w-[1400px] mx-auto z-10 relative"
+          transition={{ duration: 0.8 }}
+          className="w-full max-w-[1400px] mx-auto z-50 relative bg-white/80 backdrop-blur-md"
         >
-          <div className="flex items-center gap-2 font-bold tracking-tight text-base sm:text-lg text-zinc-900 shrink-0">
-            <Terminal size={18} className="text-zinc-400" />
-            cistack
-          </div>
-          <div className="flex items-center gap-4 sm:gap-6 text-sm font-medium text-zinc-500">
-            <a
-              href="https://github.com/edwinvs/cistack"
-              className="hover:text-zinc-900 transition-colors flex items-center gap-1.5 sm:gap-2"
-            >
-              <GithubIcon size={15} />
-              <span className="hidden xs:inline">GitHub</span>
-            </a>
-            <a
-              href="https://www.npmjs.com/package/cistack"
-              className="hover:text-zinc-900 transition-colors flex items-center gap-1.5 sm:gap-2"
-            >
-              <Package size={15} />
-              <span className="hidden xs:inline">npm</span>
-            </a>
+          <div className="grid grid-cols-1 md:grid-cols-12 border-x border-b border-zinc-100">
+            
+            {/* Branding Cell */}
+            <div className="md:col-span-3 p-5 md:p-6 border-b md:border-b-0 md:border-r border-zinc-100 flex items-center gap-3">
+              <div className="flex items-center gap-2 font-bold tracking-tighter text-[20px] text-zinc-950">
+                <Terminal size={18} className="text-zinc-400" />
+                cistack
+              </div>
+              <span className="text-[9px] font-mono font-bold text-zinc-300 bg-zinc-50 border border-zinc-100 px-1.5 py-0.5 rounded-sm">V2.0</span>
+            </div>
+
+            {/* Navigation Metadata Cell */}
+            <div className="md:col-span-6 p-5 md:p-6 flex items-center justify-between border-b md:border-b-0 md:border-r border-zinc-100">
+               <div className="flex items-center gap-6">
+                 <div className="flex flex-col gap-0.5">
+                   <span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400 leading-none">Status</span>
+                   <div className="flex items-center gap-2">
+                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                     <span className="text-[11px] font-bold text-zinc-600 uppercase tracking-tighter">Live_stdout_ready</span>
+                   </div>
+                 </div>
+                 <div className="h-6 w-[1px] bg-zinc-100 mx-2 hidden sm:block" />
+                 <div className="flex items-center gap-6 text-[12px] font-bold text-zinc-400">
+                   <a href="https://github.com/edwinvs/cistack" target="_blank" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
+                     <GithubIcon size={14} className="opacity-40 group-hover:opacity-100 transition-opacity" />
+                     Repository
+                   </a>
+                   <a href="https://www.npmjs.com/package/cistack" target="_blank" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
+                     <Package size={14} className="opacity-40 group-hover:opacity-100 transition-opacity" />
+                     Registry
+                   </a>
+                 </div>
+               </div>
+            </div>
+
+            {/* System Identification Cell */}
+            <div className="md:col-span-3 p-5 md:p-6 flex items-center justify-between md:justify-end gap-6 bg-zinc-50/20">
+              <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-[0.2em]">NAV_SYSTEM // 2024_A1</span>
+              <button 
+                onClick={() => document.getElementById('docs')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-[11px] font-black uppercase tracking-widest text-zinc-900 px-4 py-2 border border-zinc-900 hover:bg-zinc-950 hover:text-white transition-all rounded-sm"
+              >
+                Docs
+              </button>
+            </div>
+
           </div>
         </motion.nav>
 
         {/* Main content */}
-        <main className="w-full max-w-[1500px] mx-auto flex flex-col lg:flex-row items-center justify-between pt-6 lg:pt-12 pb-16 px-4 sm:px-6 md:px-8 z-10 relative gap-8 lg:gap-8 min-h-[calc(100vh-80px)]">
+        {/* Hero Section: Technical Matrix UI */}
+        <main className="w-full max-w-[1500px] mx-auto pt-6 lg:pt-12 px-4 sm:px-6 md:px-8 z-10 relative">
 
-          {/* Left Column */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="flex flex-col items-start gap-4 sm:gap-5 w-full lg:max-w-[500px]"
-          >
-            <h1 className="text-[3.0rem] min-[1445px]:text-[4.0rem] font-bold tracking-tight text-zinc-900 leading-[1.1] flex flex-col gap-1 w-full">
+          {/* Subtle Global Dot Grid for Hero */}
+          <div className="absolute inset-x-0 top-0 h-[600px] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.35] pointer-events-none -mt-40 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
 
-              {/* First line */}
-              <div className="flex flex-col sm:flex-row sm:items-baseline gap-y-1 sm:gap-x-3">
-                <span className="italic font-black tracking-tighter text-zinc-900 sm:whitespace-nowrap">
-                  Your stack.
-                </span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 border-t border-l border-zinc-100 relative bg-white/40">
 
-                <div className="shrink-0">
-                  <CanvasText
-                    text="Your pipeline."
-                    className="text-[3.0rem] min-[1445px]:text-[4.0rem] font-bold tracking-tight"
-                    backgroundClassName="bg-[#1d4ed8]"
-                    colors={[
-                      "#60a5fa",
-                      "#3b82f6",
-                      "#bfdbfe",
-                      "#93c5fd",
-                      "#38bdf8",
-                      "#0ea5e9",
-                    ]}
-                    animationDuration={4}
-                    lineGap={6}
-                    curveIntensity={30}
-                    lineWidth={2}
-                  />
-                </div>
-              </div>
+            {/* L_01 / CORE MISSION (7/12) */}
+            <div className="lg:col-span-7 border-r border-b border-zinc-100 p-8 sm:p-12 lg:p-16 relative overflow-hidden group/hero">
+              {/* Decorative Blueprint Corner */}
+              <div className="absolute top-0 right-0 w-24 h-24 border-t border-r border-zinc-100/60 opacity-0 group-hover:opacity-100 transition-all duration-700" />
 
-              {/* Second line */}
-              <div className="flex items-baseline">
-                <span className="text-transparent bg-clip-text bg-gradient-to-br from-zinc-900 to-zinc-600 font-bold tracking-tight sm:whitespace-nowrap">
-                  engineered in seconds.
-                </span>
-              </div>
-            </h1>
-
-            {/* Description */}
-            <p className="text-[13px] sm:text-[14px] md:text-[15px] text-zinc-500 leading-[1.7] w-full font-normal">
-              cistack auto-detects your stack and generates
-              production-ready GitHub Actions workflows across 30+ frameworks and 10+ platforms.
-            </p>
-
-            {/* CTA row */}
-            <div className="flex flex-row items-center gap-6 sm:gap-8 mt-2 w-full">
-              <button
-                onClick={() => copyToClipboard("npx cistack")}
-                className="flex items-center justify-between gap-3 bg-zinc-900 hover:bg-zinc-800 transition-colors border border-zinc-800 text-white rounded-full pl-5 pr-2 py-2 sm:py-1.5 text-[13px] sm:text-[13px] w-auto shadow-sm"
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="flex flex-col gap-8 relative z-10"
               >
-                <span className="font-mono">npx cistack</span>
-                <div className="bg-zinc-800 rounded-full p-2 sm:p-1.5 flex items-center justify-center shrink-0">
-                  {copiedLocal ? (
-                    <Check size={14} className="text-emerald-400" />
-                  ) : (
-                    <Copy size={13} className="text-zinc-300" />
-                  )}
+                <div className="flex items-center gap-3">
+                  <Badge variant="outline" className="px-2 py-0.5 text-[9px] uppercase tracking-[0.2em] font-black border-zinc-200 text-zinc-400 rounded-sm bg-white shadow-sm">
+                    ENGINE_2.0.0
+                  </Badge>
+                  <div className="h-[1px] w-12 bg-zinc-100" />
+                  <span className="text-[10px] font-mono text-zinc-300 font-bold tracking-widest uppercase">L_01 // CORE_MISSION</span>
                 </div>
-              </button>
 
-              {/* <a
-                href="#"
-                className="text-[14px] sm:text-[15px] font-semibold text-zinc-600 hover:text-zinc-900 transition-colors flex items-center gap-1.5 px-1 xs:px-0 whitespace-nowrap"
-              >
-                Documentation{" "}
-                <ArrowRight size={15} className="text-zinc-400 shrink-0" />
-              </a> */}
+                <h1 className="text-[3.4rem] min-[1445px]:text-[4.6rem] font-bold tracking-tight text-zinc-900 leading-[1.05] flex flex-col gap-2">
+                  <div className="flex flex-col sm:flex-row sm:items-baseline gap-x-4 flex-wrap">
+                    <span className="italic font-black text-zinc-950 tracking-tighter whitespace-nowrap">Your stack.</span>
+                    <div className="relative whitespace-nowrap">
+                      <CanvasText
+                        text="Your pipeline."
+                        className="text-[3.4rem] min-[1445px]:text-[4.6rem] font-bold tracking-tight"
+                        backgroundClassName="bg-[#1d4ed8]"
+                        colors={["#3b82f6", "#2563eb", "#60a5fa", "#93c5fd"]}
+                        animationDuration={4}
+                        lineWidth={2.5}
+                      />
+                    </div>
+                  </div>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-br from-zinc-950 via-zinc-800 to-zinc-500">
+                    engineered in seconds.
+                  </span>
+                </h1>
+
+                <p className="text-[15px] sm:text-[17px] text-zinc-500 leading-relaxed max-w-[540px] font-medium">
+                  cistack deep-scans your repository to generate production-ready
+                  GitHub Actions workflows across 30+ frameworks and 12+ platforms.
+                </p>
+
+                <div className="flex flex-wrap items-center gap-6 mt-4">
+                  <Button
+                    onClick={() => copyToClipboard("npx cistack")}
+                    className="flex h-auto items-center justify-between gap-6 bg-zinc-950 hover:bg-black transition-all border border-zinc-800 text-white rounded-sm px-6 py-3.5 text-[14px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-zinc-300/50 group/btn"
+                  >
+                    <span className="font-mono font-bold tracking-tight text-emerald-400 group-hover:text-emerald-300 transition-colors">npx cistack</span>
+                    <div className="flex items-center justify-center shrink-0 border-l border-zinc-800 pl-6 ml-2">
+                      {copiedLocal ? <Check size={18} className="text-emerald-400" /> : <Copy size={18} className="text-zinc-500 group-hover:text-zinc-300 transition-colors" />}
+                    </div>
+                  </Button>
+
+                  <div className="flex flex-col gap-1 px-2 border-l-2 border-zinc-100">
+                    <span className="text-[10px] font-black text-zinc-300 uppercase tracking-widest">Active Installs</span>
+                    <span className="text-[14px] font-bold text-zinc-900 tracking-tight">2.4k / week</span>
+                  </div>
+                </div>
+              </motion.div>
             </div>
-          </motion.div>
 
-          {/* Right Column */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="w-full lg:w-[680px] lg:flex-shrink-0 min-w-0"
-          >
-            <TerminalCard />
-          </motion.div>
+            {/* L_02 / RUNTIME STAGE (5/12) */}
+            <div className="lg:col-span-5 border-r border-b border-zinc-100 flex flex-col">
+
+              {/* Visual Terminal Area */}
+              <div className="flex-1 p-8 sm:p-12 bg-zinc-50/20 flex items-center justify-center relative overflow-hidden group/runtime group-hover/hero:bg-zinc-50/40 transition-colors duration-700">
+                <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-[0.2]" />
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: 0.1 }}
+                  className="w-full relative z-20 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-sm overflow-hidden"
+                >
+                  <TerminalCard />
+                </motion.div>
+
+                <div className="absolute top-6 right-8 flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-[9px] font-mono text-zinc-400 tracking-widest font-black uppercase">LIVE_STDOUT</span>
+                </div>
+              </div>
+
+              {/* Matrix Footer Row */}
+              <div className="border-t border-zinc-100 grid grid-cols-2 bg-white">
+                <div className="p-8 border-r border-zinc-100 flex flex-col gap-2 hover:bg-zinc-50/50 transition-colors cursor-default group/meta">
+                  <span className="text-[9px] font-black uppercase text-zinc-300 tracking-[0.2em] group-hover/meta:text-zinc-500 transition-colors">Integrations</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[20px] font-black text-zinc-900 leading-none">30+</span>
+                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-tighter">Stack-Aware</span>
+                  </div>
+                </div>
+                <div className="p-8 flex flex-col gap-2 bg-zinc-50/30 hover:bg-zinc-50/60 transition-colors cursor-default group/meta">
+                  <span className="text-[9px] font-black uppercase text-zinc-300 tracking-[0.2em] group-hover/meta:text-zinc-500 transition-colors">Success Rate</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[20px] font-black text-emerald-600 leading-none tracking-tighter">99.9%</span>
+                    <Check size={14} className="text-emerald-500/50" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </main>
 
         {/* Documentation Section */}
-        <section id="docs" className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 py-24 sm:py-32 z-10 relative">
-          <div className="flex flex-col gap-20 items-start">
-            {/* Intro & Features */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="flex flex-col gap-10"
-            >
-              <div className="flex flex-col gap-4">
-                <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-zinc-900">
-                  Automatically generate CI/CD pipelines by analyzing your codebase.
-                </h2>
-                <p className="text-base sm:text-lg text-zinc-500 leading-relaxed max-w-[800px]">
-                  cistack scans your project directory and produces production-grade GitHub Actions workflow YAML files. 
-                  It detects your language, framework, testing tools, and hosting platform — then writes the best pipeline for your stack.
-                </p>
-              </div>
+        <section id="docs" className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 py-24 pb-40 z-10 relative">
+          {/* subtle dot background mask */}
+          <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.4] pointer-events-none" />
 
-              <div className="flex flex-col gap-6">
-                <h3 className="text-xl font-bold text-zinc-900 uppercase tracking-wider">Features</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
-                  {[
-                    { title: "Deep codebase analysis", desc: "Reads package.json, lock files, config files, and directory structure" },
-                    { title: "Smart detection", desc: "Identifies 30+ frameworks, 12 languages, 12+ testing tools, and 10+ hosting platforms" },
-                    { title: "Hosting auto-detect", desc: "Firebase, Vercel, Netlify, AWS, GCP, Azure, Heroku, Render, and more" },
-                    { title: "Multi-workflow output", desc: "Generates separate ci.yml, deploy.yml, docker.yml, and security.yml" },
-                    { title: "Security built-in", desc: "CodeQL analysis + dependency auditing on every pipeline" },
-                    { title: "Monorepo aware", desc: "Detects Turborepo, Nx, Lerna, pnpm workspaces" },
-                    { title: "Interactive mode", desc: "Confirms detected settings before writing files" },
-                    { title: "Zero config", desc: "Works out of the box with no configuration needed" }
-                  ].map((item, i) => (
-                    <div key={i} className="flex flex-col gap-1">
-                      <span className="font-bold text-zinc-900 text-sm">{item.title}</span>
-                      <span className="text-zinc-500 text-sm leading-relaxed">{item.desc}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Installation & Usage */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="flex flex-col gap-10"
-            >
-              <div className="flex flex-col gap-6">
-                <h3 className="text-xl font-bold text-zinc-900 uppercase tracking-wider">Installation</h3>
-                <div className="flex flex-col gap-4">
-                  <div className="flex flex-col gap-2">
-                    <p className="text-sm text-zinc-500 font-medium italic">Run without installing (recommended for one-off use)</p>
-                    <div className="bg-zinc-50 border border-zinc-100 rounded-xl p-4 font-mono text-sm text-zinc-800">
-                      npx cistack
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <p className="text-sm text-zinc-500 font-medium italic">Install globally</p>
-                    <div className="bg-zinc-50 border border-zinc-100 rounded-xl p-4 font-mono text-sm text-zinc-800">
-                      npm install -g cistack
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-6">
-                <h3 className="text-xl font-bold text-zinc-900 uppercase tracking-wider">Usage</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[
-                    { cmd: "npx cistack", desc: "In your project directory" },
-                    { cmd: "npx cistack --path /path/to/project", desc: "Specify a project path" },
-                    { cmd: "npx cistack --output .github/workflows", desc: "Custom output directory" },
-                    { cmd: "npx cistack --dry-run", desc: "Dry run (print YAML without writing)" },
-                    { cmd: "npx cistack --no-prompt", desc: "Skip interactive prompts" },
-                    { cmd: "npx cistack --verbose", desc: "Verbose output" },
-                    { cmd: "npx cistack --force", desc: "Force overwrite existing files" }
-                  ].map((item, i) => (
-                    <div key={i} className="bg-zinc-50 border border-zinc-100 rounded-xl p-4 flex flex-col gap-2">
-                      <code className="text-[13px] font-mono text-zinc-900 font-bold">{item.cmd}</code>
-                      <span className="text-[12px] text-zinc-500">{item.desc}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Matrix Section */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="flex flex-col gap-12"
-            >
-              <div className="flex flex-col gap-6">
-                <h3 className="text-xl font-bold text-zinc-900 uppercase tracking-wider">Detected Platforms</h3>
-                <div className="overflow-x-auto rounded-2xl border border-zinc-100">
-                  <table className="w-full text-left text-sm">
-                    <thead className="bg-zinc-50 border-b border-zinc-100">
-                      <tr>
-                        <th className="px-6 py-4 font-bold text-zinc-900">Platform</th>
-                        <th className="px-6 py-4 font-bold text-zinc-900">Detection Signal</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-zinc-50">
-                      {[
-                        { name: "Firebase", signal: "firebase.json, .firebaserc, firebase-tools dep" },
-                        { name: "Vercel", signal: "vercel.json, .vercel dir, vercel dep" },
-                        { name: "Netlify", signal: "netlify.toml, _redirects, netlify-cli dep" },
-                        { name: "GitHub Pages", signal: "gh-pages dep, github.io homepage" },
-                        { name: "AWS", signal: "serverless.yml, appspec.yml, cdk.json, aws-sdk dep" },
-                        { name: "GCP App Engine", signal: "app.yaml" },
-                        { name: "Azure", signal: "azure/pipelines.yml, @azure/* deps" },
-                        { name: "Heroku", signal: "Procfile, heroku.yml" },
-                        { name: "Render", signal: "render.yaml" },
-                        { name: "Railway", signal: "railway.json, railway.toml" },
-                        { name: "Docker", signal: "Dockerfile, docker-compose.yml" }
-                      ].map((item, i) => (
-                        <tr key={i} className="hover:bg-zinc-50/50 transition-colors">
-                          <td className="px-6 py-3 font-semibold text-zinc-900">{item.name}</td>
-                          <td className="px-6 py-3 text-zinc-500 font-mono text-[13px]">{item.signal}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-6">
-                <h4 className="font-bold text-zinc-900 uppercase tracking-wider text-sm">Detected Frameworks</h4>
-                <p className="text-sm text-zinc-500 leading-relaxed font-mono bg-zinc-50/50 p-6 rounded-2xl border border-dashed border-zinc-200">
-                  Next.js, Nuxt, SvelteKit, Remix, Astro, Vite, React, Vue, Angular, Svelte, Gatsby, Express, Fastify, NestJS, Hono, Koa, tRPC, Django, Flask, FastAPI, Ruby on Rails, Spring Boot, Laravel, Go (gin), Rust (Cargo)
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Workflows */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="flex flex-col gap-10"
-            >
-              <div className="flex flex-col gap-6">
-                <h3 className="text-xl font-bold text-zinc-900 uppercase tracking-wider">Generated Workflows</h3>
-                <div className="grid grid-cols-1 gap-6">
-                  {[
-                    { 
-                      title: "ci.yml — Continuous Integration", 
-                      desc: "Runs on every push and pull request. Includes Lint (ESLint, TS type-check), Test (Unit tests with matrix), Build (Production build), and E2E (Cypress/Playwright if detected)."
-                    },
-                    { 
-                      title: "deploy.yml — Continuous Deployment", 
-                      desc: "Triggers on push to main/master. Sets up platform-specific deployment using best-practice GitHub Actions and provides documentation for required secrets."
-                    },
-                    { 
-                      title: "docker.yml — Docker Build & Push", 
-                      desc: "Triggers on push to main and version tags. Handles multi-platform builds via Buildx and pushes to GHCR with integrated caching."
-                    },
-                    { 
-                      title: "security.yml — Security Audit", 
-                      desc: "Runs on push and weekly schedule. Performs dependency vulnerability audits and GitHub CodeQL analysis for the detected language."
-                    }
-                  ].map((item, i) => (
-                    <div key={i} className="flex flex-col gap-3 p-8 rounded-3xl border border-zinc-100 bg-white shadow-sm">
-                      <h4 className="font-bold text-zinc-900 text-lg">{item.title}</h4>
-                      <p className="text-zinc-500 text-sm leading-relaxed">{item.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-zinc-900 rounded-[2.5rem] p-10 sm:p-12 text-white flex flex-col gap-6 overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-zinc-800 rounded-full blur-[100px] -mr-32 -mt-32 opacity-50"></div>
-                <div className="flex flex-col gap-3 z-10">
-                  <h3 className="text-2xl font-bold tracking-tight">Required Secrets</h3>
-                  <p className="text-zinc-400 text-sm leading-relaxed max-w-[500px]">
-                    After generating, add the required secrets to your repository at: <br/>
-                    <code className="text-zinc-300 bg-zinc-800 px-1.5 py-0.5 rounded text-[12px]">Settings → Secrets and variables → Actions</code>
-                  </p>
-                </div>
-                <div className="flex flex-col gap-4 mt-4 z-10">
-                  <span className="text-sm font-bold uppercase tracking-widest text-zinc-500">Examples</span>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="flex flex-col gap-2 p-5 rounded-2xl bg-zinc-800/50 border border-zinc-700/50">
-                      <span className="text-xs font-bold text-zinc-400">Next.js + Vercel</span>
-                      <code className="text-xs text-white">npx cistack</code>
-                      <span className="text-[10px] text-zinc-500 leading-tight">Generates CI, Deploy (Vercel), and Security workflows.</span>
-                    </div>
-                    <div className="flex flex-col gap-2 p-5 rounded-2xl bg-zinc-800/50 border border-zinc-700/50">
-                      <span className="text-xs font-bold text-zinc-400">Node + Docker</span>
-                      <code className="text-xs text-white">npx cistack</code>
-                      <span className="text-[10px] text-zinc-500 leading-tight">Generates CI, Docker (GHCR), and Security workflows.</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+          {/* Section Header: Compact & Professional */}
+          <div className="flex flex-col gap-4 mb-16 max-w-[900px]">
+            <div className="flex items-center gap-3">
+              <Badge variant="outline" className="px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-black border-zinc-200 text-zinc-600 bg-white rounded-sm shadow-sm">
+                Technical Specification v2.0.0
+              </Badge>
+              <div className="h-[1px] flex-1 bg-zinc-200/60" />
+            </div>
+            <h2 className="text-[36px] sm:text-[44px] font-bold tracking-tight text-zinc-900 leading-[1.1]">
+              Engineered for consistency.<br />
+              Generated for speed.
+            </h2>
+            <p className="text-[17px] text-zinc-500 leading-relaxed max-w-[760px] font-medium">
+              cistack deep-scans your project directory to produce production-grade GitHub Actions YAML.
+              It detects your language, framework, testing tools, and hosting platform — then writes the best pipeline for your stack.
+            </p>
           </div>
+
+          {/* Integrated High-Density Matrix */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 border-t border-l border-zinc-100">
+
+            {/* 01. Capabilities Grid (4 columns) */}
+            <div className="lg:col-span-4 border-r border-b border-zinc-100 p-8 lg:p-12 bg-zinc-50/20 hover:bg-zinc-50/40 transition-colors duration-500 relative group/cell">
+              <div className="absolute top-4 right-4 text-[10px] font-mono text-zinc-200 font-bold group-hover/cell:text-zinc-300 transition-colors">01 / 04</div>
+              <div className="flex flex-col gap-10">
+                <div className="flex flex-col gap-2">
+                  <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">01. Capabilities</span>
+                  <h3 className="text-[18px] font-bold text-zinc-900">Analysis & Detection</h3>
+                </div>
+                <div className="flex flex-col divide-y divide-zinc-200/40">
+                  {[
+                    { label: "Deep analysis", sub: "package.json, lock files, tree-shaking" },
+                    { label: "Monorepo aware", sub: "Turborepo, Nx, Lerna, pnpm workspaces" },
+                    { label: "Interactive mode", sub: "Confirms settings before writing files" },
+                    { label: "Zero config", sub: "Works out of the box with no config needed" },
+                    { label: "Security auditing", sub: "CodeQL and dependency vulnerability checks" }
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-4 py-5 first:pt-0 last:pb-0">
+                      <Checkbox checked readOnly className="mt-1 border-zinc-200 data-[state=checked]:bg-zinc-900 data-[state=checked]:border-zinc-900 shrink-0" />
+                      <div className="flex flex-col">
+                        <span className="text-[16px] font-semibold text-zinc-800">{item.label}</span>
+                        <span className="text-[13px] text-zinc-400 leading-normal">{item.sub}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* 02. Setup & Compatibility (8 columns) */}
+            <div className="lg:col-span-8 flex flex-col">
+
+              {/* Row: Activation & Detailed Flags */}
+              <div className="border-r border-b border-zinc-100 p-8 lg:p-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
+                  <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-2">
+                      <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">02. Activation</span>
+                      <h3 className="text-[18px] font-bold text-zinc-900">Installation</h3>
+                    </div>
+                    <InstallToggle />
+                    <p className="text-[13px] text-zinc-400 italic">Recommended: Use npx for one-off generation.</p>
+                  </div>
+                  <div className="flex flex-col gap-6">
+                    <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">CLI Parameter Set</span>
+                    <div className="grid grid-cols-2 gap-1 border border-zinc-100 rounded-sm overflow-hidden bg-transparent p-1">
+                      {[
+                        { cmd: "--path", d: "Project path" },
+                        { cmd: "--output", d: "Workflow dir" },
+                        { cmd: "--dry-run", d: "Simulation" },
+                        { cmd: "--no-prompt", d: "Skip checks" },
+                        { cmd: "--verbose", d: "Full output" },
+                        { cmd: "--force", d: "Overwrite" }
+                      ].map((flag, i) => (
+                        <div key={i} className="flex items-center justify-between p-2.5 border border-transparent rounded-sm transition-all group">
+                          <code className="text-[12px] font-bold text-zinc-700 bg-zinc-100/50 px-1.5 py-0.5 rounded-sm transition-colors">{flag.cmd}</code>
+                          <span className="text-[11px] text-zinc-400 font-medium">{flag.d}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Row: Hosting & Framework Split */}
+              <div className="border-r border-b border-zinc-100 grid grid-cols-1 md:grid-cols-2 flex-1">
+                <div className="p-8 lg:p-12 border-b md:border-b-0 md:border-r border-zinc-100">
+                  <div className="flex flex-col gap-8">
+                    <div className="flex flex-col gap-2">
+                      <h4 className="text-[14px] font-bold text-zinc-900 uppercase tracking-widest">Detection Logic</h4>
+                      <p className="text-[13px] text-zinc-400 leading-relaxed font-medium">Automatic recognition triggers based on filesystem signals.</p>
+                    </div>
+                    <Accordion className="w-full">
+                      {[
+                        { id: "p1", idx: "S_01", n: "Firebase", s: "firebase.json, .firebaserc", d: "Automatic Firebase Hosting detection with automated multi-project branch logic.", icon: <Package size={14} /> },
+                        { id: "p2", idx: "S_02", n: "Vercel", s: "vercel.json, .vercel dir", d: "Vercel deploy-gate generation with branch-aware environment provisioning.", icon: <Shield size={14} /> },
+                        { id: "p3", idx: "S_03", n: "Netlify", s: "netlify.toml, _redirects", d: "Netlify edge detection with custom header and redirect validation.", icon: <Terminal size={14} /> },
+                        { id: "p4", idx: "S_04", n: "AWS / Azure", s: "cdk.json, azure/pipelines.yml", d: "Infrastructure-as-Code (IaC) recognition for AWS CDK and Azure App Service.", icon: <Globe size={14} /> },
+                        { id: "p5", idx: "S_05", n: "Docker", s: "Dockerfile, compose.yml", d: "Containerization recognition with Buildx layer caching and GHCR authentication.", icon: <Box size={14} /> }
+                      ].map((p) => (
+                        <AccordionItem key={p.id} value={p.id} className="border-b border-zinc-100 last:border-0">
+                          <AccordionTrigger className="py-5 hover:no-underline text-zinc-500 hover:text-zinc-900 transition-colors group/trigger data-[state=open]:text-zinc-950">
+                            <div className="flex items-center gap-4">
+                              <span className="text-[10px] font-mono font-bold text-zinc-300 group-hover/trigger:text-zinc-500 transition-colors">{p.idx}</span>
+                              <div className="flex items-center gap-3">
+                                <span className="text-zinc-400 group-hover/trigger:text-zinc-900 transition-colors">{p.icon}</span>
+                                <span className="text-[16px] font-semibold">{p.n}</span>
+                              </div>
+                            </div>
+                            <Badge variant="outline" className="ml-auto mr-4 text-[10px] opacity-40 font-mono tracking-tight font-normal rounded-sm border-zinc-200 bg-zinc-50/50">{p.s}</Badge>
+                          </AccordionTrigger>
+                          <AccordionContent className="pb-6">
+                            <div className="bg-zinc-50/30 border-l-2 border-zinc-200 ml-[18px] pl-6 py-4">
+                              <p className="text-[15px] text-zinc-500 leading-relaxed max-w-[440px]">
+                                {p.d}
+                              </p>
+                              <div className="flex items-center gap-2 mt-4">
+                                <span className="text-[9px] font-bold text-zinc-300 uppercase tracking-widest">Signal source:</span>
+                                <code className="text-[10px] text-zinc-400 font-mono bg-white px-2 py-0.5 rounded-sm border border-zinc-100">{p.s}</code>
+                              </div>
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  </div>
+                </div>
+                <div className="p-8 lg:p-12 bg-zinc-50/20 flex flex-col gap-10">
+                  <div className="flex flex-col gap-6">
+                    <h4 className="text-[14px] font-bold text-zinc-900 uppercase tracking-wider">Framework coverage</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {["Next.js", "Nuxt", "SvelteKit", "Remix", "Astro", "Vite", "React", "Vue", "Angular", "Gatsby", "Express", "Fastify", "NestJS", "Django", "FastAPI", "Rails", "Go", "Rust"].map((f, i) => (
+                        <Badge key={i} variant="outline" className="text-[11px] font-medium text-zinc-500 bg-white border-zinc-100 px-2 py-0.5 rounded-sm">
+                          {f}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-6">
+                    <h4 className="text-[14px] font-bold text-zinc-900 uppercase tracking-wider">Testing tools</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {["Jest", "Vitest", "Mocha", "Cypress", "Playwright", "Pytest", "RSpec", "Go Test", "Cargo Test", "PHPUnit", "JUnit", "Storybook"].map((t, i) => (
+                        <Badge key={i} variant="secondary" className="text-[11px] font-bold text-zinc-500 bg-zinc-100/50 border-transparent px-2 py-0.5 rounded-sm">
+                          {t}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 03. Workflow Outputs (Bento Layout) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 border-l border-r border-b border-zinc-100">
+
+            <div className="lg:col-span-8 p-8 lg:p-12 border-r border-zinc-100 group/artifacts hover:bg-zinc-50/20 transition-colors duration-500">
+              <div className="flex flex-col gap-10">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">03. Artifacts</span>
+                    <Terminal size={14} className="text-zinc-200 group-hover/artifacts:text-zinc-300 transition-colors" />
+                  </div>
+                  <h3 className="text-[18px] font-bold text-zinc-900">Generated Workflows</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
+                  {[
+                    { f: "ci.yml", l: "Continuous Integration", d: "Lint (ESLint/Prettier), Test (Matrix across Node versions), Build, and E2E (Cypress/Playwright)." },
+                    { f: "deploy.yml", l: "Continuous Deployment", d: "Platform-specific deploy gates with secure branch-routing and documented secret references." },
+                    { f: "docker.yml", l: "Containerization", d: "Multi-platform build via Docker Buildx, GHCR push, and GitHub Actions layer caching." },
+                    { f: "security.yml", l: "Security Audit", d: "Dependency vulnerability auditing and deep CodeQL analysis for the detected language." }
+                  ].map((wf, i) => (
+                    <div key={i} className="flex flex-col gap-3 group/item">
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-3">
+                          <code className="text-[14px] font-black text-zinc-800  px-2.5 py-1 rounded-sm leading-none border border-zinc-100 group-hover/item:border-zinc-200 transition-colors">{wf.f}</code>
+                          <div className="h-[1px] flex-1 bg-zinc-100 group-hover/item:bg-zinc-200 transition-colors" />
+                        </div>
+                        <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-tight">{wf.l}</span>
+                      </div>
+                      <p className="text-[14px] text-zinc-500 leading-relaxed group-hover/item:text-zinc-600 transition-colors">{wf.d}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Security side panel */}
+            <div className="lg:col-span-4 flex flex-col">
+              <div className="p-8 lg:p-12 bg-zinc-950 text-white relative overflow-hidden group flex-1">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[100px] -mr-32 -mt-32" />
+                <div className="flex flex-col gap-8 relative z-10">
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Security Requirement</span>
+                    <h4 className="text-[18px] font-bold">Encrypted Secrets</h4>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    {["VERCEL_TOKEN", "AWS_ACCESS_KEY", "FIREBASE_TOKEN", "GHCR_TOKEN"].map((token) => (
+                      <div key={token} className="flex items-center justify-between py-3 border-b border-white/5 last:border-0 group/token">
+                        <code className="text-[13px] font-mono text-zinc-400 group-hover/token:text-white transition-colors">{token}</code>
+                        <Shield size={12} className="text-zinc-700 group-hover/token:text-emerald-500 transition-colors" />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    <p className="text-[13px] text-zinc-500 italic leading-relaxed border-l-2 border-emerald-500/30 pl-4 py-2">
+                      Add secrets at: <br />
+                      <span className="text-zinc-300 not-italic font-bold tracking-tight">Settings → Secrets and variables → Actions</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 04. Tactical Examples Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 border-l border-r border-b border-zinc-100 bg-zinc-50/10">
+            <div className="lg:col-span-12 p-8 lg:p-12">
+              <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-2">
+                  <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">04. Structural Examples</span>
+                  <h3 className="text-[18px] font-bold text-zinc-900">Standard Stack Scenarios</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {[
+                    { name: "Next.js + Vercel", desc: "Lint, Test, Build + Vercel Deploy + Security" },
+                    { name: "React + Firebase", desc: "CI Pipeline + Firebase Hosting Deploy + Security" },
+                    { name: "Node.js + Docker", desc: "CI Pipeline + Multi-platform Docker Push (GHCR)" }
+                  ].map((ex, i) => (
+                    <div key={i} className="p-6 border border-zinc-200/60 bg-white rounded-sm flex flex-col gap-3 hover:shadow-xl hover:shadow-zinc-200/40 transition-all cursor-default">
+                      <span className="text-[14px] font-black text-zinc-900">{ex.name}</span>
+                      <p className="text-[13px] text-zinc-500 leading-relaxed font-medium">{ex.desc}</p>
+                      <div className="flex items-center gap-1.5 mt-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        <span className="text-[10px] font-mono text-zinc-400 font-bold uppercase tracking-widest">Validated Output</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
         </section>
 
-        {/* Footer */}
-        <motion.footer 
+        {/* Redesigned Architectural Footer */}
+        <motion.footer
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="relative z-20 border-t border-zinc-100"
+          transition={{ duration: 1.2 }}
+          className="relative z-20 border-t border-zinc-100 bg-white"
         >
-          <div className="max-w-[1400px] mx-auto px-4 sm:px-8 py-5 sm:py-6 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4">
-            <span className="text-xs text-zinc-400">cistack — MIT license</span>
-            <span className="text-xs text-zinc-400">npm install -g cistack</span>
+          <div className="max-w-[1400px] mx-auto border-l border-r border-zinc-100">
+            <div className="grid grid-cols-1 md:grid-cols-12">
+
+              {/* Branding & Attribution */}
+              <div className="md:col-span-4 p-8 border-b md:border-b-0 md:border-r border-zinc-100 flex flex-col gap-6">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Project_Origin</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-[18px] tracking-tighter text-zinc-900">cistack</span>
+                    <span className="text-[9px] font-mono font-bold text-zinc-300 bg-zinc-50 border border-zinc-100 px-1.5 py-0.5 rounded-sm">V_2.0.0 // PRODUCTION</span>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Architected_By</span>
+                  <a href="https://www.edwinvakayil.info/" target="_blank" rel="noopener noreferrer" className="text-[14px] font-bold text-zinc-600 hover:text-zinc-900 transition-colors flex items-center gap-2 group">
+                    Edwin Vakayil
+                    <ArrowUpRight size={12} className="text-zinc-300 group-hover:text-zinc-900 transition-colors" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Technical Status & License */}
+              <div className="md:col-span-5 p-8 border-b md:border-b-0 md:border-r border-zinc-100 flex flex-col justify-between gap-8">
+                <div className="flex flex-wrap gap-x-8 gap-y-4">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Status</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="text-[12px] font-bold text-zinc-700">All Systems Operational</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">License</span>
+                    <span className="text-[12px] font-bold text-zinc-700 uppercase">Open Source</span>
+                  </div>
+                </div>
+                <p className="text-[11px] text-zinc-400 leading-relaxed font-medium">
+                  Automated CI/CD infrastructure generation for the modern web. Built with precision for developers who value visibility and security in their deployment pipelines.
+                </p>
+              </div>
+
+              {/* Final Install Command */}
+              <div className="md:col-span-3 p-8 bg-zinc-50/30 flex flex-col justify-center items-start md:items-end gap-3">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Global_Install</span>
+                <code className="text-[13px] font-mono font-bold text-zinc-800 bg-white border border-zinc-200 px-3 py-1.5 rounded-sm shadow-sm group hover:border-zinc-900 transition-colors cursor-pointer">
+                  npm install -g cistack
+                </code>
+              </div>
+
+            </div>
+
+            {/* Sub-footer detail */}
+            <div className="border-t border-zinc-100 p-4 px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-widest">© {new Date().getFullYear()} CISTACK ENGINE — ALL PIPELINES REIFIED.</span>
+              <div className="flex items-center gap-6">
+                <a href="https://github.com/edwinvs/cistack" target="_blank" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors">Github</a>
+                <a href="https://www.npmjs.com/package/cistack" target="_blank" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors">Npm</a>
+                <button 
+                  onClick={() => document.getElementById('docs')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors"
+                >
+                  Documentation
+                </button>
+              </div>
+            </div>
           </div>
         </motion.footer>
       </div>

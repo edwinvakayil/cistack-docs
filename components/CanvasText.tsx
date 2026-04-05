@@ -79,7 +79,7 @@ export function CanvasText({
       const rect = textEl.getBoundingClientRect();
       const computed = window.getComputedStyle(textEl);
       setDimensions({
-        width: Math.ceil(rect.width) || 400,
+        width: Math.ceil(rect.width) + 8 || 400,
         height: Math.ceil(rect.height) || 200,
       });
       setFont(
@@ -201,7 +201,7 @@ export function CanvasText({
         )}
         aria-hidden="true"
       />
-      <span ref={textRef} className="invisible inline-block" aria-hidden="true">
+      <span ref={textRef} className="invisible inline-block whitespace-nowrap" aria-hidden="true">
         {text}
       </span>
       <canvas
