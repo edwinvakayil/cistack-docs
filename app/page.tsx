@@ -192,7 +192,7 @@ export default function Home() {
                 </div>
                 <div className="h-6 w-[1px] bg-zinc-100 mx-2 hidden sm:block" />
                 <div className="flex items-center gap-6 text-[12px] font-bold text-zinc-400">
-                  <a href="https://github.com/edwinvs/cistack" target="_blank" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
+                  <a href="https://github.com/edwinvakayil/cistack" target="_blank" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
                     <GithubIcon size={14} className="opacity-40 group-hover:opacity-100 transition-opacity" />
                     Repository
                   </a>
@@ -725,7 +725,7 @@ export default function Home() {
                 © {mounted ? new Date().getFullYear() : "2026"} CISTACK ENGINE — ALL PIPELINES REIFIED.
               </span>
               <div className="flex items-center gap-6">
-                <a href="https://github.com/edwinvs/cistack" target="_blank" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors">Github</a>
+                <a href="https://github.com/edwinvakayil/cistack" target="_blank" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors">Github</a>
                 <a href="https://www.npmjs.com/package/cistack" target="_blank" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors">Npm</a>
                 <button
                   onClick={() => document.getElementById('docs')?.scrollIntoView({ behavior: 'smooth' })}
