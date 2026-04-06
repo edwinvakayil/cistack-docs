@@ -237,7 +237,7 @@ export default function Home() {
                   {/* S_01: Input Stage */}
                   <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 group/h1">
                     <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h1:text-zinc-400 transition-colors">S_01 // INGEST_ENGINE</span>
-                    <h1 className="text-[2.8rem] min-[400px]:text-[3.2rem] md:text-[4.8rem] font-black tracking-tighter text-zinc-950 leading-[0.9] sm:leading-none break-words">
+                    <h1 className="text-[2.8rem] min-[400px]:text-[3.2rem] md:text-[3.8rem] font-black tracking-tighter text-zinc-950 leading-[0.9] sm:leading-none break-words">
                       YOUR STACK.
                     </h1>
                   </div>
@@ -245,7 +245,7 @@ export default function Home() {
                   {/* S_02: Transformation Stage */}
                   <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 sm:ml-6 md:ml-12 group/h2">
                     <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h2:text-zinc-400 transition-colors">S_02 // PIPELINE_SYNTH</span>
-                    <h1 className="text-[2.8rem] min-[400px]:text-[3.2rem] md:text-[4.8rem] font-black tracking-tighter text-zinc-900 leading-[0.9] sm:leading-none break-words">
+                    <h1 className="text-[2.8rem] min-[400px]:text-[3.2rem] md:text-[3.8rem] font-black tracking-tighter text-zinc-900 leading-[0.9] sm:leading-none break-words">
                       YOUR PIPELINE.
                     </h1>
                   </div>
@@ -253,8 +253,8 @@ export default function Home() {
                   {/* S_03: Reification Stage */}
                   <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 sm:ml-12 md:ml-24 group/h3">
                     <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h3:text-zinc-400 transition-colors">S_03 // ACTION_COMMIT</span>
-                    <h1 className="text-[2.8rem] min-[400px]:text-[3.2rem] md:text-[4.8rem] font-black tracking-tighter text-zinc-400 sm:text-zinc-300 leading-[0.9] sm:leading-none break-words">
-                      ENGINEERED.
+                    <h1 className="text-[2.8rem] min-[400px]:text-[3.2rem] md:text-[3.8rem] font-black tracking-tighter text-zinc-400 sm:text-zinc-300 leading-[0.9] sm:leading-none break-words">
+                      ORCHESTRATED.
                     </h1>
                   </div>
                 </div>
