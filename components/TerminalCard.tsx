@@ -1,75 +1,26 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Terminal, RefreshCcw, Copy, Check, Shield, Package, Globe } from "lucide-react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { motion } from "framer-motion";
+import { Copy, Check, RefreshCcw } from "lucide-react";
 
 const COMMAND = "npx cistack";
 
-const LOGO = [
-  "  ██████╗██╗███████╗████████╗ █████╗  ██████╗██╗  ██╗",
-  " ██╔════╝██║██╔════╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝",
-  " ██║     ██║███████╗   ██║   ███████║██║     █████╔╝ ",
-  " ██║     ██║╚════██║   ██║   ██╔══██║██║     ██╔═██╗ ",
-  " ╚██████╗██║███████║   ██║   ██║  ██║╚██████╗██║  ██╗",
-  "  ╚═════╝╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝",
-];
-
 interface OutputLine {
   text: string;
-  type: "logo" | "subtitle" | "success" | "info" | "heading" | "detail" | "merged" | "bullet" | "written" | "done" | "path" | "blank";
+  type: "success" | "info" | "heading" | "detail" | "merged" | "bullet" | "written" | "done" | "path" | "blank";
   delay: number;
 }
 
-const OUTPUT_LINES: OutputLine[] = [
-  ...LOGO.map((l, i) => ({ text: l, type: "logo" as const, delay: i * 40 })),
-  { text: "", type: "blank", delay: 250 },
-  { text: "  GitHub Actions pipeline generator  v2.0.0", type: "subtitle", delay: 300 },
-  { text: "─".repeat(50), type: "detail", delay: 400 },
-  { text: "", type: "blank", delay: 450 },
-  { text: "✔ Project scanned", type: "success", delay: 600 },
-  { text: "✔ Stack detected", type: "success", delay: 900 },
-  { text: "", type: "blank", delay: 950 },
-  { text: "🏗  Detected Stack", type: "heading", delay: 1100 },
-  { text: "", type: "blank", delay: 1150 },
-  { text: "  Languages:          TypeScript", type: "info", delay: 1300 },
-  { text: "  Frameworks:         Next.js, React", type: "info", delay: 1450 },
-  { text: "  Hosting:            Vercel", type: "info", delay: 1600 },
-  { text: "  Testing:            none", type: "info", delay: 1750 },
-  { text: "  Release tool:       none", type: "info", delay: 1900 },
-  { text: "", type: "blank", delay: 1950 },
-  { text: "? Does this look correct? Generate pipeline with these settings? Yes", type: "detail", delay: 2200 },
-  { text: "✔ Generated 3 CI workflow(s)", type: "success", delay: 2600 },
-  { text: "  ⊙ Smart-merged: ci.yml", type: "merged", delay: 2800 },
-  { text: '      • updated top-level "on"', type: "bullet", delay: 2900 },
-  { text: '      • updated top-level "concurrency"', type: "bullet", delay: 2950 },
-  { text: '      • added job "lint"', type: "bullet", delay: 3000 },
-  { text: '      • job "build" → updated "name"', type: "bullet", delay: 3050 },
-  { text: '      • job "build" → updated "needs"', type: "bullet", delay: 3100 },
-  { text: '      • job "build" → added step "Checkout code"', type: "bullet", delay: 3150 },
-  { text: '      • job "build" → added step "Set up Node.js"', type: "bullet", delay: 3200 },
-  { text: '      • job "build" → updated step "Build"', type: "bullet", delay: 3250 },
-  { text: '      • job "build" → added step "Upload build artifact"', type: "bullet", delay: 3300 },
-  { text: "  ✔ Written:      deploy.yml", type: "written", delay: 3500 },
-  { text: "  ✔ Written:      security.yml", type: "written", delay: 3650 },
-  { text: "  ✔ Written:      .github/dependabot.yml", type: "written", delay: 3800 },
-  { text: "", type: "blank", delay: 3850 },
-  { text: "  Done! Your GitHub Actions pipeline is ready.", type: "done", delay: 4100 },
-  { text: "  Workflows → cistack/.github/workflows", type: "path", delay: 4300 },
-  { text: "  Dependabot → cistack/.github/dependabot.yml", type: "path", delay: 4450 },
-];
-
 const lineColor: Record<OutputLine["type"], string> = {
-  logo: "text-zinc-500",
-  subtitle: "text-zinc-500",
   success: "text-emerald-500",
-  info: "text-blue-500",
+  info: "text-zinc-500",
   heading: "text-zinc-900 font-bold",
   detail: "text-zinc-500",
   merged: "text-amber-500",
-  bullet: "text-zinc-400",
+  bullet: "text-zinc-400 font-medium",
   written: "text-emerald-500",
-  done: "text-emerald-500 font-bold",
+  done: "text-zinc-950 font-bold",
   path: "text-zinc-400",
   blank: "",
 };
@@ -100,7 +51,53 @@ const TerminalCard = () => {
   const [visibleLines, setVisibleLines] = useState<number>(0);
   const [phase, setPhase] = useState<"typing" | "output" | "done">("typing");
   const [key, setKey] = useState(0);
+  const [version, setVersion] = useState("3.0.0");
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch("https://registry.npmjs.org/cistack/latest")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.version) setVersion(data.version);
+      })
+      .catch((err) => console.error("Error fetching version:", err));
+  }, []);
+
+  const OUTPUT_LINES = useMemo((): OutputLine[] => [
+    { text: `  cistack v${version}`, type: "heading", delay: 100 },
+    { text: "  " + "─".repeat(24), type: "detail", delay: 200 },
+    { text: "", type: "blank", delay: 250 },
+    { text: "✔ Project scanned", type: "success", delay: 500 },
+    { text: "✔ Stack detected", type: "success", delay: 800 },
+    { text: "", type: "blank", delay: 850 },
+    { text: "  Detected Stack", type: "heading", delay: 1000 },
+    { text: "  " + "─".repeat(48), type: "detail", delay: 1100 },
+    { text: "  Languages:           TypeScript", type: "info", delay: 1300 },
+    { text: "  Frameworks:          Next.js, React", type: "info", delay: 1450 },
+    { text: "  Hosting:             Vercel", type: "info", delay: 1600 },
+    { text: "  Testing:             none", type: "info", delay: 1750 },
+    { text: "  Release tool:        none", type: "info", delay: 1900 },
+    { text: "", type: "blank", delay: 1950 },
+    { text: "? Does this look correct? Generate pipeline with these settings? Yes", type: "detail", delay: 2200 },
+    { text: "✔ Generated 3 CI workflow(s)", type: "success", delay: 2600 },
+    { text: "  ↻ Smart-merged: ci.yml", type: "merged", delay: 2800 },
+    { text: '    • updated top-level "on"', type: "bullet", delay: 2900 },
+    { text: '    • updated top-level "concurrency"', type: "bullet", delay: 2950 },
+    { text: '    • added job "lint"', type: "bullet", delay: 3000 },
+    { text: '    •   job "build" → updated "name"', type: "bullet", delay: 3050 },
+    { text: '    •   job "build" → updated "needs"', type: "bullet", delay: 3100 },
+    { text: '    •   job "build" → added step "Checkout code"', type: "bullet", delay: 3150 },
+    { text: '    •   job "build" → added step "Set up Node.js"', type: "bullet", delay: 3200 },
+    { text: '    •   job "build" → updated step "Build"', type: "bullet", delay: 3250 },
+    { text: '    •   job "build" → added step "Upload build artifact"', type: "bullet", delay: 3300 },
+    { text: "  ✔ Written:      deploy.yml", type: "written", delay: 3500 },
+    { text: "  ✔ Written:      security.yml", type: "written", delay: 3650 },
+    { text: "  ✔ Written:      .github/dependabot.yml", type: "written", delay: 3800 },
+    { text: "", type: "blank", delay: 3850 },
+    { text: "  Done! Your GitHub Actions pipeline is ready.", type: "done", delay: 4100 },
+    { text: "   Workflows → cistack/.github/workflows", type: "path", delay: 4300 },
+    { text: "   Dependabot → cistack/.github/dependabot.yml", type: "path", delay: 4450 },
+  ], [version]);
 
   const handleReplay = () => {
     setTypedCommand("");
@@ -130,7 +127,7 @@ const TerminalCard = () => {
     const currentDelay = OUTPUT_LINES[visibleLines].delay - (visibleLines > 0 ? OUTPUT_LINES[visibleLines - 1].delay : 0);
     const t = setTimeout(() => setVisibleLines((v) => v + 1), Math.max(currentDelay, 30));
     return () => clearTimeout(t);
-  }, [visibleLines, phase]);
+  }, [visibleLines, phase, OUTPUT_LINES]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -138,7 +135,6 @@ const TerminalCard = () => {
 
   return (
     <div key={key} className="w-full h-[300px] sm:h-[350px] lg:h-[380px] flex flex-col rounded-sm border border-zinc-100 bg-white shadow-sm hover:shadow-md transition-shadow">
-      {/* Structural Terminal Header */}
       <div className="bg-white border-b border-zinc-100 flex items-center justify-between px-4 py-3 shrink-0">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
@@ -165,14 +161,12 @@ const TerminalCard = () => {
         </div>
       </div>
 
-      {/* Terminal Content Area */}
       <div
         ref={scrollRef}
         className="flex-1 bg-white p-6 pt-4 font-mono text-[11px] sm:text-[13px] tracking-tight leading-relaxed overflow-y-auto custom-scrollbar selection:bg-zinc-900 selection:text-white"
         style={{ fontFamily: "'Fira Code', monospace" }}
       >
         <div className="flex flex-col gap-1.5">
-          {/* Active Prompt */}
           <div className="flex items-center gap-2 mb-2">
             <span className="text-zinc-300 font-bold">$</span>
             <span className="text-zinc-800 font-bold">{typedCommand}</span>
@@ -185,7 +179,6 @@ const TerminalCard = () => {
             )}
           </div>
 
-          {/* Staggered Output Feed */}
           {phase !== "typing" && (
             <div className="space-y-0.5">
               {OUTPUT_LINES.slice(0, visibleLines).map((line, i) => (
@@ -194,7 +187,7 @@ const TerminalCard = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.2 }}
                   key={i}
-                  className={`${line.type === "logo" ? "whitespace-pre text-[7px] min-[400px]:text-[8px] sm:text-[10px] md:text-[12px] leading-[1.1] opacity-40 mb-4" : "whitespace-pre-wrap break-words"} ${lineColor[line.type]}`}
+                  className={`whitespace-pre-wrap break-words ${lineColor[line.type]}`}
                   style={{ minHeight: line.type === "blank" ? "0.75rem" : undefined }}
                 >
                   {line.text}
