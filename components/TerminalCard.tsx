@@ -46,7 +46,7 @@ const CopyButton = () => {
   );
 };
 
-const TerminalCard = () => {
+const TerminalCard = ({ dict }: { dict: any }) => {
   const [typedCommand, setTypedCommand] = useState("");
   const [visibleLines, setVisibleLines] = useState<number>(0);
   const [phase, setPhase] = useState<"typing" | "output" | "done">("typing");
@@ -63,41 +63,45 @@ const TerminalCard = () => {
       .catch((err) => console.error("Error fetching version:", err));
   }, []);
 
-  const OUTPUT_LINES = useMemo((): OutputLine[] => [
-    { text: `  cistack v${version}`, type: "heading", delay: 100 },
-    { text: "  " + "─".repeat(24), type: "detail", delay: 200 },
-    { text: "", type: "blank", delay: 250 },
-    { text: "✔ Project scanned", type: "success", delay: 500 },
-    { text: "✔ Stack detected", type: "success", delay: 800 },
-    { text: "", type: "blank", delay: 850 },
-    { text: "  Detected Stack", type: "heading", delay: 1000 },
-    { text: "  " + "─".repeat(48), type: "detail", delay: 1100 },
-    { text: "  Languages:           TypeScript", type: "info", delay: 1300 },
-    { text: "  Frameworks:          Next.js, React", type: "info", delay: 1450 },
-    { text: "  Hosting:             Vercel", type: "info", delay: 1600 },
-    { text: "  Testing:             none", type: "info", delay: 1750 },
-    { text: "  Release tool:        none", type: "info", delay: 1900 },
-    { text: "", type: "blank", delay: 1950 },
-    { text: "? Does this look correct? Generate pipeline with these settings? Yes", type: "detail", delay: 2200 },
-    { text: "✔ Generated 3 CI workflow(s)", type: "success", delay: 2600 },
-    { text: "  ↻ Smart-merged: ci.yml", type: "merged", delay: 2800 },
-    { text: '    • updated top-level "on"', type: "bullet", delay: 2900 },
-    { text: '    • updated top-level "concurrency"', type: "bullet", delay: 2950 },
-    { text: '    • added job "lint"', type: "bullet", delay: 3000 },
-    { text: '    •   job "build" → updated "name"', type: "bullet", delay: 3050 },
-    { text: '    •   job "build" → updated "needs"', type: "bullet", delay: 3100 },
-    { text: '    •   job "build" → added step "Checkout code"', type: "bullet", delay: 3150 },
-    { text: '    •   job "build" → added step "Set up Node.js"', type: "bullet", delay: 3200 },
-    { text: '    •   job "build" → updated step "Build"', type: "bullet", delay: 3250 },
-    { text: '    •   job "build" → added step "Upload build artifact"', type: "bullet", delay: 3300 },
-    { text: "  ✔ Written:      deploy.yml", type: "written", delay: 3500 },
-    { text: "  ✔ Written:      security.yml", type: "written", delay: 3650 },
-    { text: "  ✔ Written:      .github/dependabot.yml", type: "written", delay: 3800 },
-    { text: "", type: "blank", delay: 3850 },
-    { text: "  Done! Your GitHub Actions pipeline is ready.", type: "done", delay: 4100 },
-    { text: "   Workflows → cistack/.github/workflows", type: "path", delay: 4300 },
-    { text: "   Dependabot → cistack/.github/dependabot.yml", type: "path", delay: 4450 },
-  ], [version]);
+  const OUTPUT_LINES = useMemo((): OutputLine[] => {
+    if (!dict) return [];
+    
+    return [
+      { text: `  cistack v${version}`, type: "heading", delay: 100 },
+      { text: "  " + "─".repeat(24), type: "detail", delay: 200 },
+      { text: "", type: "blank", delay: 250 },
+      { text: dict.project_scanned || "✔ Project scanned", type: "success", delay: 500 },
+      { text: dict.stack_detected || "✔ Stack detected", type: "success", delay: 800 },
+      { text: "", type: "blank", delay: 850 },
+      { text: "  " + (dict.detected_stack || "Detected Stack"), type: "heading", delay: 1000 },
+      { text: "  " + "─".repeat(48), type: "detail", delay: 1100 },
+      { text: `  ${dict.languages || "Languages:"}           TypeScript`, type: "info", delay: 1300 },
+      { text: `  ${dict.frameworks || "Frameworks:"}          Next.js, React`, type: "info", delay: 1450 },
+      { text: `  ${dict.hosting || "Hosting:"}             Vercel`, type: "info", delay: 1600 },
+      { text: `  ${dict.testing || "Testing:"}             none`, type: "info", delay: 1750 },
+      { text: `  ${dict.release_tool || "Release tool:"}        none`, type: "info", delay: 1900 },
+      { text: "", type: "blank", delay: 1950 },
+      { text: dict.look_correct || "? Does this look correct? Generate pipeline with these settings? Yes", type: "detail", delay: 2200 },
+      { text: dict.generated_workflows || "✔ Generated 3 CI workflow(s)", type: "success", delay: 2600 },
+      { text: `  ${dict.smart_merged || "↻ Smart-merged: ci.yml"}`, type: "merged", delay: 2800 },
+      { text: `    • ${dict.updated_on || "updated top-level \"on\""}`, type: "bullet", delay: 2900 },
+      { text: `    • ${dict.updated_concurrency || "updated top-level \"concurrency\""}`, type: "bullet", delay: 2950 },
+      { text: `    • ${dict.added_lint || "added job \"lint\""}`, type: "bullet", delay: 3000 },
+      { text: `    •   ${dict.updated_build || "job \"build\" → updated \"name\""}`, type: "bullet", delay: 3050 },
+      { text: `    •   ${dict.updated_needs || "job \"build\" → updated \"needs\""}`, type: "bullet", delay: 3100 },
+      { text: `    •   ${dict.added_checkout || "job \"build\" → added step \"Checkout code\""}`, type: "bullet", delay: 3150 },
+      { text: `    •   ${dict.added_node || "job \"build\" → added step \"Set up Node.js\""}`, type: "bullet", delay: 3200 },
+      { text: `    •   ${dict.updated_step_build || "job \"build\" → updated step \"Build\""}`, type: "bullet", delay: 3250 },
+      { text: `    •   ${dict.added_upload || "job \"build\" → added step \"Upload build artifact\""}`, type: "bullet", delay: 3300 },
+      { text: `  ✔ ${dict.written_deploy || "Written:      deploy.yml"}`, type: "written", delay: 3500 },
+      { text: `  ✔ ${dict.written_security || "Written:      security.yml"}`, type: "written", delay: 3650 },
+      { text: `  ✔ ${dict.written_dependabot || "Written:      .github/dependabot.yml"}`, type: "written", delay: 3800 },
+      { text: "", type: "blank", delay: 3850 },
+      { text: `  ${dict.done_msg || "Done! Your GitHub Actions pipeline is ready."}`, type: "done", delay: 4100 },
+      { text: `   ${dict.workflows_path || "Workflows → cistack/.github/workflows"}`, type: "path", delay: 4300 },
+      { text: `   ${dict.dependabot_path || "Dependabot → cistack/.github/dependabot.yml"}`, type: "path", delay: 4450 },
+    ];
+  }, [version, dict]);
 
   const handleReplay = () => {
     setTypedCommand("");
@@ -196,7 +200,7 @@ const TerminalCard = () => {
               {phase === "output" && (
                 <div className="flex items-center gap-2 mt-2">
                   <div className="w-1 h-3 bg-zinc-200 animate-pulse" />
-                  <span className="text-[10px] text-zinc-300 uppercase tracking-widest font-bold">Processing Output...</span>
+                  <span className="text-[10px] text-zinc-300 uppercase tracking-widest font-bold">{dict.processing || "Processing Output..."}</span>
                 </div>
               )}
             </div>

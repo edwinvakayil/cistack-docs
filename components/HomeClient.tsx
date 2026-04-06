@@ -27,7 +27,7 @@ const GithubIcon = ({ size = 24, className = "" }) => (
   </svg>
 );
 
-function InstallToggle() {
+function InstallToggle({ dict }: { dict: any }) {
   const [mode, setMode] = useState<"npx" | "npm">("npx");
   return (
     <div className="flex flex-col gap-4">
@@ -40,7 +40,7 @@ function InstallToggle() {
         >
           npx
           {mode === "npx" && (
-            <span className="ml-1.5 text-zinc-400 font-normal text-[11px]">— recommended</span>
+            <span className="ml-1.5 text-zinc-400 font-normal text-[11px]"> — {dict.install_toggle.recommended}</span>
           )}
         </button>
         <Separator orientation="vertical" className="h-3.5 bg-zinc-200" />
@@ -49,7 +49,7 @@ function InstallToggle() {
           className={`text-[12px] font-semibold pl-4 py-1 transition-colors ${mode === "npm" ? "text-zinc-900" : "text-zinc-400 hover:text-zinc-600"
             }`}
         >
-          npm install -g
+          {dict.install_toggle.npm_global}
         </button>
       </div>
 
@@ -57,9 +57,9 @@ function InstallToggle() {
       <div className="bg-zinc-950 rounded-sm px-6 pt-5 pb-6 font-mono text-sm text-zinc-300 relative overflow-hidden">
         <div className="flex items-center justify-between mb-5">
           {mode === "npx" ? (
-            <Badge className="text-[9px] bg-emerald-500/10 text-emerald-500 border-emerald-500/20 uppercase tracking-widest font-black px-2 py-0.5">Recommended</Badge>
+            <Badge className="text-[9px] bg-emerald-500/10 text-emerald-500 border-emerald-500/20 uppercase tracking-widest font-black px-2 py-0.5">{dict.install_toggle.recommended_badge}</Badge>
           ) : (
-            <Badge className="text-[9px] bg-zinc-500/10 text-zinc-400 border-zinc-700 uppercase tracking-widest font-black px-2 py-0.5">Global</Badge>
+            <Badge className="text-[9px] bg-zinc-500/10 text-zinc-400 border-zinc-700 uppercase tracking-widest font-black px-2 py-0.5">{dict.install_toggle.global_badge}</Badge>
           )}
           {mode === "npx" ? (
             <Terminal size={13} className="text-zinc-700" />
@@ -73,15 +73,15 @@ function InstallToggle() {
         <Separator className="bg-zinc-800 my-4" />
         <p className="text-[11px] text-zinc-500 leading-relaxed font-sans">
           {mode === "npx"
-            ? "Always fetches the latest version. No install step."
-            : "Best for developers across multiple repos."}
+            ? dict.install_toggle.npx_desc
+            : dict.install_toggle.npm_desc}
         </p>
       </div>
     </div>
   );
 }
 
-export default function Home() {
+export default function HomeClient({ dict, lang }: { dict: any; lang: string }) {
   const [copiedLocal, setCopiedLocal] = useState(false);
   const [version, setVersion] = useState("3.0.0");
   const [downloads, setDownloads] = useState("2.4k");
@@ -134,21 +134,13 @@ export default function Home() {
               "priceCurrency": "USD",
               "availability": "https://schema.org/InStock"
             },
-            "description": "cistack deep-scans your repository to generate production-ready GitHub Actions workflows instantly. Supports 30+ frameworks and 12+ platforms.",
+            "description": dict.hero.description,
             "creator": {
               "@type": "Person",
               "name": "Edwin Vakayil",
               "url": "https://www.edwinvakayil.info/"
             },
-            "featureList": [
-              "Deep codebase analysis",
-              "Smart detection of 30+ frameworks",
-              "Native Cache support",
-              "PR Preview Deploys",
-              "Workflow Audit & Upgrade",
-              "Hosting auto-detect (AWS, Vercel, Firebase)",
-              "Monorepo awareness"
-            ],
+            "featureList": Object.values(dict.docs.capabilities).map((c: any) => c.label),
             "keywords": "github actions, automation, ci/cd, devops, workflow generator, nextjs, docker, vercel, aws, firebase"
           })
         }}
@@ -162,7 +154,6 @@ export default function Home() {
         }}
       >
         {/* Navigation */}
-        {/* Redesigned Technical Navbar */}
         <motion.nav
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -184,22 +175,48 @@ export default function Home() {
             <div className="md:col-span-6 p-5 md:p-6 flex items-center justify-between border-b md:border-b-0 md:border-r border-zinc-100">
               <div className="flex items-center gap-6">
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400 leading-none">VERSION</span>
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400 leading-none">{dict.navigation.version}</span>
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[11px] font-bold text-zinc-600 uppercase tracking-tighter">Pipelines_Synced</span>
+                    <span className="text-[11px] font-bold text-zinc-600 uppercase tracking-tighter">{dict.navigation.status}</span>
                   </div>
                 </div>
                 <div className="h-6 w-[1px] bg-zinc-100 mx-2 hidden sm:block" />
                 <div className="flex items-center gap-6 text-[12px] font-bold text-zinc-400">
                   <a href="https://github.com/edwinvakayil/cistack" target="_blank" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
                     <GithubIcon size={14} className="opacity-40 group-hover:opacity-100 transition-opacity" />
-                    Repository
+                    {dict.navigation.repository}
                   </a>
                   <a href="https://www.npmjs.com/package/cistack" target="_blank" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
                     <Package size={14} className="opacity-40 group-hover:opacity-100 transition-opacity" />
-                    Registry
+                    {dict.navigation.registry}
                   </a>
+                </div>
+                <div className="h-6 w-[1px] bg-zinc-100 mx-2 hidden sm:block" />
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <a href="/en" className={`text-[10px] font-bold tracking-widest uppercase transition-colors px-1.5 py-0.5 rounded-sm border ${lang === 'en' ? 'bg-zinc-950 text-white border-zinc-950' : 'text-zinc-400 hover:text-zinc-950 border-transparent hover:border-zinc-100'}`}>EN</a>
+                  
+                  {lang !== 'en' && (
+                    <>
+                      <div className="h-3 w-[1px] bg-zinc-100 mx-0.5" />
+                      <a href={`/${lang}`} className="text-[10px] font-bold tracking-widest uppercase transition-colors px-1.5 py-0.5 rounded-sm border bg-zinc-950 text-white border-zinc-950">
+                        {lang.toUpperCase()}
+                      </a>
+                    </>
+                  )}
+
+                  <div className="relative group/lang border-l border-zinc-100 pl-2 ml-1">
+                    <Globe size={13} className="text-zinc-300 group-hover/lang:text-zinc-950 transition-colors cursor-pointer" />
+                    <div className="absolute right-0 top-full mt-2 w-24 bg-white border border-zinc-100 shadow-xl rounded-sm opacity-0 invisible group-hover/lang:opacity-100 group-hover/lang:visible transition-all z-[100] p-1 flex flex-col gap-1">
+                      <a href="/en" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">English</a>
+                      <a href="/fr" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Français</a>
+                      <a href="/es" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Español</a>
+                      <a href="/ar" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">العربية</a>
+                      <a href="/pt" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Português</a>
+                      <a href="/br" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">BR (Brasil)</a>
+                      <a href="/de" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Deutsch</a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -207,13 +224,13 @@ export default function Home() {
             {/* System Identification Cell */}
             <div className="md:col-span-3 p-5 md:p-6 flex items-center justify-between md:justify-end gap-6 bg-zinc-50/20">
               <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-[0.2em]">
-                CORE_MANIFEST // {mounted ? `${new Date().getFullYear()}_${(new Date().getMonth() + 1).toString().padStart(2, '0')}` : "2026_01"}
+                {dict.navigation.core_manifest} // {mounted ? `${new Date().getFullYear()}_${(new Date().getMonth() + 1).toString().padStart(2, '0')}` : "2026_01"}
               </span>
               <button
                 onClick={() => document.getElementById('docs')?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-[11px] font-black uppercase tracking-widest text-zinc-900 px-4 py-2 border border-zinc-900 hover:bg-zinc-950 hover:text-white transition-all rounded-sm"
               >
-                Docs
+                {dict.navigation.docs}
               </button>
             </div>
 
@@ -221,7 +238,6 @@ export default function Home() {
         </motion.nav>
 
         {/* Main content */}
-        {/* Hero Section: Technical Matrix UI */}
         <main className="w-full max-w-[1500px] mx-auto pt-6 lg:pt-12 px-4 sm:px-6 md:px-8 z-10 relative">
 
           {/* Subtle Global Dot Grid for Hero */}
@@ -229,9 +245,8 @@ export default function Home() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 border-t border-l border-zinc-100 relative bg-white/40">
 
-            {/* L_01 / CORE MISSION (7/12) */}
+            {/* CORE MISSION */}
             <div className="lg:col-span-7 border-r border-b border-zinc-100 p-8 sm:p-12 lg:p-16 relative overflow-hidden group/hero">
-              {/* Decorative Blueprint Corner */}
               <div className="absolute top-0 right-0 w-24 h-24 border-t border-r border-zinc-100/60 opacity-0 group-hover:opacity-100 transition-all duration-700" />
 
               <motion.div
@@ -241,98 +256,96 @@ export default function Home() {
                 transition={{ duration: 0.6 }}
                 className="flex flex-col gap-8 relative z-10"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3" >
                   <Badge variant="outline" className="px-2 py-0.5 text-[9px] uppercase tracking-[0.2em] font-black border-zinc-200 text-zinc-400 rounded-sm bg-white">
                     VERSION_{version}
                   </Badge>
                   <div className="h-[1px] w-12 bg-zinc-100" />
-                  <span className="text-[10px] font-mono text-zinc-300 font-bold tracking-widest uppercase">SCAN_IDENTITY</span>
+                  <span className="text-[10px] font-mono text-zinc-300 font-bold tracking-widest uppercase">{dict.hero.scan_identity}</span>
                 </div>
 
                 <div className="flex flex-col gap-8 md:gap-8">
-                  {/* S_01: Input Stage */}
+                  {/* S_01 */}
                   <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 group/h1">
-                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h1:text-zinc-400 transition-colors">S_01 // INGEST_ENGINE</span>
+                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h1:text-zinc-400 transition-colors">{dict.hero.s1_label}</span>
                     <h1 className="text-[2.2rem] min-[400px]:text-[2.5rem] md:text-[3.8rem] font-[1000] tracking-tighter text-black leading-[0.9] sm:leading-none break-words">
-                      YOUR STACK
+                      {dict.hero.s1_title}
                     </h1>
                   </div>
 
-                  {/* S_02: Transformation Stage */}
+                  {/* S_02 */}
                   <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 sm:ml-6 md:ml-12 group/h2">
-                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h2:text-zinc-400 transition-colors">S_02 // PIPELINE_SYNTH</span>
+                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h2:text-zinc-400 transition-colors">{dict.hero.s2_label}</span>
                     <h2 className="text-[2.2rem] min-[400px]:text-[2.5rem] md:text-[3.8rem] font-[1000] tracking-tighter text-black leading-[0.9] sm:leading-none break-words">
-                      YOUR PIPELINE
+                      {dict.hero.s2_title}
                     </h2>
                   </div>
 
-                  {/* S_03: Reification Stage */}
+                  {/* S_03 */}
                   <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 sm:ml-12 md:ml-24 group/h3">
-                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h3:text-zinc-400 transition-colors">S_03 // ACTION_COMMIT</span>
+                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h3:text-zinc-400 transition-colors">{dict.hero.s3_label}</span>
                     <h2 className="text-[2.2rem] min-[400px]:text-[2.5rem] md:text-[3.8rem] font-[1000] tracking-tighter text-zinc-500 sm:text-zinc-400 leading-[0.9] sm:leading-none break-words">
-                      ORCHESTRATED
+                      {dict.hero.s3_title}
                     </h2>
                   </div>
                 </div>
 
                 <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed max-w-[540px] font-medium">
-                  cistack deep-scans your repository to generate production-ready
-                  GitHub Actions workflows across 30+ frameworks and 12+ platforms.
+                  {dict.hero.description}
                 </p>
 
                 <div className="flex flex-wrap items-center gap-6 mt-4">
                   <Button
-                    onClick={() => copyToClipboard("npx cistack")}
+                    onClick={() => copyToClipboard(dict.hero.npx_command)}
                     className="flex h-auto items-center justify-between gap-6 bg-zinc-950 hover:bg-black transition-all border border-zinc-800 text-white rounded-sm px-6 py-3.5 text-[14px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-zinc-300/50 group/btn"
                   >
-                    <span className="font-mono font-bold tracking-tight text-emerald-400 group-hover:text-emerald-300 transition-colors">npx cistack</span>
+                    <span className="font-mono font-bold tracking-tight text-emerald-400 group-hover:text-emerald-300 transition-colors">{dict.hero.npx_command}</span>
                     <div className="flex items-center justify-center shrink-0 border-l border-zinc-800 pl-6 ml-2">
                       {copiedLocal ? <Check size={18} className="text-emerald-400" /> : <Copy size={18} className="text-zinc-500 group-hover:text-zinc-300 transition-colors" />}
                     </div>
                   </Button>
 
                   <div className="flex flex-col gap-1 px-2 border-l-2 border-zinc-100">
-                    <span className="text-[10px] font-black text-zinc-300 uppercase tracking-widest">Active Installs</span>
-                    <span className="text-[14px] font-bold text-zinc-900 tracking-tight">{downloads} / week</span>
+                    <span className="text-[10px] font-black text-zinc-300 uppercase tracking-widest">{dict.hero.active_installs}</span>
+                    <span className="text-[14px] font-bold text-zinc-900 tracking-tight">{downloads} {dict.hero.per_week}</span>
                   </div>
                 </div>
               </motion.div>
             </div>
 
-            {/* L_02 / RUNTIME STAGE (5/12) */}
+            {/* RUNTIME STAGE */}
             <div className="lg:col-span-5 border-r border-b border-zinc-100 flex flex-col">
-
-              {/* Visual Terminal Area */}
               <div className="flex-1 p-8 sm:p-12 bg-zinc-50/20 flex items-center justify-center relative overflow-hidden group/runtime group-hover/hero:bg-zinc-50/40 transition-colors duration-700">
                 <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-[0.2]" />
 
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.1 }}
-                  className="w-full relative z-20 rounded-sm overflow-hidden"
-                >
-                  <TerminalCard />
-                </motion.div>
+                {dict.terminal && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.1 }}
+                    className="w-full relative z-20 rounded-sm overflow-hidden"
+                  >
+                    <TerminalCard dict={dict.terminal} />
+                  </motion.div>
+                )}
 
                 <div className="absolute top-6 right-8 hidden sm:flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-[9px] font-mono text-zinc-400 tracking-widest font-black uppercase">REALTIME_SYNTH</span>
+                  <span className="text-[9px] font-mono text-zinc-400 tracking-widest font-black uppercase">{dict.hero.realtime_synth}</span>
                 </div>
               </div>
 
-              {/* Matrix Footer Row */}
               <div className="border-t border-zinc-100 grid grid-cols-2 bg-white">
                 <div className="p-8 border-r border-zinc-100 flex flex-col gap-2 hover:bg-zinc-50/50 transition-colors cursor-default group/meta">
-                  <span className="text-[9px] font-black uppercase text-zinc-300 tracking-[0.2em] group-hover/meta:text-zinc-500 transition-colors">Integrations</span>
+                  <span className="text-[9px] font-black uppercase text-zinc-300 tracking-[0.2em] group-hover/meta:text-zinc-500 transition-colors">{dict.hero.integrations}</span>
                   <div className="flex items-center gap-2">
                     <span className="text-[20px] font-black text-zinc-900 leading-none">30+</span>
-                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-tighter">Stack-Aware</span>
+                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-tighter">{dict.hero.stack_aware}</span>
                   </div>
                 </div>
                 <div className="p-8 flex flex-col gap-2 bg-zinc-50/30 hover:bg-zinc-50/60 transition-colors cursor-default group/meta">
-                  <span className="text-[9px] font-black uppercase text-zinc-300 tracking-[0.2em] group-hover/meta:text-zinc-500 transition-colors">Success Rate</span>
+                  <span className="text-[9px] font-black uppercase text-zinc-300 tracking-[0.2em] group-hover/meta:text-zinc-500 transition-colors">{dict.hero.success_rate}</span>
                   <div className="flex items-center gap-2">
                     <span className="text-[20px] font-black text-emerald-600 leading-none tracking-tighter">99.9%</span>
                     <Check size={14} className="text-emerald-500/50" />
@@ -345,28 +358,25 @@ export default function Home() {
 
         {/* Documentation Section */}
         <section id="docs" className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 py-24 pb-40 z-10 relative">
-          {/* subtle dot background mask */}
           <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.4] pointer-events-none" />
 
-          {/* Section Header: Compact & Professional */}
+          {/* Section Header */}
           <div className="flex flex-col gap-4 mb-16 max-w-[900px]">
             <div className="flex items-center gap-3">
               <Badge variant="outline" className="px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-black border-zinc-200 text-zinc-600 bg-white rounded-sm">
-                Technical Specification v{version}
+                {dict.docs.badge}{version}
               </Badge>
               <div className="h-[1px] flex-1 bg-zinc-200/60" />
             </div>
             <h2 className="text-[36px] sm:text-[44px] font-bold tracking-tight text-zinc-900 leading-[1.1]">
-              Engineered for consistency.<br />
-              Generated for speed.
+              {dict.docs.title_part1}<br />
+              {dict.docs.title_part2}
             </h2>
             <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed max-w-[760px] font-medium">
-              cistack deep-scans your project directory to produce production-grade GitHub Actions YAML.
-              It detects your language, framework, testing tools, and hosting platform — then writes the best pipeline for your stack.
+              {dict.docs.description}
             </p>
           </div>
 
-          {/* Integrated High-Density Matrix */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -374,8 +384,7 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="grid grid-cols-1 lg:grid-cols-12 border-t border-l border-zinc-100"
           >
-
-            {/* 01. Capabilities Grid (4 columns) */}
+            {/* 01. Capabilities Grid */}
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -383,26 +392,14 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="lg:col-span-4 border-r border-b border-zinc-100 p-8 lg:p-12 bg-zinc-50/20 hover:bg-zinc-50/40 transition-colors duration-500 relative group/cell"
             >
-              <div className="absolute top-4 right-4 text-[10px] font-mono text-zinc-200 font-bold group-hover/cell:text-zinc-300 transition-colors">01 / 04</div>
+              <div className="absolute top-4 right-4 text-[10px] font-mono text-zinc-200 font-bold group-hover/cell:text-zinc-300 transition-colors">{dict.docs.section1_id}</div>
               <div className="flex flex-col gap-10">
                 <div className="flex flex-col gap-2">
-                  <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">01. Capabilities</span>
-                  <h3 className="text-[18px] font-bold text-zinc-900">Analysis & Detection</h3>
+                  <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">{dict.docs.section1_num}</span>
+                  <h3 className="text-[18px] font-bold text-zinc-900">{dict.docs.section1_title}</h3>
                 </div>
                 <div className="flex flex-col divide-y divide-zinc-200/40">
-                  {[
-                    { label: "Deep codebase analysis", sub: "Reads package.json, lock files, configs" },
-                    { label: "Smart detection", sub: "Identifies 30+ frameworks & 12 languages" },
-                    { label: "Native Cache support", sub: "Speeds up pipelines for npm, pip, go, cargo & more" },
-                    { label: "PR Preview Deploys", sub: "Automatic environments for Vercel and Netlify" },
-                    { label: "Workflow Audit & Upgrade", sub: "Bumps action versions & checks best practices" },
-                    { label: "Hosting auto-detect", sub: "AWS, Vercel, Firebase, Docker & more" },
-                    { label: "Multi-workflow output", sub: "ci.yml, deploy.yml, docker.yml, security.yml" },
-                    { label: "Security built-in", sub: "CodeQL + dependency auditing checkpoints" },
-                    { label: "Monorepo aware", sub: "Turborepo, Nx, Lerna, pnpm workspaces" },
-                    { label: "Interactive mode", sub: "Confirms settings before writing files" },
-                    { label: "Zero config", sub: "Works out of the box with no config needed" }
-                  ].map((item, i) => (
+                  {Object.values(dict.docs.capabilities).map((item: any, i) => (
                     <div key={i} className="flex items-start gap-3 py-3.5 first:pt-0 last:pb-0">
                       <Checkbox checked readOnly className="mt-0.5 border-zinc-200 data-[state=checked]:bg-zinc-900 data-[state=checked]:border-zinc-900 shrink-0 h-4 w-4" />
                       <div className="flex flex-col">
@@ -415,25 +412,23 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* 02. Setup & Compatibility (8 columns) */}
+            {/* 02. Setup & Compatibility */}
             <div className="lg:col-span-8 flex flex-col">
-
-              {/* Row: Activation & Detailed Flags */}
               <div className="border-r border-b border-zinc-100 p-8 lg:p-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
                   <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-2">
-                      <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">02. Activation</span>
-                      <h3 className="text-[18px] font-bold text-zinc-900">Installation</h3>
+                      <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">{dict.docs.section2_num}</span>
+                      <h3 className="text-[18px] font-bold text-zinc-900">{dict.docs.section2_title}</h3>
                     </div>
-                    <InstallToggle />
+                    <InstallToggle dict={dict} />
                     <div className="flex flex-col gap-3 mt-2">
-                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">COMMAND_REGISTRY</span>
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">{dict.docs.command_registry}</span>
                       <div className="flex flex-col gap-2">
                         {[
-                          { cmd: "audit", d: "Check workflows for outdated actions" },
-                          { cmd: "upgrade", d: "Bump all actions to latest versions" },
-                          { cmd: "init", d: "Create override config file" }
+                          { cmd: "audit", d: dict.docs.commands.audit },
+                          { cmd: "upgrade", d: dict.docs.commands.upgrade },
+                          { cmd: "init", d: dict.docs.commands.init }
                         ].map((c, i) => (
                           <div key={i} className="flex items-center justify-between px-3 py-2 border border-zinc-100 bg-zinc-50/50 rounded-sm group hover:border-zinc-200 transition-colors">
                             <code className="text-[11px] font-extrabold text-zinc-800">npx cistack {c.cmd}</code>
@@ -442,23 +437,23 @@ export default function Home() {
                         ))}
                       </div>
                     </div>
-                    <p className="text-[13px] text-zinc-400 italic">Recommended: Use npx for one-off generation.</p>
+                    <p className="text-[13px] text-zinc-400 italic">{dict.docs.recommended_npx}</p>
                   </div>
                   <div className="flex flex-col gap-4 mt-4">
                     <div className="flex items-center gap-3">
-                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">PARAMETERS_MANIFEST</span>
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">{dict.docs.parameters_manifest}</span>
                       <div className="h-[1px] flex-1 bg-zinc-200 opacity-60" />
                     </div>
 
                     <div className="flex flex-col border-y border-zinc-200 divide-y divide-zinc-100 bg-white/40">
                       {[
-                        { cmd: "--explain", t: "boolean", d: "Show reasoning for detected stack" },
-                        { cmd: "--path", t: "string", d: "Target directory scanning path" },
-                        { cmd: "--output", t: "string", d: "Redefine workflow output dir" },
-                        { cmd: "--dry-run", t: "boolean", d: "Simulate output without writing" },
-                        { cmd: "--no-prompt", t: "boolean", d: "Bypass interactive safety checks" },
-                        { cmd: "--verbose", t: "boolean", d: "Enable maximum stdout tracing" },
-                        { cmd: "--force", t: "boolean", d: "Ignore existing files and overwrite" }
+                        { cmd: "--explain", t: "boolean", d: dict.docs.flags.explain },
+                        { cmd: "--path", t: "string", d: dict.docs.flags.path },
+                        { cmd: "--output", t: "string", d: dict.docs.flags.output },
+                        { cmd: "--dry-run", t: "boolean", d: dict.docs.flags.dry_run },
+                        { cmd: "--no-prompt", t: "boolean", d: dict.docs.flags.no_prompt },
+                        { cmd: "--verbose", t: "boolean", d: dict.docs.flags.verbose },
+                        { cmd: "--force", t: "boolean", d: dict.docs.flags.force }
                       ].map((flag, i) => (
                         <div key={i} className="flex flex-col md:flex-row md:items-center py-3 px-2 hover:bg-zinc-50/80 transition-colors group">
                           <div className="flex items-center gap-3 md:w-[150px] shrink-0">
@@ -481,8 +476,8 @@ export default function Home() {
                 <div className="p-8 lg:p-12 border-b md:border-b-0 md:border-r border-zinc-100">
                   <div className="flex flex-col gap-8">
                     <div className="flex flex-col gap-2">
-                      <h4 className="text-[14px] font-bold text-zinc-900 uppercase tracking-widest">Detection Logic</h4>
-                      <p className="text-[13px] text-zinc-400 leading-relaxed font-medium">Automatic recognition triggers based on filesystem signals.</p>
+                      <h4 className="text-[14px] font-bold text-zinc-900 uppercase tracking-widest">{dict.docs.detection_logic_title}</h4>
+                      <p className="text-[13px] text-zinc-400 leading-relaxed font-medium">{dict.docs.detection_logic_desc}</p>
                     </div>
                     <div className="w-full max-h-[250px] sm:max-h-[265px] overflow-y-auto overflow-x-hidden pr-3 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-zinc-200 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-zinc-300">
                       <Accordion className="w-full">
@@ -500,26 +495,26 @@ export default function Home() {
                         ].map((p) => (
                           <AccordionItem key={p.id} value={p.id} className="border-b border-zinc-100 last:border-0">
                             <AccordionTrigger className="py-4 sm:py-5 hover:no-underline text-zinc-500 hover:text-zinc-900 transition-colors group/trigger data-[state=open]:text-zinc-950 [&>svg]:shrink-0">
-                              <div className="flex flex-col justify-center flex-1 min-w-0 gap-1.5 sm:gap-2 pr-2 sm:pr-4 text-left overflow-hidden">
-                                <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+                              <div className="flex flex-col justify-center flex-1 min-w-0 gap-1.5 sm:gap-2 pe-2 sm:pe-4 text-start overflow-hidden">
+                                <div className="flex items-center gap-3 sm:gap-4 shrink-0" >
                                   <span className="text-[10px] font-mono font-bold text-zinc-300 group-hover/trigger:text-zinc-500 transition-colors w-[24px] shrink-0">{p.idx}</span>
                                   <div className="flex items-center gap-2 sm:gap-3">
                                     <span className="text-zinc-400 group-hover/trigger:text-zinc-900 transition-colors shrink-0">{p.icon}</span>
                                     <span className="text-[15px] sm:text-[16px] font-semibold whitespace-nowrap">{p.n}</span>
                                   </div>
                                 </div>
-                                <div className="flex justify-start pl-[36px] sm:pl-[44px] w-full overflow-hidden">
+                                <div className="flex justify-start ps-[36px] sm:ps-[44px] w-full overflow-hidden">
                                   <Badge variant="outline" className="text-[9px] sm:text-[10px] opacity-60 font-mono tracking-tight font-normal rounded-sm border-zinc-200 bg-zinc-50/50 truncate max-w-full">{p.s}</Badge>
                                 </div>
                               </div>
                             </AccordionTrigger>
                             <AccordionContent className="pb-6">
-                              <div className="bg-zinc-50/30 border-l-2 border-zinc-200 ml-[18px] pl-6 py-4">
+                              <div className="bg-zinc-50/30 border-s-2 border-zinc-200 ms-[18px] ps-6 py-4">
                                 <p className="text-[15px] text-zinc-500 leading-relaxed max-w-[440px]">
                                   {p.d}
                                 </p>
                                 <div className="flex items-center gap-2 mt-4">
-                                  <span className="text-[9px] font-bold text-zinc-300 uppercase tracking-widest">Signal source:</span>
+                                  <span className="text-[9px] font-bold text-zinc-300 uppercase tracking-widest">{dict.docs.signal_source}</span>
                                   <code className="text-[10px] text-zinc-400 font-mono bg-white px-2 py-0.5 rounded-sm border border-zinc-100">{p.s}</code>
                                 </div>
                               </div>
@@ -532,7 +527,7 @@ export default function Home() {
                 </div>
                 <div className="p-8 lg:p-12 bg-zinc-50/20 flex flex-col gap-10">
                   <div className="flex flex-col gap-6">
-                    <h4 className="text-[14px] font-bold text-zinc-900 uppercase tracking-wider">Framework coverage</h4>
+                    <h4 className="text-[14px] font-bold text-zinc-900 uppercase tracking-wider">{dict.docs.framework_coverage}</h4>
                     <div className="flex flex-wrap gap-2">
                       {["Next.js", "Nuxt", "SvelteKit", "Remix", "Astro", "Vite", "React", "Vue", "Angular", "Svelte", "Gatsby", "Express", "Fastify", "NestJS", "Hono", "Koa", "tRPC", "Django", "Flask", "FastAPI", "Ruby on Rails", "Spring Boot", "Laravel", "Go (gin)", "Rust (Cargo)"].map((f, i) => (
                         <Badge key={i} variant="outline" className="text-[11px] font-medium text-zinc-500 bg-white border-zinc-100 px-2 py-0.5 rounded-sm">
@@ -542,7 +537,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="flex flex-col gap-6">
-                    <h4 className="text-[14px] font-bold text-zinc-900 uppercase tracking-wider">Testing tools</h4>
+                    <h4 className="text-[14px] font-bold text-zinc-900 uppercase tracking-wider">{dict.docs.testing_tools}</h4>
                     <div className="flex flex-wrap gap-2">
                       {["Jest", "Vitest", "Mocha", "Cypress", "Playwright", "Pytest", "RSpec", "Go Test", "Cargo Test", "PHPUnit", "JUnit/Maven", "Storybook"].map((t, i) => (
                         <Badge key={i} variant="secondary" className="text-[11px] font-bold text-zinc-500 bg-zinc-100/50 border-transparent px-2 py-0.5 rounded-sm">
@@ -556,30 +551,29 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* 03. Workflow Outputs (Bento Layout) */}
+          {/* 03. Workflow Outputs */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="grid grid-cols-1 lg:grid-cols-12 border-l border-r border-b border-zinc-100"
+            className="grid grid-cols-1 lg:grid-cols-12 border-s border-e border-b border-zinc-100"
           >
-
-            <div className="lg:col-span-8 p-8 lg:p-12 border-r border-zinc-100 group/artifacts hover:bg-zinc-50/20 transition-colors duration-500">
+            <div className="lg:col-span-8 p-8 lg:p-12 border-e border-zinc-100 group/artifacts hover:bg-zinc-50/20 transition-colors duration-500">
               <div className="flex flex-col gap-10">
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">03. Artifacts</span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">{dict.docs.section3_num}</span>
                     <Terminal size={14} className="text-zinc-200 group-hover/artifacts:text-zinc-300 transition-colors" />
                   </div>
-                  <h3 className="text-[18px] font-bold text-zinc-900">Generated Workflows</h3>
+                  <h3 className="text-[18px] font-bold text-zinc-900">{dict.docs.section3_title}</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
                   {[
-                    { f: "ci.yml", l: "Continuous Integration", d: "Runs on push/PR: Lint (ESLint, TS type-check), Test (Node versions matrix), Build (production), and E2E." },
-                    { f: "deploy.yml", l: "Continuous Deployment", d: "Triggers on main: Platform deployment with automatic PR Preview environments for Vercel and Netlify." },
-                    { f: "docker.yml", l: "Docker Build & Push", d: "Triggers on main/tags: Multi-platform build via Docker Buildx, GHCR push, and GitHub Actions caching." },
-                    { f: "security.yml", l: "Security Audit", d: "Runs on push/PR/weekly schedules: Dependency analysis and deep CodeQL auditing for the detected language." }
+                    { f: "ci.yml", l: dict.docs.workflows.ci.label, d: dict.docs.workflows.ci.desc },
+                    { f: "deploy.yml", l: dict.docs.workflows.deploy.label, d: dict.docs.workflows.deploy.desc },
+                    { f: "docker.yml", l: dict.docs.workflows.docker.label, d: dict.docs.workflows.docker.desc },
+                    { f: "security.yml", l: dict.docs.workflows.security.label, d: dict.docs.workflows.security.desc }
                   ].map((wf, i) => (
                     <div key={i} className="flex flex-col gap-3 group/item">
                       <div className="flex flex-col gap-1">
@@ -596,14 +590,13 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Security side panel */}
             <div className="lg:col-span-4 flex flex-col">
               <div className="p-8 lg:p-12 bg-zinc-950 text-white relative overflow-hidden group flex-1">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[100px] -mr-32 -mt-32" />
+                <div className="absolute top-0 end-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[100px] -me-32 -mt-32" />
                 <div className="flex flex-col gap-8 relative z-10">
                   <div className="flex flex-col gap-2">
-                    <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Security Requirement</span>
-                    <h4 className="text-[18px] font-bold">Encrypted Secrets</h4>
+                    <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">{dict.docs.security_requirement}</span>
+                    <h4 className="text-[18px] font-bold">{dict.docs.encrypted_secrets}</h4>
                   </div>
                   <div className="flex flex-col gap-1">
                     {["VERCEL_TOKEN", "AWS_ACCESS_KEY", "FIREBASE_TOKEN", "GHCR_TOKEN"].map((token) => (
@@ -615,7 +608,7 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col gap-3">
                     <p className="text-[13px] text-zinc-500 italic leading-relaxed border-l-2 border-emerald-500/30 pl-4 py-2">
-                      Add secrets at: <br />
+                      {dict.docs.add_secrets_at} <br />
                       <span className="text-zinc-300 not-italic font-bold tracking-tight">Settings → Secrets and variables → Actions</span>
                     </p>
                   </div>
@@ -635,8 +628,8 @@ export default function Home() {
             <div className="lg:col-span-12 p-8 lg:p-12">
               <div className="flex flex-col gap-8">
                 <div className="flex flex-col gap-2">
-                  <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">04. Structural Examples</span>
-                  <h3 className="text-[18px] font-bold text-zinc-900">Standard Stack Scenarios</h3>
+                  <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">{dict.docs.section4_num}</span>
+                  <h3 className="text-[18px] font-bold text-zinc-900">{dict.docs.section4_title}</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {[
@@ -649,7 +642,7 @@ export default function Home() {
                       <p className="text-[13px] text-zinc-500 leading-relaxed font-medium">{ex.desc}</p>
                       <div className="flex items-center gap-1.5 mt-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                        <span className="text-[10px] font-mono text-zinc-400 font-bold uppercase tracking-widest">Validated Output</span>
+                        <span className="text-[10px] font-mono text-zinc-400 font-bold uppercase tracking-widest">{dict.docs.validated_output}</span>
                       </div>
                     </div>
                   ))}
@@ -660,7 +653,7 @@ export default function Home() {
 
         </section>
 
-        {/* Redesigned Architectural Footer */}
+        {/* Footer */}
         <motion.footer
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -674,14 +667,14 @@ export default function Home() {
               {/* Branding & Attribution */}
               <div className="md:col-span-4 p-8 border-b md:border-b-0 md:border-r border-zinc-100 flex flex-col gap-6">
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Project_Origin</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">{dict.footer.project_origin}</span>
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-[18px] tracking-tighter text-zinc-900">cistack</span>
                     <span className="text-[9px] font-mono font-bold text-zinc-300 bg-zinc-50 border border-zinc-100 px-1.5 py-0.5 rounded-sm">V_{version} // PRODUCTION</span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Architected_By</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">{dict.footer.architected_by}</span>
                   <a href="https://www.edwinvakayil.info/" target="_blank" rel="noopener noreferrer" className="text-[14px] font-bold text-zinc-600 hover:text-zinc-900 transition-colors flex items-center gap-2 group">
                     Edwin Vakayil
                     <ArrowUpRight size={12} className="text-zinc-300 group-hover:text-zinc-900 transition-colors" />
@@ -693,25 +686,25 @@ export default function Home() {
               <div className="md:col-span-5 p-8 border-b md:border-b-0 md:border-r border-zinc-100 flex flex-col justify-between gap-8">
                 <div className="flex flex-wrap gap-x-8 gap-y-4">
                   <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Status</span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">{dict.footer.status}</span>
                     <div className="flex items-center gap-2">
                       <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      <span className="text-[12px] font-bold text-zinc-700">All Systems Operational</span>
+                      <span className="text-[12px] font-bold text-zinc-700">{dict.footer.operational}</span>
                     </div>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">License</span>
-                    <span className="text-[12px] font-bold text-zinc-700 uppercase">Open Source</span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">{dict.footer.license}</span>
+                    <span className="text-[12px] font-bold text-zinc-700 uppercase">{dict.footer.open_source}</span>
                   </div>
                 </div>
                 <p className="text-[11px] text-zinc-400 leading-relaxed font-medium">
-                  Automated CI/CD infrastructure generation for the modern web. Built with precision for developers who value visibility and security in their deployment pipelines.
+                  {dict.footer.footer_desc}
                 </p>
               </div>
 
               {/* Final Install Command */}
               <div className="md:col-span-3 p-8 bg-zinc-50/30 flex flex-col justify-center items-start md:items-end gap-3">
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Global_Install</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">{dict.footer.global_install}</span>
                 <code className="text-[13px] font-mono font-bold text-zinc-800 bg-white border border-zinc-100 px-3 py-1.5 rounded-sm group hover:border-zinc-300 transition-colors cursor-pointer">
                   npm install -g cistack
                 </code>
@@ -722,7 +715,7 @@ export default function Home() {
             {/* Sub-footer detail */}
             <div className="border-t border-zinc-100 p-4 px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
               <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-widest">
-                © {mounted ? new Date().getFullYear() : "2026"} CISTACK ENGINE — ALL PIPELINES REIFIED.
+                © {mounted ? new Date().getFullYear() : "2026"} {dict.footer.copyright}
               </span>
               <div className="flex items-center gap-6">
                 <a href="https://github.com/edwinvakayil/cistack" target="_blank" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors">Github</a>
@@ -731,7 +724,7 @@ export default function Home() {
                   onClick={() => document.getElementById('docs')?.scrollIntoView({ behavior: 'smooth' })}
                   className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors"
                 >
-                  Documentation
+                  {dict.navigation.docs}
                 </button>
               </div>
             </div>
