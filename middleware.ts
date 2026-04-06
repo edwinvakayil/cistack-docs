@@ -3,14 +3,14 @@ import type { NextRequest } from 'next/server'
 import { match } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
 
-let locales = ['en', 'fr', 'es', 'pt', 'br', 'de']
+let locales = ['en', 'fr', 'es', 'pt', 'br', 'de', 'cn']
 
 function getLocale(request: NextRequest) {
   const negotiatorHeaders: Record<string, string> = {}
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
 
   // @ts-ignore locales are readonly
-  const locales: string[] = ['en', 'fr', 'es', 'pt', 'br', 'de']
+  const locales: string[] = ['en', 'fr', 'es', 'pt', 'br', 'de', 'cn']
   const languages = new Negotiator({ headers: negotiatorHeaders }).languages()
   let defaultLocale = 'en'
 
