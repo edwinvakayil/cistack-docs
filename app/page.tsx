@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import TerminalCard from "../components/TerminalCard";
-import { CanvasText } from "../components/CanvasText";
 import { Terminal, Copy, Check, Package, Shield, Globe, Box, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
@@ -85,6 +84,7 @@ function InstallToggle() {
 export default function Home() {
   const [copiedLocal, setCopiedLocal] = useState(false);
   const [version, setVersion] = useState("3.0.0");
+  const [downloads, setDownloads] = useState("2.4k");
 
   useEffect(() => {
     fetch("https://registry.npmjs.org/cistack/latest")
@@ -93,6 +93,19 @@ export default function Home() {
         if (data.version) setVersion(data.version);
       })
       .catch((err) => console.error("Error fetching version:", err));
+
+    fetch("https://api.npmjs.org/downloads/point/last-week/cistack")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.downloads) {
+          const count = data.downloads;
+          const formatted = count >= 1000
+            ? (count / 1000).toFixed(1) + "k"
+            : count.toLocaleString();
+          setDownloads(formatted);
+        }
+      })
+      .catch((err) => console.error("Error fetching downloads:", err));
   }, []);
 
   const copyToClipboard = (text: string) => {
@@ -157,10 +170,10 @@ export default function Home() {
             <div className="md:col-span-6 p-5 md:p-6 flex items-center justify-between border-b md:border-b-0 md:border-r border-zinc-100">
               <div className="flex items-center gap-6">
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400 leading-none">Status</span>
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400 leading-none">VERSION</span>
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[11px] font-bold text-zinc-600 uppercase tracking-tighter">Live_stdout_ready</span>
+                    <span className="text-[11px] font-bold text-zinc-600 uppercase tracking-tighter">Pipelines_Synced</span>
                   </div>
                 </div>
                 <div className="h-6 w-[1px] bg-zinc-100 mx-2 hidden sm:block" />
@@ -179,7 +192,7 @@ export default function Home() {
 
             {/* System Identification Cell */}
             <div className="md:col-span-3 p-5 md:p-6 flex items-center justify-between md:justify-end gap-6 bg-zinc-50/20">
-              <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-[0.2em]">NAV_SYSTEM // {new Date().getFullYear()}_{(new Date().getMonth() + 1).toString().padStart(2, '0')}</span>
+              <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-[0.2em]">CORE_MANIFEST // {new Date().getFullYear()}_{(new Date().getMonth() + 1).toString().padStart(2, '0')}</span>
               <button
                 onClick={() => document.getElementById('docs')?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-[11px] font-black uppercase tracking-widest text-zinc-900 px-4 py-2 border border-zinc-900 hover:bg-zinc-950 hover:text-white transition-all rounded-sm"
@@ -213,33 +226,33 @@ export default function Home() {
                 className="flex flex-col gap-8 relative z-10"
               >
                 <div className="flex items-center gap-3">
-                  <Badge variant="outline" className="px-2 py-0.5 text-[9px] uppercase tracking-[0.2em] font-black border-zinc-200 text-zinc-400 rounded-sm bg-white shadow-sm">
-                    ENGINE_{version}
+                  <Badge variant="outline" className="px-2 py-0.5 text-[9px] uppercase tracking-[0.2em] font-black border-zinc-200 text-zinc-400 rounded-sm bg-white">
+                    VERSION_{version}
                   </Badge>
                   <div className="h-[1px] w-12 bg-zinc-100" />
-                  <span className="text-[10px] font-mono text-zinc-300 font-bold tracking-widest uppercase">L_01 // CORE_MISSION</span>
+                  <span className="text-[10px] font-mono text-zinc-300 font-bold tracking-widest uppercase">SCAN_IDENTITY</span>
                 </div>
 
                 <div className="flex flex-col gap-8 md:gap-8">
-                  {/* H_01: Input Stage */}
+                  {/* S_01: Input Stage */}
                   <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 group/h1">
-                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h1:text-zinc-400 transition-colors">H_01 // STAGE_INPUT</span>
+                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h1:text-zinc-400 transition-colors">S_01 // INGEST_ENGINE</span>
                     <h1 className="text-[2.8rem] min-[400px]:text-[3.2rem] md:text-[4.8rem] font-black tracking-tighter text-zinc-950 leading-[0.9] sm:leading-none break-words">
                       YOUR STACK.
                     </h1>
                   </div>
 
-                  {/* H_02: Transformation Stage */}
+                  {/* S_02: Transformation Stage */}
                   <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 sm:ml-6 md:ml-12 group/h2">
-                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h2:text-zinc-400 transition-colors">H_02 // STAGE_PROC</span>
+                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h2:text-zinc-400 transition-colors">S_02 // PIPELINE_SYNTH</span>
                     <h1 className="text-[2.8rem] min-[400px]:text-[3.2rem] md:text-[4.8rem] font-black tracking-tighter text-zinc-900 leading-[0.9] sm:leading-none break-words">
                       YOUR PIPELINE.
                     </h1>
                   </div>
 
-                  {/* H_03: Reification Stage */}
+                  {/* S_03: Reification Stage */}
                   <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 sm:ml-12 md:ml-24 group/h3">
-                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h3:text-zinc-400 transition-colors">H_03 // STAGE_REIFY</span>
+                    <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h3:text-zinc-400 transition-colors">S_03 // ACTION_COMMIT</span>
                     <h1 className="text-[2.8rem] min-[400px]:text-[3.2rem] md:text-[4.8rem] font-black tracking-tighter text-zinc-400 sm:text-zinc-300 leading-[0.9] sm:leading-none break-words">
                       ENGINEERED.
                     </h1>
@@ -264,7 +277,7 @@ export default function Home() {
 
                   <div className="flex flex-col gap-1 px-2 border-l-2 border-zinc-100">
                     <span className="text-[10px] font-black text-zinc-300 uppercase tracking-widest">Active Installs</span>
-                    <span className="text-[14px] font-bold text-zinc-900 tracking-tight">2.4k / week</span>
+                    <span className="text-[14px] font-bold text-zinc-900 tracking-tight">{downloads} / week</span>
                   </div>
                 </div>
               </motion.div>
@@ -289,7 +302,7 @@ export default function Home() {
 
                 <div className="absolute top-6 right-8 hidden sm:flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-[9px] font-mono text-zinc-400 tracking-widest font-black uppercase">LIVE_STDOUT</span>
+                  <span className="text-[9px] font-mono text-zinc-400 tracking-widest font-black uppercase">REALTIME_SYNTH</span>
                 </div>
               </div>
 
@@ -399,19 +412,19 @@ export default function Home() {
                     </div>
                     <InstallToggle />
                     <div className="flex flex-col gap-3 mt-2">
-                       <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">COMMAND_REGISTRY</span>
-                       <div className="flex flex-col gap-2">
-                          {[
-                            { cmd: "audit", d: "Check workflows for outdated actions" },
-                            { cmd: "upgrade", d: "Bump all actions to latest versions" },
-                            { cmd: "init", d: "Create override config file" }
-                          ].map((c, i) => (
-                            <div key={i} className="flex items-center justify-between px-3 py-2 border border-zinc-100 bg-zinc-50/50 rounded-sm group hover:border-zinc-200 transition-colors">
-                              <code className="text-[11px] font-extrabold text-zinc-800">npx cistack {c.cmd}</code>
-                              <span className="text-[10px] text-zinc-400 font-medium">{c.d}</span>
-                            </div>
-                          ))}
-                       </div>
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">COMMAND_REGISTRY</span>
+                      <div className="flex flex-col gap-2">
+                        {[
+                          { cmd: "audit", d: "Check workflows for outdated actions" },
+                          { cmd: "upgrade", d: "Bump all actions to latest versions" },
+                          { cmd: "init", d: "Create override config file" }
+                        ].map((c, i) => (
+                          <div key={i} className="flex items-center justify-between px-3 py-2 border border-zinc-100 bg-zinc-50/50 rounded-sm group hover:border-zinc-200 transition-colors">
+                            <code className="text-[11px] font-extrabold text-zinc-800">npx cistack {c.cmd}</code>
+                            <span className="text-[10px] text-zinc-400 font-medium">{c.d}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                     <p className="text-[13px] text-zinc-400 italic">Recommended: Use npx for one-off generation.</p>
                   </div>
@@ -420,7 +433,7 @@ export default function Home() {
                       <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">PARAMETERS_MANIFEST</span>
                       <div className="h-[1px] flex-1 bg-zinc-200 opacity-60" />
                     </div>
-                    
+
                     <div className="flex flex-col border-y border-zinc-200 divide-y divide-zinc-100 bg-white/40">
                       {[
                         { cmd: "--explain", t: "boolean", d: "Show reasoning for detected stack" },
@@ -432,14 +445,14 @@ export default function Home() {
                         { cmd: "--force", t: "boolean", d: "Ignore existing files and overwrite" }
                       ].map((flag, i) => (
                         <div key={i} className="flex flex-col md:flex-row md:items-center py-3 px-2 hover:bg-zinc-50/80 transition-colors group">
-                           <div className="flex items-center gap-3 md:w-[150px] shrink-0">
-                             <div className="w-[3px] h-[12px] bg-zinc-200 group-hover:bg-emerald-500 transition-colors" />
-                             <code className="text-[11px] font-bold text-zinc-800 font-mono tracking-tight">{flag.cmd}</code>
-                           </div>
-                           <div className="flex flex-row items-center flex-1 gap-4 mt-2 md:mt-0 pl-[15px] md:pl-0">
-                             <span className="text-[9px] font-mono text-zinc-500 bg-zinc-100 px-1.5 py-0.5 rounded-sm uppercase tracking-widest">{flag.t}</span>
-                             <span className="text-[11px] text-zinc-500 font-medium">{flag.d}</span>
-                           </div>
+                          <div className="flex items-center gap-3 md:w-[150px] shrink-0">
+                            <div className="w-[3px] h-[12px] bg-zinc-200 group-hover:bg-emerald-500 transition-colors" />
+                            <code className="text-[11px] font-bold text-zinc-800 font-mono tracking-tight">{flag.cmd}</code>
+                          </div>
+                          <div className="flex flex-row items-center flex-1 gap-4 mt-2 md:mt-0 pl-[15px] md:pl-0">
+                            <span className="text-[9px] font-mono text-zinc-500 bg-zinc-100 px-1.5 py-0.5 rounded-sm uppercase tracking-widest">{flag.t}</span>
+                            <span className="text-[11px] text-zinc-500 font-medium">{flag.d}</span>
+                          </div>
                         </div>
                       ))}
                     </div>
