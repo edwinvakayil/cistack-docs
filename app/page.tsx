@@ -179,7 +179,7 @@ export default function Home() {
 
             {/* System Identification Cell */}
             <div className="md:col-span-3 p-5 md:p-6 flex items-center justify-between md:justify-end gap-6 bg-zinc-50/20">
-              <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-[0.2em]">NAV_SYSTEM // 2024_A1</span>
+              <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-[0.2em]">NAV_SYSTEM // {new Date().getFullYear()}_{(new Date().getMonth() + 1).toString().padStart(2, '0')}</span>
               <button
                 onClick={() => document.getElementById('docs')?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-[11px] font-black uppercase tracking-widest text-zinc-900 px-4 py-2 border border-zinc-900 hover:bg-zinc-950 hover:text-white transition-all rounded-sm"
