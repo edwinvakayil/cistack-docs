@@ -654,7 +654,7 @@ export default function Home() {
               {/* Final Install Command */}
               <div className="md:col-span-3 p-8 bg-zinc-50/30 flex flex-col justify-center items-start md:items-end gap-3">
                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Global_Install</span>
-                <code className="text-[13px] font-mono font-bold text-zinc-800 bg-white border border-zinc-200 px-3 py-1.5 rounded-sm shadow-sm group hover:border-zinc-900 transition-colors cursor-pointer">
+                <code className="text-[13px] font-mono font-bold text-zinc-800 bg-white border border-zinc-100 px-3 py-1.5 rounded-sm group hover:border-zinc-300 transition-colors cursor-pointer">
                   npm install -g cistack
                 </code>
               </div>
