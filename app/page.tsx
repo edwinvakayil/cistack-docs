@@ -85,8 +85,10 @@ export default function Home() {
   const [copiedLocal, setCopiedLocal] = useState(false);
   const [version, setVersion] = useState("3.0.0");
   const [downloads, setDownloads] = useState("2.4k");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     fetch("https://registry.npmjs.org/cistack/latest")
       .then((res) => res.json())
       .then((data) => {
@@ -204,7 +206,9 @@ export default function Home() {
 
             {/* System Identification Cell */}
             <div className="md:col-span-3 p-5 md:p-6 flex items-center justify-between md:justify-end gap-6 bg-zinc-50/20">
-              <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-[0.2em]">CORE_MANIFEST // {new Date().getFullYear()}_{(new Date().getMonth() + 1).toString().padStart(2, '0')}</span>
+              <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-[0.2em]">
+                CORE_MANIFEST // {mounted ? `${new Date().getFullYear()}_${(new Date().getMonth() + 1).toString().padStart(2, '0')}` : "2026_01"}
+              </span>
               <button
                 onClick={() => document.getElementById('docs')?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-[11px] font-black uppercase tracking-widest text-zinc-900 px-4 py-2 border border-zinc-900 hover:bg-zinc-950 hover:text-white transition-all rounded-sm"
@@ -249,7 +253,7 @@ export default function Home() {
                   {/* S_01: Input Stage */}
                   <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 group/h1">
                     <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h1:text-zinc-400 transition-colors">S_01 // INGEST_ENGINE</span>
-                    <h1 className="text-[2.2rem] min-[400px]:text-[2.5rem] md:text-[3.8rem] font-black tracking-tighter text-zinc-950 leading-[0.9] sm:leading-none break-words">
+                    <h1 className="text-[2.2rem] min-[400px]:text-[2.5rem] md:text-[3.8rem] font-[1000] tracking-tighter text-black leading-[0.9] sm:leading-none break-words">
                       YOUR STACK.
                     </h1>
                   </div>
@@ -257,7 +261,7 @@ export default function Home() {
                   {/* S_02: Transformation Stage */}
                   <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 sm:ml-6 md:ml-12 group/h2">
                     <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h2:text-zinc-400 transition-colors">S_02 // PIPELINE_SYNTH</span>
-                    <h2 className="text-[2.2rem] min-[400px]:text-[2.5rem] md:text-[3.8rem] font-black tracking-tighter text-zinc-900 leading-[0.9] sm:leading-none break-words">
+                    <h2 className="text-[2.2rem] min-[400px]:text-[2.5rem] md:text-[3.8rem] font-[1000] tracking-tighter text-black leading-[0.9] sm:leading-none break-words">
                       YOUR PIPELINE.
                     </h2>
                   </div>
@@ -265,13 +269,13 @@ export default function Home() {
                   {/* S_03: Reification Stage */}
                   <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 sm:ml-12 md:ml-24 group/h3">
                     <span className="text-[10px] md:text-[12px] font-mono font-bold text-zinc-300 sm:text-zinc-200 group-hover/h3:text-zinc-400 transition-colors">S_03 // ACTION_COMMIT</span>
-                    <h2 className="text-[2.2rem] min-[400px]:text-[2.5rem] md:text-[3.8rem] font-black tracking-tighter text-zinc-400 sm:text-zinc-300 leading-[0.9] sm:leading-none break-words">
+                    <h2 className="text-[2.2rem] min-[400px]:text-[2.5rem] md:text-[3.8rem] font-[1000] tracking-tighter text-zinc-500 sm:text-zinc-400 leading-[0.9] sm:leading-none break-words">
                       ORCHESTRATED.
                     </h2>
                   </div>
                 </div>
 
-                <p className="text-[15px] sm:text-[17px] text-zinc-500 leading-relaxed max-w-[540px] font-medium">
+                <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed max-w-[540px] font-medium">
                   cistack deep-scans your repository to generate production-ready
                   GitHub Actions workflows across 30+ frameworks and 12+ platforms.
                 </p>
@@ -347,7 +351,7 @@ export default function Home() {
           {/* Section Header: Compact & Professional */}
           <div className="flex flex-col gap-4 mb-16 max-w-[900px]">
             <div className="flex items-center gap-3">
-              <Badge variant="outline" className="px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-black border-zinc-200 text-zinc-600 bg-white rounded-sm shadow-sm">
+              <Badge variant="outline" className="px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-black border-zinc-200 text-zinc-600 bg-white rounded-sm">
                 Technical Specification v{version}
               </Badge>
               <div className="h-[1px] flex-1 bg-zinc-200/60" />
@@ -356,7 +360,7 @@ export default function Home() {
               Engineered for consistency.<br />
               Generated for speed.
             </h2>
-            <p className="text-[17px] text-zinc-500 leading-relaxed max-w-[760px] font-medium">
+            <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed max-w-[760px] font-medium">
               cistack deep-scans your project directory to produce production-grade GitHub Actions YAML.
               It detects your language, framework, testing tools, and hosting platform — then writes the best pipeline for your stack.
             </p>
@@ -717,7 +721,9 @@ export default function Home() {
 
             {/* Sub-footer detail */}
             <div className="border-t border-zinc-100 p-4 px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-widest">© {new Date().getFullYear()} CISTACK ENGINE — ALL PIPELINES REIFIED.</span>
+              <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-widest">
+                © {mounted ? new Date().getFullYear() : "2026"} CISTACK ENGINE — ALL PIPELINES REIFIED.
+              </span>
               <div className="flex items-center gap-6">
                 <a href="https://github.com/edwinvs/cistack" target="_blank" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors">Github</a>
                 <a href="https://www.npmjs.com/package/cistack" target="_blank" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors">Npm</a>
