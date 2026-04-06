@@ -354,6 +354,9 @@ export default function Home() {
                   {[
                     { label: "Deep codebase analysis", sub: "Reads package.json, lock files, configs" },
                     { label: "Smart detection", sub: "Identifies 30+ frameworks & 12 languages" },
+                    { label: "Native Cache support", sub: "Speeds up pipelines for npm, pip, go, cargo & more" },
+                    { label: "PR Preview Deploys", sub: "Automatic environments for Vercel and Netlify" },
+                    { label: "Workflow Audit & Upgrade", sub: "Bumps action versions & checks best practices" },
                     { label: "Hosting auto-detect", sub: "AWS, Vercel, Firebase, Docker & more" },
                     { label: "Multi-workflow output", sub: "ci.yml, deploy.yml, docker.yml, security.yml" },
                     { label: "Security built-in", sub: "CodeQL + dependency auditing checkpoints" },
@@ -385,6 +388,21 @@ export default function Home() {
                       <h3 className="text-[18px] font-bold text-zinc-900">Installation</h3>
                     </div>
                     <InstallToggle />
+                    <div className="flex flex-col gap-3 mt-2">
+                       <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">COMMAND_REGISTRY</span>
+                       <div className="flex flex-col gap-2">
+                          {[
+                            { cmd: "audit", d: "Check workflows for outdated actions" },
+                            { cmd: "upgrade", d: "Bump all actions to latest versions" },
+                            { cmd: "init", d: "Create override config file" }
+                          ].map((c, i) => (
+                            <div key={i} className="flex items-center justify-between px-3 py-2 border border-zinc-100 bg-zinc-50/50 rounded-sm group hover:border-zinc-200 transition-colors">
+                              <code className="text-[11px] font-extrabold text-zinc-800">npx cistack {c.cmd}</code>
+                              <span className="text-[10px] text-zinc-400 font-medium">{c.d}</span>
+                            </div>
+                          ))}
+                       </div>
+                    </div>
                     <p className="text-[13px] text-zinc-400 italic">Recommended: Use npx for one-off generation.</p>
                   </div>
                   <div className="flex flex-col gap-4 mt-4">
@@ -395,6 +413,7 @@ export default function Home() {
                     
                     <div className="flex flex-col border-y border-zinc-200 divide-y divide-zinc-100 bg-white/40">
                       {[
+                        { cmd: "--explain", t: "boolean", d: "Show reasoning for detected stack" },
                         { cmd: "--path", t: "string", d: "Target directory scanning path" },
                         { cmd: "--output", t: "string", d: "Redefine workflow output dir" },
                         { cmd: "--dry-run", t: "boolean", d: "Simulate output without writing" },
@@ -431,13 +450,13 @@ export default function Home() {
                         {[
                           { id: "p1", idx: "S_01", n: "Firebase", s: "firebase.json, firebase-tools dep", d: "Automatic Firebase Hosting detection with automated multi-project branch logic.", icon: <Package size={14} /> },
                           { id: "p2", idx: "S_02", n: "Vercel", s: "vercel.json, .vercel dir, vercel dep", d: "Vercel deploy-gate generation with branch-aware environment provisioning.", icon: <Shield size={14} /> },
-                          { id: "p3", idx: "S_03", n: "Netlify", s: "netlify.toml, _redirects", d: "Netlify edge detection with custom header and redirect validation.", icon: <Terminal size={14} /> },
+                          { id: "p3", idx: "S_03", n: "Netlify", s: "netlify.toml, _redirects, netlify-cli dep", d: "Netlify edge detection with custom header and redirect validation.", icon: <Terminal size={14} /> },
                           { id: "p4", idx: "S_04", n: "GitHub Pages", s: "gh-pages dep, github.io package.json", d: "Static site hosting recognition for the native GitHub Pages deployment service.", icon: <Globe size={14} /> },
-                          { id: "p5", idx: "S_05", n: "AWS Cloud", s: "serverless.yml, appspec.yml, cdk.json", d: "Infrastructure-as-Code (IaC) recognition for AWS CDK, EC2, and Serverless.", icon: <Box size={14} /> },
+                          { id: "p5", idx: "S_05", n: "AWS Cloud", s: "serverless.yml, appspec.yml, cdk.json, aws-sdk dep", d: "Infrastructure-as-Code (IaC) recognition for AWS CDK, EC2, and Serverless.", icon: <Box size={14} /> },
                           { id: "p6", idx: "S_06", n: "GCP App Engine", s: "app.yaml", d: "Automated deployment scanning for Google Cloud Platform App Engine targets.", icon: <Globe size={14} /> },
                           { id: "p7", idx: "S_07", n: "Azure", s: "azure/pipelines.yml, @azure/* deps", d: "Azure App Service and native Azure pipeline definition identification.", icon: <Package size={14} /> },
                           { id: "p8", idx: "S_08", n: "Heroku", s: "Procfile, heroku.yml", d: "Classic PaaS deployment via Heroku registry and git push logic.", icon: <Box size={14} /> },
-                          { id: "p9", idx: "S_09", n: "Render / Railway", s: "render.yaml, railway.json", d: "Modern PaaS detection utilizing automated app service descriptors.", icon: <Terminal size={14} /> },
+                          { id: "p9", idx: "S_09", n: "Render / Railway", s: "render.yaml, railway.json, railway.toml", d: "Modern PaaS detection utilizing automated app service descriptors.", icon: <Terminal size={14} /> },
                           { id: "p10", idx: "S_10", n: "Docker", s: "Dockerfile, docker-compose.yml", d: "Containerization recognition with Buildx layer caching and GHCR authentication.", icon: <Box size={14} /> }
                         ].map((p) => (
                           <AccordionItem key={p.id} value={p.id} className="border-b border-zinc-100 last:border-0">
@@ -519,7 +538,7 @@ export default function Home() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
                   {[
                     { f: "ci.yml", l: "Continuous Integration", d: "Runs on push/PR: Lint (ESLint, TS type-check), Test (Node versions matrix), Build (production), and E2E." },
-                    { f: "deploy.yml", l: "Continuous Deployment", d: "Triggers on main: Platform-specific deployment routing with documented, mandatory secret references at the top of file." },
+                    { f: "deploy.yml", l: "Continuous Deployment", d: "Triggers on main: Platform deployment with automatic PR Preview environments for Vercel and Netlify." },
                     { f: "docker.yml", l: "Docker Build & Push", d: "Triggers on main/tags: Multi-platform build via Docker Buildx, GHCR push, and GitHub Actions caching." },
                     { f: "security.yml", l: "Security Audit", d: "Runs on push/PR/weekly schedules: Dependency analysis and deep CodeQL auditing for the detected language." }
                   ].map((wf, i) => (
