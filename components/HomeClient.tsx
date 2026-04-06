@@ -181,8 +181,8 @@ export default function HomeClient({ dict, lang }: { dict: any; lang: string }) 
                     <span className="text-[11px] font-bold text-zinc-600 uppercase tracking-tighter">{dict.navigation.status}</span>
                   </div>
                 </div>
-                <div className="h-6 w-[1px] bg-zinc-100 mx-2 hidden sm:block" />
-                <div className="flex items-center gap-6 text-[12px] font-bold text-zinc-400">
+                <div className="h-6 w-[1px] bg-zinc-100 mx-2 hidden lg:block" />
+                <div className="hidden lg:flex items-center gap-6 text-[12px] font-bold text-zinc-400">
                   <a href="https://github.com/edwinvakayil/cistack" target="_blank" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
                     <GithubIcon size={14} className="opacity-40 group-hover:opacity-100 transition-opacity" />
                     {dict.navigation.repository}
@@ -192,30 +192,29 @@ export default function HomeClient({ dict, lang }: { dict: any; lang: string }) 
                     {dict.navigation.registry}
                   </a>
                 </div>
-                <div className="h-6 w-[1px] bg-zinc-100 mx-2 hidden sm:block" />
-                <div className="flex items-center gap-1.5 sm:gap-2">
-                  <a href="/en" className={`text-[10px] font-bold tracking-widest uppercase transition-colors px-1.5 py-0.5 rounded-sm border ${lang === 'en' ? 'bg-zinc-950 text-white border-zinc-950' : 'text-zinc-400 hover:text-zinc-950 border-transparent hover:border-zinc-100'}`}>EN</a>
-                  
-                  {lang !== 'en' && (
-                    <>
-                      <div className="h-3 w-[1px] bg-zinc-100 mx-0.5" />
-                      <a href={`/${lang}`} className="text-[10px] font-bold tracking-widest uppercase transition-colors px-1.5 py-0.5 rounded-sm border bg-zinc-950 text-white border-zinc-950">
-                        {lang.toUpperCase()}
-                      </a>
-                    </>
-                  )}
+              </div>
+              <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <a href="/en" className={`text-[10px] font-bold tracking-widest uppercase transition-colors px-1.5 py-0.5 rounded-sm border ${lang === 'en' ? 'bg-zinc-950 text-white border-zinc-950' : 'text-zinc-400 hover:text-zinc-950 border-transparent hover:border-zinc-100'}`}>EN</a>
+                
+                {lang !== 'en' && (
+                  <>
+                    <div className="h-3 w-[1px] bg-zinc-100 mx-0.5" />
+                    <a href={`/${lang}`} className="text-[10px] font-bold tracking-widest uppercase transition-colors px-1.5 py-0.5 rounded-sm border bg-zinc-950 text-white border-zinc-950">
+                      {lang.toUpperCase()}
+                    </a>
+                  </>
+                )}
 
-                  <div className="relative group/lang border-l border-zinc-100 pl-2 ml-1">
-                    <Globe size={13} className="text-zinc-300 group-hover/lang:text-zinc-950 transition-colors cursor-pointer" />
-                    <div className="absolute right-0 top-full mt-2 w-24 bg-white border border-zinc-100 shadow-xl rounded-sm opacity-0 invisible group-hover/lang:opacity-100 group-hover/lang:visible transition-all z-[100] p-1 flex flex-col gap-1">
-                      <a href="/en" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">English</a>
-                      <a href="/fr" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Français</a>
-                      <a href="/es" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Español</a>
-                      <a href="/pt" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Português</a>
-                      <a href="/br" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">BR (Brasil)</a>
-                      <a href="/de" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Deutsch</a>
-                      <a href="/cn" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">简体中文</a>
-                    </div>
+                <div className="relative group/lang border-l border-zinc-100 pl-2 ml-1">
+                  <Globe size={13} className="text-zinc-300 group-hover/lang:text-zinc-950 transition-colors cursor-pointer" />
+                  <div className="absolute right-0 top-full mt-2 w-24 bg-white border border-zinc-100 shadow-xl rounded-sm opacity-0 invisible group-hover/lang:opacity-100 group-hover/lang:visible transition-all z-[100] p-1 flex flex-col gap-1">
+                    <a href="/en" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">English</a>
+                    <a href="/fr" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Français</a>
+                    <a href="/es" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Español</a>
+                    <a href="/pt" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Português</a>
+                    <a href="/br" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">BR (Brasil)</a>
+                    <a href="/de" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Deutsch</a>
+                    <a href="/cn" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">简体中文</a>
                   </div>
                 </div>
               </div>
