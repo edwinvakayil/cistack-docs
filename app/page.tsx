@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TerminalCard from "../components/TerminalCard";
 import { CanvasText } from "../components/CanvasText";
 import { Terminal, Copy, Check, Package, Shield, Globe, Box, ArrowUpRight } from "lucide-react";
@@ -84,6 +84,16 @@ function InstallToggle() {
 
 export default function Home() {
   const [copiedLocal, setCopiedLocal] = useState(false);
+  const [version, setVersion] = useState("3.0.0");
+
+  useEffect(() => {
+    fetch("https://registry.npmjs.org/cistack/latest")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.version) setVersion(data.version);
+      })
+      .catch((err) => console.error("Error fetching version:", err));
+  }, []);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -140,7 +150,7 @@ export default function Home() {
                 <Terminal size={18} className="text-zinc-400" />
                 cistack
               </div>
-              <span className="text-[9px] font-mono font-bold text-zinc-300 bg-zinc-50 border border-zinc-100 px-1.5 py-0.5 rounded-sm">V2.0</span>
+              <span className="text-[9px] font-mono font-bold text-zinc-300 bg-zinc-50 border border-zinc-100 px-1.5 py-0.5 rounded-sm">V{version}</span>
             </div>
 
             {/* Navigation Metadata Cell */}
@@ -204,7 +214,7 @@ export default function Home() {
               >
                 <div className="flex items-center gap-3">
                   <Badge variant="outline" className="px-2 py-0.5 text-[9px] uppercase tracking-[0.2em] font-black border-zinc-200 text-zinc-400 rounded-sm bg-white shadow-sm">
-                    ENGINE_2.0.0
+                    ENGINE_{version}
                   </Badge>
                   <div className="h-[1px] w-12 bg-zinc-100" />
                   <span className="text-[10px] font-mono text-zinc-300 font-bold tracking-widest uppercase">L_01 // CORE_MISSION</span>
@@ -313,7 +323,7 @@ export default function Home() {
           <div className="flex flex-col gap-4 mb-16 max-w-[900px]">
             <div className="flex items-center gap-3">
               <Badge variant="outline" className="px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-black border-zinc-200 text-zinc-600 bg-white rounded-sm shadow-sm">
-                Technical Specification v2.0.0
+                Technical Specification v{version}
               </Badge>
               <div className="h-[1px] flex-1 bg-zinc-200/60" />
             </div>
@@ -638,7 +648,7 @@ export default function Home() {
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Project_Origin</span>
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-[18px] tracking-tighter text-zinc-900">cistack</span>
-                    <span className="text-[9px] font-mono font-bold text-zinc-300 bg-zinc-50 border border-zinc-100 px-1.5 py-0.5 rounded-sm">V_2.0.0 // PRODUCTION</span>
+                    <span className="text-[9px] font-mono font-bold text-zinc-300 bg-zinc-50 border border-zinc-100 px-1.5 py-0.5 rounded-sm">V_{version} // PRODUCTION</span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
