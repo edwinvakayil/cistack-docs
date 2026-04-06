@@ -211,7 +211,6 @@ export default function HomeClient({ dict, lang }: { dict: any; lang: string }) 
                       <a href="/en" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">English</a>
                       <a href="/fr" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Français</a>
                       <a href="/es" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Español</a>
-                      <a href="/ar" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">العربية</a>
                       <a href="/pt" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Português</a>
                       <a href="/br" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">BR (Brasil)</a>
                       <a href="/de" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Deutsch</a>

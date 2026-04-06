@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Geist_Mono, Fira_Code, IBM_Plex_Sans_Arabic } from "next/font/google";
+import { DM_Sans, Geist_Mono, Fira_Code } from "next/font/google";
 import "../globals.css";
 import { Locale } from "@/lib/dictionaries";
 
@@ -16,12 +16,6 @@ const geistMono = Geist_Mono({
 const firaCode = Fira_Code({
   variable: "--font-fira-code",
   subsets: ["latin"],
-});
-
-const ibmPlexArabic = IBM_Plex_Sans_Arabic({
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["arabic"],
-  variable: "--font-ibm-plex-arabic",
 });
 
 export const metadata: Metadata = {
@@ -76,7 +70,7 @@ export const metadata: Metadata = {
 };
 
 export async function generateStaticParams() {
-  return [{ lang: 'en' }, { lang: 'fr' }, { lang: 'es' }, { lang: 'ar' }, { lang: 'pt' }, { lang: 'br' }, { lang: 'de' }];
+  return [{ lang: 'en' }, { lang: 'fr' }, { lang: 'es' }, { lang: 'pt' }, { lang: 'br' }, { lang: 'de' }];
 }
 
 export default async function RootLayout({
@@ -90,8 +84,7 @@ export default async function RootLayout({
   return (
     <html
       lang={lang}
-      dir={lang === 'ar' ? 'rtl' : 'ltr'}
-      className={`${dmSans.variable} ${geistMono.variable} ${firaCode.variable} ${ibmPlexArabic.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${geistMono.variable} ${firaCode.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
