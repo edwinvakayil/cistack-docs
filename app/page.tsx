@@ -352,17 +352,20 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col divide-y divide-zinc-200/40">
                   {[
-                    { label: "Deep analysis", sub: "package.json, lock files, tree-shaking" },
+                    { label: "Deep codebase analysis", sub: "Reads package.json, lock files, configs" },
+                    { label: "Smart detection", sub: "Identifies 30+ frameworks & 12 languages" },
+                    { label: "Hosting auto-detect", sub: "AWS, Vercel, Firebase, Docker & more" },
+                    { label: "Multi-workflow output", sub: "ci.yml, deploy.yml, docker.yml, security.yml" },
+                    { label: "Security built-in", sub: "CodeQL + dependency auditing checkpoints" },
                     { label: "Monorepo aware", sub: "Turborepo, Nx, Lerna, pnpm workspaces" },
                     { label: "Interactive mode", sub: "Confirms settings before writing files" },
-                    { label: "Zero config", sub: "Works out of the box with no config needed" },
-                    { label: "Security auditing", sub: "CodeQL and dependency vulnerability checks" }
+                    { label: "Zero config", sub: "Works out of the box with no config needed" }
                   ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-4 py-5 first:pt-0 last:pb-0">
-                      <Checkbox checked readOnly className="mt-1 border-zinc-200 data-[state=checked]:bg-zinc-900 data-[state=checked]:border-zinc-900 shrink-0" />
+                    <div key={i} className="flex items-start gap-3 py-3.5 first:pt-0 last:pb-0">
+                      <Checkbox checked readOnly className="mt-0.5 border-zinc-200 data-[state=checked]:bg-zinc-900 data-[state=checked]:border-zinc-900 shrink-0 h-4 w-4" />
                       <div className="flex flex-col">
-                        <span className="text-[16px] font-semibold text-zinc-800">{item.label}</span>
-                        <span className="text-[13px] text-zinc-400 leading-normal">{item.sub}</span>
+                        <span className="text-[14px] font-semibold text-zinc-800 leading-tight">{item.label}</span>
+                        <span className="text-[12px] text-zinc-400 leading-snug mt-0.5">{item.sub}</span>
                       </div>
                     </div>
                   ))}
@@ -384,20 +387,30 @@ export default function Home() {
                     <InstallToggle />
                     <p className="text-[13px] text-zinc-400 italic">Recommended: Use npx for one-off generation.</p>
                   </div>
-                  <div className="flex flex-col gap-6">
-                    <span className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">CLI Parameter Set</span>
-                    <div className="grid grid-cols-2 gap-1 border border-zinc-100 rounded-sm overflow-hidden bg-transparent p-1">
+                  <div className="flex flex-col gap-4 mt-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">PARAMETERS_MANIFEST</span>
+                      <div className="h-[1px] flex-1 bg-zinc-200 opacity-60" />
+                    </div>
+                    
+                    <div className="flex flex-col border-y border-zinc-200 divide-y divide-zinc-100 bg-white/40">
                       {[
-                        { cmd: "--path", d: "Project path" },
-                        { cmd: "--output", d: "Workflow dir" },
-                        { cmd: "--dry-run", d: "Simulation" },
-                        { cmd: "--no-prompt", d: "Skip checks" },
-                        { cmd: "--verbose", d: "Full output" },
-                        { cmd: "--force", d: "Overwrite" }
+                        { cmd: "--path", t: "string", d: "Target directory scanning path" },
+                        { cmd: "--output", t: "string", d: "Redefine workflow output dir" },
+                        { cmd: "--dry-run", t: "boolean", d: "Simulate output without writing" },
+                        { cmd: "--no-prompt", t: "boolean", d: "Bypass interactive safety checks" },
+                        { cmd: "--verbose", t: "boolean", d: "Enable maximum stdout tracing" },
+                        { cmd: "--force", t: "boolean", d: "Ignore existing files and overwrite" }
                       ].map((flag, i) => (
-                        <div key={i} className="flex items-center justify-between p-2.5 border border-transparent rounded-sm transition-all group">
-                          <code className="text-[12px] font-bold text-zinc-700 bg-zinc-100/50 px-1.5 py-0.5 rounded-sm transition-colors">{flag.cmd}</code>
-                          <span className="text-[11px] text-zinc-400 font-medium">{flag.d}</span>
+                        <div key={i} className="flex flex-col md:flex-row md:items-center py-3 px-2 hover:bg-zinc-50/80 transition-colors group">
+                           <div className="flex items-center gap-3 md:w-[150px] shrink-0">
+                             <div className="w-[3px] h-[12px] bg-zinc-200 group-hover:bg-emerald-500 transition-colors" />
+                             <code className="text-[11px] font-bold text-zinc-800 font-mono tracking-tight">{flag.cmd}</code>
+                           </div>
+                           <div className="flex flex-row items-center flex-1 gap-4 mt-2 md:mt-0 pl-[15px] md:pl-0">
+                             <span className="text-[9px] font-mono text-zinc-500 bg-zinc-100 px-1.5 py-0.5 rounded-sm uppercase tracking-widest">{flag.t}</span>
+                             <span className="text-[11px] text-zinc-500 font-medium">{flag.d}</span>
+                           </div>
                         </div>
                       ))}
                     </div>
@@ -413,46 +426,57 @@ export default function Home() {
                       <h4 className="text-[14px] font-bold text-zinc-900 uppercase tracking-widest">Detection Logic</h4>
                       <p className="text-[13px] text-zinc-400 leading-relaxed font-medium">Automatic recognition triggers based on filesystem signals.</p>
                     </div>
-                    <Accordion className="w-full">
-                      {[
-                        { id: "p1", idx: "S_01", n: "Firebase", s: "firebase.json, .firebaserc", d: "Automatic Firebase Hosting detection with automated multi-project branch logic.", icon: <Package size={14} /> },
-                        { id: "p2", idx: "S_02", n: "Vercel", s: "vercel.json, .vercel dir", d: "Vercel deploy-gate generation with branch-aware environment provisioning.", icon: <Shield size={14} /> },
-                        { id: "p3", idx: "S_03", n: "Netlify", s: "netlify.toml, _redirects", d: "Netlify edge detection with custom header and redirect validation.", icon: <Terminal size={14} /> },
-                        { id: "p4", idx: "S_04", n: "AWS / Azure", s: "cdk.json, azure/pipelines.yml", d: "Infrastructure-as-Code (IaC) recognition for AWS CDK and Azure App Service.", icon: <Globe size={14} /> },
-                        { id: "p5", idx: "S_05", n: "Docker", s: "Dockerfile, compose.yml", d: "Containerization recognition with Buildx layer caching and GHCR authentication.", icon: <Box size={14} /> }
-                      ].map((p) => (
-                        <AccordionItem key={p.id} value={p.id} className="border-b border-zinc-100 last:border-0">
-                          <AccordionTrigger className="py-5 hover:no-underline text-zinc-500 hover:text-zinc-900 transition-colors group/trigger data-[state=open]:text-zinc-950">
-                            <div className="flex items-center gap-4">
-                              <span className="text-[10px] font-mono font-bold text-zinc-300 group-hover/trigger:text-zinc-500 transition-colors">{p.idx}</span>
-                              <div className="flex items-center gap-3">
-                                <span className="text-zinc-400 group-hover/trigger:text-zinc-900 transition-colors">{p.icon}</span>
-                                <span className="text-[16px] font-semibold">{p.n}</span>
+                    <div className="w-full max-h-[250px] sm:max-h-[265px] overflow-y-auto overflow-x-hidden pr-3 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-zinc-200 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-zinc-300">
+                      <Accordion className="w-full">
+                        {[
+                          { id: "p1", idx: "S_01", n: "Firebase", s: "firebase.json, firebase-tools dep", d: "Automatic Firebase Hosting detection with automated multi-project branch logic.", icon: <Package size={14} /> },
+                          { id: "p2", idx: "S_02", n: "Vercel", s: "vercel.json, .vercel dir, vercel dep", d: "Vercel deploy-gate generation with branch-aware environment provisioning.", icon: <Shield size={14} /> },
+                          { id: "p3", idx: "S_03", n: "Netlify", s: "netlify.toml, _redirects", d: "Netlify edge detection with custom header and redirect validation.", icon: <Terminal size={14} /> },
+                          { id: "p4", idx: "S_04", n: "GitHub Pages", s: "gh-pages dep, github.io package.json", d: "Static site hosting recognition for the native GitHub Pages deployment service.", icon: <Globe size={14} /> },
+                          { id: "p5", idx: "S_05", n: "AWS Cloud", s: "serverless.yml, appspec.yml, cdk.json", d: "Infrastructure-as-Code (IaC) recognition for AWS CDK, EC2, and Serverless.", icon: <Box size={14} /> },
+                          { id: "p6", idx: "S_06", n: "GCP App Engine", s: "app.yaml", d: "Automated deployment scanning for Google Cloud Platform App Engine targets.", icon: <Globe size={14} /> },
+                          { id: "p7", idx: "S_07", n: "Azure", s: "azure/pipelines.yml, @azure/* deps", d: "Azure App Service and native Azure pipeline definition identification.", icon: <Package size={14} /> },
+                          { id: "p8", idx: "S_08", n: "Heroku", s: "Procfile, heroku.yml", d: "Classic PaaS deployment via Heroku registry and git push logic.", icon: <Box size={14} /> },
+                          { id: "p9", idx: "S_09", n: "Render / Railway", s: "render.yaml, railway.json", d: "Modern PaaS detection utilizing automated app service descriptors.", icon: <Terminal size={14} /> },
+                          { id: "p10", idx: "S_10", n: "Docker", s: "Dockerfile, docker-compose.yml", d: "Containerization recognition with Buildx layer caching and GHCR authentication.", icon: <Box size={14} /> }
+                        ].map((p) => (
+                          <AccordionItem key={p.id} value={p.id} className="border-b border-zinc-100 last:border-0">
+                            <AccordionTrigger className="py-4 sm:py-5 hover:no-underline text-zinc-500 hover:text-zinc-900 transition-colors group/trigger data-[state=open]:text-zinc-950 [&>svg]:shrink-0">
+                              <div className="flex flex-col justify-center flex-1 min-w-0 gap-1.5 sm:gap-2 pr-2 sm:pr-4 text-left overflow-hidden">
+                                <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+                                  <span className="text-[10px] font-mono font-bold text-zinc-300 group-hover/trigger:text-zinc-500 transition-colors w-[24px] shrink-0">{p.idx}</span>
+                                  <div className="flex items-center gap-2 sm:gap-3">
+                                    <span className="text-zinc-400 group-hover/trigger:text-zinc-900 transition-colors shrink-0">{p.icon}</span>
+                                    <span className="text-[15px] sm:text-[16px] font-semibold whitespace-nowrap">{p.n}</span>
+                                  </div>
+                                </div>
+                                <div className="flex justify-start pl-[36px] sm:pl-[44px] w-full overflow-hidden">
+                                  <Badge variant="outline" className="text-[9px] sm:text-[10px] opacity-60 font-mono tracking-tight font-normal rounded-sm border-zinc-200 bg-zinc-50/50 truncate max-w-full">{p.s}</Badge>
+                                </div>
                               </div>
-                            </div>
-                            <Badge variant="outline" className="ml-auto mr-4 text-[10px] opacity-40 font-mono tracking-tight font-normal rounded-sm border-zinc-200 bg-zinc-50/50">{p.s}</Badge>
-                          </AccordionTrigger>
-                          <AccordionContent className="pb-6">
-                            <div className="bg-zinc-50/30 border-l-2 border-zinc-200 ml-[18px] pl-6 py-4">
-                              <p className="text-[15px] text-zinc-500 leading-relaxed max-w-[440px]">
-                                {p.d}
-                              </p>
-                              <div className="flex items-center gap-2 mt-4">
-                                <span className="text-[9px] font-bold text-zinc-300 uppercase tracking-widest">Signal source:</span>
-                                <code className="text-[10px] text-zinc-400 font-mono bg-white px-2 py-0.5 rounded-sm border border-zinc-100">{p.s}</code>
+                            </AccordionTrigger>
+                            <AccordionContent className="pb-6">
+                              <div className="bg-zinc-50/30 border-l-2 border-zinc-200 ml-[18px] pl-6 py-4">
+                                <p className="text-[15px] text-zinc-500 leading-relaxed max-w-[440px]">
+                                  {p.d}
+                                </p>
+                                <div className="flex items-center gap-2 mt-4">
+                                  <span className="text-[9px] font-bold text-zinc-300 uppercase tracking-widest">Signal source:</span>
+                                  <code className="text-[10px] text-zinc-400 font-mono bg-white px-2 py-0.5 rounded-sm border border-zinc-100">{p.s}</code>
+                                </div>
                               </div>
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
+                            </AccordionContent>
+                          </AccordionItem>
+                        ))}
+                      </Accordion>
+                    </div>
                   </div>
                 </div>
                 <div className="p-8 lg:p-12 bg-zinc-50/20 flex flex-col gap-10">
                   <div className="flex flex-col gap-6">
                     <h4 className="text-[14px] font-bold text-zinc-900 uppercase tracking-wider">Framework coverage</h4>
                     <div className="flex flex-wrap gap-2">
-                      {["Next.js", "Nuxt", "SvelteKit", "Remix", "Astro", "Vite", "React", "Vue", "Angular", "Gatsby", "Express", "Fastify", "NestJS", "Django", "FastAPI", "Rails", "Go", "Rust"].map((f, i) => (
+                      {["Next.js", "Nuxt", "SvelteKit", "Remix", "Astro", "Vite", "React", "Vue", "Angular", "Svelte", "Gatsby", "Express", "Fastify", "NestJS", "Hono", "Koa", "tRPC", "Django", "Flask", "FastAPI", "Ruby on Rails", "Spring Boot", "Laravel", "Go (gin)", "Rust (Cargo)"].map((f, i) => (
                         <Badge key={i} variant="outline" className="text-[11px] font-medium text-zinc-500 bg-white border-zinc-100 px-2 py-0.5 rounded-sm">
                           {f}
                         </Badge>
@@ -462,7 +486,7 @@ export default function Home() {
                   <div className="flex flex-col gap-6">
                     <h4 className="text-[14px] font-bold text-zinc-900 uppercase tracking-wider">Testing tools</h4>
                     <div className="flex flex-wrap gap-2">
-                      {["Jest", "Vitest", "Mocha", "Cypress", "Playwright", "Pytest", "RSpec", "Go Test", "Cargo Test", "PHPUnit", "JUnit", "Storybook"].map((t, i) => (
+                      {["Jest", "Vitest", "Mocha", "Cypress", "Playwright", "Pytest", "RSpec", "Go Test", "Cargo Test", "PHPUnit", "JUnit/Maven", "Storybook"].map((t, i) => (
                         <Badge key={i} variant="secondary" className="text-[11px] font-bold text-zinc-500 bg-zinc-100/50 border-transparent px-2 py-0.5 rounded-sm">
                           {t}
                         </Badge>
@@ -494,10 +518,10 @@ export default function Home() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
                   {[
-                    { f: "ci.yml", l: "Continuous Integration", d: "Lint (ESLint/Prettier), Test (Matrix across Node versions), Build, and E2E (Cypress/Playwright)." },
-                    { f: "deploy.yml", l: "Continuous Deployment", d: "Platform-specific deploy gates with secure branch-routing and documented secret references." },
-                    { f: "docker.yml", l: "Containerization", d: "Multi-platform build via Docker Buildx, GHCR push, and GitHub Actions layer caching." },
-                    { f: "security.yml", l: "Security Audit", d: "Dependency vulnerability auditing and deep CodeQL analysis for the detected language." }
+                    { f: "ci.yml", l: "Continuous Integration", d: "Runs on push/PR: Lint (ESLint, TS type-check), Test (Node versions matrix), Build (production), and E2E." },
+                    { f: "deploy.yml", l: "Continuous Deployment", d: "Triggers on main: Platform-specific deployment routing with documented, mandatory secret references at the top of file." },
+                    { f: "docker.yml", l: "Docker Build & Push", d: "Triggers on main/tags: Multi-platform build via Docker Buildx, GHCR push, and GitHub Actions caching." },
+                    { f: "security.yml", l: "Security Audit", d: "Runs on push/PR/weekly schedules: Dependency analysis and deep CodeQL auditing for the detected language." }
                   ].map((wf, i) => (
                     <div key={i} className="flex flex-col gap-3 group/item">
                       <div className="flex flex-col gap-1">
@@ -558,9 +582,9 @@ export default function Home() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {[
-                    { name: "Next.js + Vercel", desc: "Lint, Test, Build + Vercel Deploy + Security" },
-                    { name: "React + Firebase", desc: "CI Pipeline + Firebase Hosting Deploy + Security" },
-                    { name: "Node.js + Docker", desc: "CI Pipeline + Multi-platform Docker Push (GHCR)" }
+                    { name: "Next.js + Vercel", desc: "ci.yml (lint, test, build), deploy.yml (vercel deploy), security.yml" },
+                    { name: "React + Firebase", desc: "ci.yml, deploy.yml (firebase deploy --only hosting), security.yml" },
+                    { name: "Node.js API + Docker", desc: "ci.yml, docker.yml (GHCR push), security.yml" }
                   ].map((ex, i) => (
                     <div key={i} className="p-6 border border-zinc-200/60 bg-white rounded-sm flex flex-col gap-3 hover:shadow-xl hover:shadow-zinc-200/40 transition-all cursor-default">
                       <span className="text-[14px] font-black text-zinc-900">{ex.name}</span>
