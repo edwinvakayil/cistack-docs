@@ -134,7 +134,7 @@ const TerminalCard = () => {
   }, [typedCommand, visibleLines]);
 
   return (
-    <div key={key} className="w-full h-[300px] sm:h-[350px] lg:h-[380px] flex flex-col rounded-sm border border-zinc-100 bg-white shadow-sm hover:shadow-md transition-shadow">
+    <div key={key} className="w-full h-[300px] sm:h-[350px] lg:h-[380px] flex flex-col rounded-sm border border-zinc-100 bg-white">
       <div className="bg-white border-b border-zinc-100 flex items-center justify-between px-4 py-3 shrink-0">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
