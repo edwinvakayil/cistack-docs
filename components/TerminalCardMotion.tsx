@@ -272,7 +272,7 @@ export default function TerminalCardMotion({
         >
           <div className="flex flex-col gap-1.5">
             <div className="mb-2 flex items-center gap-2">
-              <span className="font-bold text-zinc-500">$</span>
+              <span className="font-bold text-zinc-600">$</span>
               <span className="font-bold text-zinc-900">{typedCommand}</span>
               {phase === "typing" && (
                 <m.span
@@ -302,7 +302,7 @@ export default function TerminalCardMotion({
                 {phase === "output" && (
                   <div className="mt-2 flex items-center gap-2">
                     <div className="h-3 w-1 animate-pulse bg-zinc-300" />
-                    <span className="text-[12px] font-bold tracking-[0.14em] text-zinc-500 uppercase">
+                    <span className="text-[12px] font-bold tracking-[0.14em] text-zinc-600 uppercase">
                       {dict.processing || "Processing Output..."}
                     </span>
                   </div>

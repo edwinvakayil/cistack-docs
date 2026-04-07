@@ -23,7 +23,7 @@ const installModes: Record<
   },
   npm: {
     command: "$ npm install -g cistack",
-    badgeClassName: "border-zinc-700 bg-zinc-500/10 text-zinc-400",
+    badgeClassName: "border-zinc-700 bg-zinc-500/10 text-zinc-500",
     badgeLabel: "global_badge",
     description: "npm_desc",
   },
@@ -45,12 +45,12 @@ export default function InstallToggle({ dict }: { dict: Dictionary }) {
           onClick={() => setMode("npx")}
           aria-label="Use the recommended npx installation command"
           className={`py-1 pr-4 text-[12px] font-semibold transition-colors ${
-            mode === "npx" ? "text-zinc-900" : "text-zinc-400 hover:text-zinc-600"
+            mode === "npx" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-700"
           }`}
         >
           npx
           {mode === "npx" && (
-            <span className="ml-1.5 text-[11px] font-normal text-zinc-400">
+            <span className="ml-1.5 text-[12px] font-normal text-zinc-500">
               {" "}
               - {dict.install_toggle.recommended}
             </span>
@@ -63,7 +63,7 @@ export default function InstallToggle({ dict }: { dict: Dictionary }) {
           onClick={() => setMode("npm")}
           aria-label="Use the global npm installation command"
           className={`py-1 pl-4 text-[12px] font-semibold transition-colors ${
-            mode === "npm" ? "text-zinc-900" : "text-zinc-400 hover:text-zinc-600"
+            mode === "npm" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-700"
           }`}
         >
           {dict.install_toggle.npm_global}
@@ -77,11 +77,11 @@ export default function InstallToggle({ dict }: { dict: Dictionary }) {
       <div className="relative overflow-hidden rounded-sm bg-zinc-950 px-6 pt-5 pb-6 font-mono text-sm text-zinc-300">
         <div className="mb-5 flex items-center justify-between">
           <span
-            className={`px-2 py-0.5 text-[9px] font-black uppercase tracking-widest ${selectedMode.badgeClassName}`}
+            className={`px-2 py-0.5 text-[12px] font-black uppercase tracking-widest ${selectedMode.badgeClassName}`}
           >
             {dict.install_toggle[selectedMode.badgeLabel]}
           </span>
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-700">
+          <span className="text-[12px] font-black uppercase tracking-[0.2em] text-zinc-700">
             {mode}
           </span>
         </div>
@@ -89,7 +89,7 @@ export default function InstallToggle({ dict }: { dict: Dictionary }) {
           {selectedMode.command}
         </code>
         <div className="my-4 h-px w-full bg-zinc-800" />
-        <p className="font-sans text-[11px] leading-relaxed text-zinc-500">
+        <p className="font-sans text-[12px] leading-relaxed text-zinc-500">
           {dict.install_toggle[selectedMode.description]}
         </p>
       </div>

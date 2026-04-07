@@ -317,10 +317,10 @@ export default async function HomeClient({
           <div className="grid grid-cols-1 border-x border-b border-zinc-100 md:grid-cols-12">
             <div className="flex items-center gap-3 border-b border-zinc-100 p-5 md:col-span-3 md:border-r md:border-b-0 md:p-6">
               <div className="flex items-center gap-2 text-[20px] font-bold tracking-tighter text-zinc-950">
-                <Terminal size={18} className="text-zinc-400" />
+                <Terminal size={18} className="text-zinc-500" />
                 cistack
               </div>
-              <span className="rounded-sm border border-zinc-100 bg-zinc-50 px-1.5 py-0.5 font-mono text-[9px] font-bold text-zinc-300">
+              <span className="rounded-sm border border-zinc-100 bg-zinc-50 px-1.5 py-0.5 font-mono text-[12px] font-bold text-zinc-500">
                 V{version}
               </span>
             </div>
@@ -328,18 +328,18 @@ export default async function HomeClient({
             <div className="flex items-center justify-between border-b border-zinc-100 p-5 md:col-span-6 md:border-r md:border-b-0 md:p-6">
               <div className="flex items-center gap-6">
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-[9px] font-black leading-none tracking-[0.2em] text-zinc-400 uppercase">
+                  <span className="text-[12px] font-black leading-none tracking-[0.2em] text-zinc-500 uppercase">
                     {dict.navigation.version}
                   </span>
                   <div className="flex items-center gap-2">
                     <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-                    <span className="text-[11px] font-bold tracking-tighter text-zinc-600 uppercase">
+                    <span className="text-[12px] font-bold tracking-tighter text-zinc-600 uppercase">
                       {dict.navigation.status}
                     </span>
                   </div>
                 </div>
                 <div className="mx-2 hidden h-6 w-px bg-zinc-100 lg:block" />
-                <div className="hidden items-center gap-6 text-[12px] font-bold text-zinc-400 lg:flex">
+                <div className="hidden items-center gap-6 text-[12px] font-bold text-zinc-500 lg:flex">
                   <a
                     href="https://github.com/edwinvakayil/cistack"
                     target="_blank"
@@ -370,10 +370,10 @@ export default async function HomeClient({
               <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
                 <Link
                   href="/en"
-                  className={`rounded-sm border px-1.5 py-0.5 text-[10px] font-bold tracking-widest uppercase transition-colors ${
+                  className={`rounded-sm border px-1.5 py-0.5 text-[12px] font-bold tracking-widest uppercase transition-colors ${
                     lang === "en"
                       ? "border-zinc-950 bg-zinc-950 text-white"
-                      : "border-transparent text-zinc-400 hover:border-zinc-100 hover:text-zinc-950"
+                      : "border-transparent text-zinc-500 hover:border-zinc-100 hover:text-zinc-950"
                   }`}
                 >
                   EN
@@ -384,7 +384,7 @@ export default async function HomeClient({
                     <div className="mx-0.5 h-3 w-px bg-zinc-100" />
                     <Link
                       href={`/${lang}`}
-                      className="rounded-sm border border-zinc-950 bg-zinc-950 px-1.5 py-0.5 text-[10px] font-bold tracking-widest text-white uppercase"
+                      className="rounded-sm border border-zinc-950 bg-zinc-950 px-1.5 py-0.5 text-[12px] font-bold tracking-widest text-white uppercase"
                     >
                       {lang.toUpperCase()}
                     </Link>
@@ -415,12 +415,12 @@ export default async function HomeClient({
             </div>
 
             <div className="flex items-center justify-between gap-6 bg-zinc-50/20 p-5 md:col-span-3 md:justify-end md:p-6">
-              <span className="font-mono text-[10px] font-bold tracking-[0.2em] text-zinc-300 uppercase">
+              <span className="font-mono text-[12px] font-bold tracking-[0.2em] text-zinc-500 uppercase">
                 {`${dict.navigation.core_manifest} // ${manifestStamp}`}
               </span>
               <a
                 href="#docs"
-                className="rounded-sm border border-zinc-900 px-4 py-2 text-[11px] font-black tracking-widest text-zinc-900 uppercase transition-all hover:bg-zinc-950 hover:text-white"
+                className="rounded-sm border border-zinc-900 px-4 py-2 text-[12px] font-black tracking-widest text-zinc-900 uppercase transition-all hover:bg-zinc-950 hover:text-white"
               >
                 {dict.navigation.docs}
               </a>
@@ -443,19 +443,19 @@ export default async function HomeClient({
                 <div className="flex items-center gap-3">
                   <Badge
                     variant="outline"
-                    className="rounded-sm border-zinc-200 bg-white px-2 py-0.5 text-[9px] font-black tracking-[0.2em] text-zinc-400 uppercase"
+                    className="rounded-sm border-zinc-200 bg-white px-2 py-0.5 text-[12px] font-black tracking-[0.2em] text-zinc-500 uppercase"
                   >
                     VERSION_{version}
                   </Badge>
                   <div className="h-px w-12 bg-zinc-100" />
-                  <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-300 uppercase">
-                    {dict.hero.scan_identity}
-                  </span>
+                  <span className="font-mono text-[12px] font-bold tracking-widest text-zinc-500 uppercase">
+                {dict.hero.scan_identity}
+              </span>
                 </div>
 
                 <div className="flex flex-col gap-8 md:gap-8">
                   <div className="group/h1 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
-                    <span className="font-mono text-[10px] font-bold text-zinc-300 transition-colors sm:text-zinc-200 md:text-[12px] group-hover/h1:text-zinc-400">
+                    <span className="font-mono text-[12px] font-bold text-zinc-400 transition-colors sm:text-zinc-300 md:text-[12px] group-hover/h1:text-zinc-500">
                       {dict.hero.s1_label}
                     </span>
                     <h1 className="break-words text-[2.2rem] leading-[0.9] font-[1000] tracking-tighter text-black min-[400px]:text-[2.5rem] sm:leading-none md:text-[3.8rem]">
@@ -464,7 +464,7 @@ export default async function HomeClient({
                   </div>
 
                   <div className="group/h2 flex flex-col gap-1 sm:ml-6 sm:flex-row sm:items-baseline sm:gap-4 md:ml-12">
-                    <span className="font-mono text-[10px] font-bold text-zinc-300 transition-colors sm:text-zinc-200 md:text-[12px] group-hover/h2:text-zinc-400">
+                    <span className="font-mono text-[12px] font-bold text-zinc-400 transition-colors sm:text-zinc-300 md:text-[12px] group-hover/h2:text-zinc-500">
                       {dict.hero.s2_label}
                     </span>
                     <h2 className="break-words text-[2.2rem] leading-[0.9] font-[1000] tracking-tighter text-black min-[400px]:text-[2.5rem] sm:leading-none md:text-[3.8rem]">
@@ -473,10 +473,10 @@ export default async function HomeClient({
                   </div>
 
                   <div className="group/h3 flex flex-col gap-1 sm:ml-12 sm:flex-row sm:items-baseline sm:gap-4 md:ml-24">
-                    <span className="font-mono text-[10px] font-bold text-zinc-300 transition-colors sm:text-zinc-200 md:text-[12px] group-hover/h3:text-zinc-400">
+                    <span className="font-mono text-[12px] font-bold text-zinc-400 transition-colors sm:text-zinc-300 md:text-[12px] group-hover/h3:text-zinc-500">
                       {dict.hero.s3_label}
                     </span>
-                    <h2 className="break-words text-[2.2rem] leading-[0.9] font-[1000] tracking-tighter text-zinc-500 min-[400px]:text-[2.5rem] sm:text-zinc-400 sm:leading-none md:text-[3.8rem]">
+                    <h2 className="break-words text-[2.2rem] leading-[0.9] font-[1000] tracking-tighter text-zinc-500 min-[400px]:text-[2.5rem] sm:text-zinc-500 sm:leading-none md:text-[3.8rem]">
                       {dict.hero.s3_title}
                     </h2>
                   </div>
@@ -490,7 +490,7 @@ export default async function HomeClient({
                   <CopyButton text={dict.hero.npx_command} />
 
                   <div className="flex flex-col gap-1 border-l-2 border-zinc-100 px-2">
-                    <span className="text-[10px] font-black tracking-widest text-zinc-300 uppercase">
+                    <span className="text-[12px] font-black tracking-widest text-zinc-500 uppercase">
                       {dict.hero.active_installs}
                     </span>
                     <span className="text-[14px] font-bold tracking-tight text-zinc-900">
@@ -516,7 +516,7 @@ export default async function HomeClient({
 
                 <div className="absolute top-6 right-8 hidden items-center gap-2 sm:flex">
                   <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-                  <span className="font-mono text-[9px] font-black tracking-widest text-zinc-400 uppercase">
+                  <span className="font-mono text-[12px] font-black tracking-widest text-zinc-500 uppercase">
                     {dict.hero.realtime_synth}
                   </span>
                 </div>
@@ -524,20 +524,20 @@ export default async function HomeClient({
 
               <div className="grid grid-cols-2 border-t border-zinc-100 bg-white">
                 <div className="group/meta flex cursor-default flex-col gap-2 border-r border-zinc-100 p-8 transition-colors hover:bg-zinc-50/50">
-                  <span className="text-[9px] font-black tracking-[0.2em] text-zinc-300 uppercase transition-colors group-hover/meta:text-zinc-500">
+                  <span className="text-[12px] font-black tracking-[0.2em] text-zinc-500 uppercase transition-colors group-hover/meta:text-zinc-700">
                     {dict.hero.integrations}
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="text-[20px] leading-none font-black text-zinc-900">
                       30+
                     </span>
-                    <span className="text-[11px] font-bold tracking-tighter text-zinc-400 uppercase">
+                    <span className="text-[12px] font-bold tracking-tighter text-zinc-500 uppercase">
                       {dict.hero.stack_aware}
                     </span>
                   </div>
                 </div>
                 <div className="group/meta flex cursor-default flex-col gap-2 bg-zinc-50/30 p-8 transition-colors hover:bg-zinc-50/60">
-                  <span className="text-[9px] font-black tracking-[0.2em] text-zinc-300 uppercase transition-colors group-hover/meta:text-zinc-500">
+                  <span className="text-[12px] font-black tracking-[0.2em] text-zinc-500 uppercase transition-colors group-hover/meta:text-zinc-700">
                     {dict.hero.success_rate}
                   </span>
                   <div className="flex items-center gap-2">
@@ -560,13 +560,13 @@ export default async function HomeClient({
 
           <div className="mb-16 flex max-w-[900px] flex-col gap-4">
             <div className="flex items-center gap-3">
-              <Badge
-                variant="outline"
-                className="rounded-sm border-zinc-200 bg-white px-3 py-1 text-[10px] font-black tracking-[0.2em] text-zinc-600 uppercase"
-              >
-                {dict.docs.badge}
-                {version}
-              </Badge>
+                <Badge
+                  variant="outline"
+                  className="rounded-sm border-zinc-200 bg-white px-3 py-1 text-[12px] font-black tracking-[0.2em] text-zinc-700 uppercase"
+                >
+                  {dict.docs.badge}
+                  {version}
+                </Badge>
               <div className="h-px flex-1 bg-zinc-200/60" />
             </div>
             <h2 className="text-[36px] leading-[1.1] font-bold tracking-tight text-zinc-900 sm:text-[44px]">
@@ -585,12 +585,12 @@ export default async function HomeClient({
             className="grid grid-cols-1 border-t border-l border-zinc-100 lg:grid-cols-12"
           >
             <div className="group/cell relative border-r border-b border-zinc-100 bg-zinc-50/20 p-8 transition-colors duration-500 hover:bg-zinc-50/40 lg:col-span-4 lg:p-12">
-              <div className="absolute top-4 right-4 font-mono text-[10px] font-bold text-zinc-200 transition-colors group-hover/cell:text-zinc-300">
+              <div className="absolute top-4 right-4 font-mono text-[12px] font-bold text-zinc-500 transition-colors group-hover/cell:text-zinc-700">
                 {dict.docs.section1_id}
               </div>
               <div className="flex flex-col gap-10">
                 <div className="flex flex-col gap-2">
-                  <span className="text-[10px] font-black tracking-[0.18em] text-zinc-400 uppercase">
+                  <span className="text-[12px] font-black tracking-[0.18em] text-zinc-500 uppercase">
                     {dict.docs.section1_num}
                   </span>
                   <h3 className="text-[18px] font-bold text-zinc-900">
@@ -603,14 +603,18 @@ export default async function HomeClient({
                       key={item.label}
                       className="flex items-start gap-3 py-3.5 first:pt-0 last:pb-0"
                     >
-                      <span className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] border border-zinc-200 bg-zinc-900 text-white">
+                      <span 
+                        role="img" 
+                        aria-label="Available feature"
+                        className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] border border-zinc-200 bg-zinc-900 text-white"
+                      >
                         <Check size={11} strokeWidth={3} />
                       </span>
                       <div className="flex flex-col">
                         <span className="text-[14px] leading-tight font-semibold text-zinc-800">
                           {item.label}
                         </span>
-                        <span className="mt-0.5 text-[12px] leading-snug text-zinc-400">
+                        <span className="mt-0.5 text-[12px] leading-snug text-zinc-500">
                           {item.sub}
                         </span>
                       </div>
@@ -625,7 +629,7 @@ export default async function HomeClient({
                 <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:gap-16">
                   <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-2">
-                      <span className="text-[10px] font-black tracking-[0.18em] text-zinc-400 uppercase">
+                      <span className="text-[12px] font-black tracking-[0.18em] text-zinc-500 uppercase">
                         {dict.docs.section2_num}
                       </span>
                       <h3 className="text-[18px] font-bold text-zinc-900">
@@ -636,7 +640,7 @@ export default async function HomeClient({
                     <InstallToggle dict={dict} />
 
                     <div className="mt-2 flex flex-col gap-3">
-                      <span className="text-[10px] font-black tracking-[0.2em] text-zinc-400 uppercase">
+                      <span className="text-[12px] font-black tracking-[0.2em] text-zinc-500 uppercase">
                         {dict.docs.command_registry}
                       </span>
                       <div className="flex flex-col gap-2">
@@ -649,10 +653,10 @@ export default async function HomeClient({
                             key={command.command}
                             className="group flex items-center justify-between rounded-sm border border-zinc-100 bg-zinc-50/50 px-3 py-2 transition-colors hover:border-zinc-200"
                           >
-                            <code className="text-[11px] font-extrabold text-zinc-800">
+                            <code className="text-[12px] font-extrabold text-zinc-800">
                               npx cistack {command.command}
                             </code>
-                            <span className="text-[10px] font-medium text-zinc-400">
+                            <span className="text-[12px] font-medium text-zinc-500">
                               {command.description}
                             </span>
                           </div>
@@ -666,7 +670,7 @@ export default async function HomeClient({
 
                   <div className="mt-4 flex flex-col gap-4">
                     <div className="flex items-center gap-3">
-                      <span className="text-[10px] font-black tracking-[0.2em] text-zinc-400 uppercase">
+                      <span className="text-[12px] font-black tracking-[0.2em] text-zinc-500 uppercase">
                         {dict.docs.parameters_manifest}
                       </span>
                       <div className="h-px flex-1 bg-zinc-200 opacity-60" />
@@ -688,15 +692,15 @@ export default async function HomeClient({
                         >
                           <div className="flex shrink-0 items-center gap-3 md:w-[150px]">
                             <div className="h-[12px] w-[3px] bg-zinc-200 transition-colors group-hover:bg-emerald-500" />
-                            <code className="font-mono text-[11px] font-bold tracking-tight text-zinc-800">
+                            <code className="font-mono text-[12px] font-bold tracking-tight text-zinc-800">
                               {flag.flag}
                             </code>
                           </div>
                           <div className="mt-2 flex flex-1 flex-row items-center gap-4 pl-[15px] md:mt-0 md:pl-0">
-                            <span className="rounded-sm bg-zinc-100 px-1.5 py-0.5 font-mono text-[9px] tracking-widest text-zinc-500 uppercase">
+                            <span className="rounded-sm bg-zinc-100 px-1.5 py-0.5 font-mono text-[12px] tracking-widest text-zinc-600 uppercase">
                               {flag.type}
                             </span>
-                            <span className="text-[11px] font-medium text-zinc-500">
+                            <span className="text-[12px] font-medium text-zinc-600">
                               {flag.description}
                             </span>
                           </div>
@@ -729,26 +733,26 @@ export default async function HomeClient({
                             <summary className="list-none cursor-pointer py-4 text-zinc-500 transition-colors hover:text-zinc-900 sm:py-5 [&::-webkit-details-marker]:hidden">
                               <div className="flex min-w-0 flex-1 flex-col justify-center gap-1.5 overflow-hidden text-start sm:gap-2">
                                 <div className="flex shrink-0 items-center gap-3 sm:gap-4">
-                                  <span className="w-[24px] shrink-0 font-mono text-[10px] font-bold text-zinc-300 transition-colors group-hover:text-zinc-500">
+                                  <span className="w-[24px] shrink-0 font-mono text-[12px] font-bold text-zinc-500 transition-colors group-hover:text-zinc-700">
                                     {panel.idx}
                                   </span>
                                   <div className="flex items-center gap-2 sm:gap-3">
                                     <panel.Icon
                                       size={14}
-                                      className="shrink-0 text-zinc-400 transition-colors group-hover:text-zinc-900"
+                                      className="shrink-0 text-zinc-600 transition-colors group-hover:text-zinc-900"
                                     />
                                     <span className="text-[15px] font-semibold whitespace-nowrap sm:text-[16px]">
                                       {panel.name}
                                     </span>
                                   </div>
-                                  <span className="ml-auto text-[10px] font-black tracking-[0.2em] text-zinc-300 uppercase">
+                                  <span className="ml-auto text-[12px] font-black tracking-[0.2em] text-zinc-500 uppercase">
                                     OPEN
                                   </span>
                                 </div>
                                 <div className="flex w-full justify-start overflow-hidden ps-[36px] sm:ps-[44px]">
                                   <Badge
                                     variant="outline"
-                                    className="max-w-full truncate rounded-sm border-zinc-200 bg-zinc-50/50 text-[9px] font-mono font-normal tracking-tight opacity-60 sm:text-[10px]"
+                                    className="max-w-full truncate rounded-sm border-zinc-200 bg-zinc-50/50 text-[12px] font-mono font-normal tracking-tight opacity-80 sm:text-[12px]"
                                   >
                                     {panel.signal}
                                   </Badge>
@@ -761,10 +765,10 @@ export default async function HomeClient({
                                   {panel.description}
                                 </p>
                                 <div className="mt-4 flex items-center gap-2">
-                                  <span className="text-[9px] font-bold tracking-widest text-zinc-300 uppercase">
+                                  <span className="text-[12px] font-bold tracking-widest text-zinc-500 uppercase">
                                     {dict.docs.signal_source}
                                   </span>
-                                  <code className="rounded-sm border border-zinc-100 bg-white px-2 py-0.5 font-mono text-[10px] text-zinc-400">
+                                  <code className="rounded-sm border border-zinc-100 bg-white px-2 py-0.5 font-mono text-[12px] text-zinc-600">
                                     {panel.signal}
                                   </code>
                                 </div>
@@ -787,7 +791,7 @@ export default async function HomeClient({
                         <Badge
                           key={framework}
                           variant="outline"
-                          className="rounded-sm border-zinc-100 bg-white px-2 py-0.5 text-[11px] font-medium text-zinc-500"
+                          className="rounded-sm border-zinc-100 bg-white px-2 py-0.5 text-[12px] font-medium text-zinc-600"
                         >
                           {framework}
                         </Badge>
@@ -804,7 +808,7 @@ export default async function HomeClient({
                         <Badge
                           key={tool}
                           variant="secondary"
-                          className="rounded-sm border-transparent bg-zinc-100/50 px-2 py-0.5 text-[11px] font-bold text-zinc-500"
+                          className="rounded-sm border-transparent bg-zinc-100 px-2 py-0.5 text-[12px] font-bold text-zinc-600"
                         >
                           {tool}
                         </Badge>
@@ -826,12 +830,12 @@ export default async function HomeClient({
               <div className="flex flex-col gap-10">
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-black tracking-[0.18em] text-zinc-400 uppercase">
-                      {dict.docs.section3_num}
+                    <span className="text-[12px] font-black tracking-[0.18em] text-zinc-500 uppercase">
+                      {dict.docs.section4_num}
                     </span>
                     <Terminal
                       size={14}
-                      className="text-zinc-200 transition-colors group-hover/artifacts:text-zinc-300"
+                      className="text-zinc-400 transition-colors group-hover/artifacts:text-zinc-500"
                     />
                   </div>
                   <h3 className="text-[18px] font-bold text-zinc-900">
@@ -872,7 +876,7 @@ export default async function HomeClient({
                           </code>
                           <div className="h-px flex-1 bg-zinc-100 transition-colors group-hover/item:bg-zinc-200" />
                         </div>
-                        <span className="text-[11px] font-bold tracking-tight text-zinc-400 uppercase">
+                        <span className="text-[12px] font-bold tracking-tight text-zinc-500 uppercase">
                           {workflow.label}
                         </span>
                       </div>
@@ -890,7 +894,7 @@ export default async function HomeClient({
                 <div className="absolute top-0 end-0 -mt-32 -me-32 h-64 w-64 rounded-full bg-emerald-500/10 blur-[100px]" />
                 <div className="relative z-10 flex flex-col gap-8">
                   <div className="flex flex-col gap-2">
-                    <span className="text-[10px] font-black tracking-[0.18em] text-zinc-500 uppercase">
+                    <span className="text-[12px] font-black tracking-[0.18em] text-zinc-500 uppercase">
                       {dict.docs.security_requirement}
                     </span>
                     <h4 className="text-[18px] font-bold">
@@ -941,7 +945,7 @@ export default async function HomeClient({
             <div className="p-8 lg:col-span-12 lg:p-12">
               <div className="flex flex-col gap-8">
                 <div className="flex flex-col gap-2">
-                  <span className="text-[10px] font-black tracking-[0.18em] text-zinc-400 uppercase">
+                  <span className="text-[12px] font-black tracking-[0.18em] text-zinc-500 uppercase">
                     {dict.docs.section4_num}
                   </span>
                   <h3 className="text-[18px] font-bold text-zinc-900">
@@ -962,7 +966,7 @@ export default async function HomeClient({
                       </p>
                       <div className="mt-2 flex items-center gap-1.5">
                         <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                        <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-400 uppercase">
+                        <span className="font-mono text-[12px] font-bold tracking-widest text-zinc-500 uppercase">
                           {dict.docs.validated_output}
                         </span>
                       </div>
@@ -984,32 +988,32 @@ export default async function HomeClient({
             <div className="grid grid-cols-1 md:grid-cols-12">
               <div className="flex flex-col gap-6 border-b border-zinc-100 p-8 md:col-span-4 md:border-r md:border-b-0">
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-black tracking-[0.2em] text-zinc-400 uppercase">
+                  <span className="text-[12px] font-black tracking-[0.2em] text-zinc-500 uppercase">
                     {dict.footer.project_origin}
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="text-[18px] font-bold tracking-tighter text-zinc-900">
                       cistack
                     </span>
-                    <span className="rounded-sm border border-zinc-100 bg-zinc-50 px-1.5 py-0.5 font-mono text-[9px] font-bold text-zinc-300">
+                    <span className="rounded-sm border border-zinc-100 bg-zinc-50 px-1.5 py-0.5 font-mono text-[12px] font-bold text-zinc-500">
                       {`V_${version} // PRODUCTION`}
                     </span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-black tracking-[0.2em] text-zinc-400 uppercase">
+                  <span className="text-[12px] font-black tracking-[0.2em] text-zinc-500 uppercase">
                     {dict.footer.architected_by}
                   </span>
                   <a
                     href="https://www.edwinvakayil.info/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center gap-2 text-[14px] font-bold text-zinc-600 transition-colors hover:text-zinc-900"
+                    className="group flex items-center gap-2 text-[14px] font-bold text-zinc-600 transition-colors hover:text-zinc-950"
                   >
                     Edwin Vakayil
                     <ArrowUpRight
                       size={12}
-                      className="text-zinc-300 transition-colors group-hover:text-zinc-900"
+                      className="text-zinc-400 transition-colors group-hover:text-zinc-950"
                     />
                   </a>
                 </div>
@@ -1018,7 +1022,7 @@ export default async function HomeClient({
               <div className="flex flex-col justify-between gap-8 border-b border-zinc-100 p-8 md:col-span-5 md:border-r md:border-b-0">
                 <div className="flex flex-wrap gap-x-8 gap-y-4">
                   <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-black tracking-[0.2em] text-zinc-400 uppercase">
+                    <span className="text-[12px] font-black tracking-[0.2em] text-zinc-500 uppercase">
                       {dict.footer.status}
                     </span>
                     <div className="flex items-center gap-2">
@@ -1029,7 +1033,7 @@ export default async function HomeClient({
                     </div>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-black tracking-[0.2em] text-zinc-400 uppercase">
+                    <span className="text-[12px] font-black tracking-[0.2em] text-zinc-500 uppercase">
                       {dict.footer.license}
                     </span>
                     <span className="text-[12px] font-bold text-zinc-700 uppercase">
@@ -1037,13 +1041,13 @@ export default async function HomeClient({
                     </span>
                   </div>
                 </div>
-                <p className="text-[11px] leading-relaxed font-medium text-zinc-400">
+                <p className="text-[12px] leading-relaxed font-medium text-zinc-500">
                   {dict.footer.footer_desc}
                 </p>
               </div>
 
               <div className="flex flex-col items-start justify-center gap-3 bg-zinc-50/30 p-8 md:col-span-3 md:items-end">
-                <span className="text-[10px] font-black tracking-[0.2em] text-zinc-400 uppercase">
+                <span className="text-[12px] font-black tracking-[0.2em] text-zinc-500 uppercase">
                   {dict.footer.global_install}
                 </span>
                 <code className="cursor-default rounded-sm border border-zinc-100 bg-white px-3 py-1.5 font-mono text-[13px] font-bold text-zinc-800 transition-colors">
@@ -1053,7 +1057,7 @@ export default async function HomeClient({
             </div>
 
             <div className="flex flex-col items-center justify-between gap-4 border-t border-zinc-100 p-4 px-8 sm:flex-row">
-              <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-300 uppercase">
+              <span className="font-mono text-[12px] font-bold tracking-widest text-zinc-500 uppercase">
                 {`© ${currentYear} ${dict.footer.copyright}`}
               </span>
               <div className="flex items-center gap-6">
@@ -1061,7 +1065,7 @@ export default async function HomeClient({
                   href="https://github.com/edwinvakayil/cistack"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[10px] font-black tracking-widest text-zinc-400 uppercase transition-colors hover:text-zinc-900"
+                  className="text-[12px] font-black tracking-widest text-zinc-500 uppercase transition-colors hover:text-zinc-950"
                 >
                   Github
                 </a>
@@ -1069,13 +1073,13 @@ export default async function HomeClient({
                   href="https://www.npmjs.com/package/cistack"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[10px] font-black tracking-widest text-zinc-400 uppercase transition-colors hover:text-zinc-900"
+                  className="text-[12px] font-black tracking-widest text-zinc-500 uppercase transition-colors hover:text-zinc-950"
                 >
                   Npm
                 </a>
                 <a
                   href="#docs"
-                  className="text-[10px] font-black tracking-widest text-zinc-400 uppercase transition-colors hover:text-zinc-900"
+                  className="text-[12px] font-black tracking-widest text-zinc-500 uppercase transition-colors hover:text-zinc-950"
                 >
                   {dict.navigation.docs}
                 </a>

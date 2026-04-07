@@ -5,15 +5,15 @@ import { useMemo } from "react";
 
 import type { Dictionary } from "@/lib/dictionary-types";
 
-function TerminalCardFallback({ version }: { version: string }) {
+function TerminalCardFallback({ version, dict }: { version: string; dict: Dictionary["terminal"] }) {
   return (
-    <div className="flex h-[300px] w-full flex-col rounded-sm border border-zinc-100 bg-white sm:h-[350px] lg:h-[380px]">
-      <div className="flex shrink-0 items-center justify-between border-b border-zinc-100 bg-white px-4 py-3">
+    <div className="flex h-[300px] w-full flex-col rounded-sm border border-zinc-200 bg-white sm:h-[350px] lg:h-[380px]">
+      <div className="flex shrink-0 items-center justify-between border-b border-zinc-200 bg-white px-4 py-3">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-            <span className="font-mono text-[12px] font-black tracking-[0.18em] text-zinc-600 uppercase">
-              TERMINAL
+            <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-600" />
+            <span className="text-[12px] font-bold tracking-[0.14em] text-zinc-600 uppercase">
+              {dict.processing || "Processing Output..."}
             </span>
           </div>
         </div>
@@ -27,9 +27,9 @@ function TerminalCardFallback({ version }: { version: string }) {
         style={{ fontFamily: "var(--font-mono)" }}
       >
         <div className="mb-2 flex items-center gap-2">
-          <span className="font-bold text-zinc-500">$</span>
+          <span className="font-bold text-zinc-600">$</span>
           <span className="font-bold text-zinc-900">npx cistack</span>
-          <span className="inline-block h-4 w-1.5 animate-pulse bg-emerald-500" />
+          <span className="inline-block h-4 w-1.5 animate-pulse bg-emerald-600" />
         </div>
         <div className="space-y-1">
           <div className="font-bold text-zinc-900">cistack v{version}</div>
@@ -53,7 +53,7 @@ export default function TerminalCard({
     () =>
       dynamic(() => import("@/components/TerminalCardMotion"), {
         ssr: false,
-        loading: () => <TerminalCardFallback version={version} />,
+        loading: () => <TerminalCardFallback version={version} dict={dict} />,
       }),
     [version]
   );

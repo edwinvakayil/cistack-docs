@@ -66,6 +66,10 @@ export default async function RootLayout({
   const { lang } = await params;
   return (
     <html lang={lang} className="h-full antialiased">
+      <head>
+        <link rel="preconnect" href="https://registry.npmjs.org" />
+        <link rel="preconnect" href="https://api.npmjs.org" />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
