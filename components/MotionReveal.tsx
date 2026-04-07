@@ -1,7 +1,8 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import type { ReactNode } from "react";
-import { LazyMotion, domAnimation, m } from "framer-motion";
+import { useMemo } from "react";
 
 type MotionTag = "div" | "nav" | "footer";
 
@@ -16,12 +17,6 @@ interface MotionRevealProps {
   initialY?: number;
 }
 
-const motionTags = {
-  div: m.div,
-  nav: m.nav,
-  footer: m.footer,
-} as const;
-
 export default function MotionReveal({
   as = "div",
   children,
@@ -32,22 +27,27 @@ export default function MotionReveal({
   initialScale = 1,
   initialY = 20,
 }: MotionRevealProps) {
-  const MotionTag = motionTags[as];
-  const transition = { duration, delay };
-  const target = { opacity: 1, y: 0, scale: 1 };
+  const FallbackTag = as;
+  const MotionRevealClient = useMemo(
+    () =>
+      dynamic(() => import("@/components/MotionRevealClient"), {
+        ssr: false,
+        loading: () => <FallbackTag className={className}>{children}</FallbackTag>,
+      }),
+    [FallbackTag, children, className]
+  );
 
   return (
-    <LazyMotion features={domAnimation}>
-      <MotionTag
-        className={className}
-        initial={{ opacity: 0, y: initialY, scale: initialScale }}
-        {...(immediate
-          ? { animate: target }
-          : { whileInView: target, viewport: { once: true, amount: 0.2 } })}
-        transition={transition}
-      >
-        {children}
-      </MotionTag>
-    </LazyMotion>
+    <MotionRevealClient
+      as={as}
+      className={className}
+      delay={delay}
+      duration={duration}
+      immediate={immediate}
+      initialScale={initialScale}
+      initialY={initialY}
+    >
+      {children}
+    </MotionRevealClient>
   );
 }

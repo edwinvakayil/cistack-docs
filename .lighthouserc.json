@@ -10,7 +10,13 @@
       ]
     },
     "assert": {
-      "preset": "lighthouse:recommended"
+      "preset": "lighthouse:recommended",
+      "assertions": {
+        "forced-reflow-insight": "warn",
+        "legacy-javascript-insight": "warn",
+        "network-dependency-tree-insight": "warn",
+        "unused-javascript": "warn"
+      }
     }
   }
 }

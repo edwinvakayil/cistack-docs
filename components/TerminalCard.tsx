@@ -52,6 +52,7 @@ export default function TerminalCard({
   const TerminalCardMotion = useMemo(
     () =>
       dynamic(() => import("@/components/TerminalCardMotion"), {
+        ssr: false,
         loading: () => <TerminalCardFallback version={version} />,
       }),
     [version]

@@ -32,15 +32,18 @@ const installModes: Record<
 export default function InstallToggle({ dict }: { dict: Dictionary }) {
   const [mode, setMode] = useState<InstallMode>("npx");
   const selectedMode = installModes[mode];
+  const selectionLabel =
+    mode === "npx"
+      ? "Recommended npx installation command selected"
+      : "Global npm installation command selected";
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center">
+      <div role="group" aria-label="Installation method" className="flex items-center">
         <button
           type="button"
           onClick={() => setMode("npx")}
           aria-label="Use the recommended npx installation command"
-          aria-pressed={mode === "npx"}
           className={`py-1 pr-4 text-[12px] font-semibold transition-colors ${
             mode === "npx" ? "text-zinc-900" : "text-zinc-400 hover:text-zinc-600"
           }`}
@@ -52,20 +55,24 @@ export default function InstallToggle({ dict }: { dict: Dictionary }) {
               - {dict.install_toggle.recommended}
             </span>
           )}
+          {mode === "npx" && <span className="sr-only"> selected</span>}
         </button>
         <div className="h-3.5 w-px bg-zinc-200" />
         <button
           type="button"
           onClick={() => setMode("npm")}
           aria-label="Use the global npm installation command"
-          aria-pressed={mode === "npm"}
           className={`py-1 pl-4 text-[12px] font-semibold transition-colors ${
             mode === "npm" ? "text-zinc-900" : "text-zinc-400 hover:text-zinc-600"
           }`}
         >
           {dict.install_toggle.npm_global}
+          {mode === "npm" && <span className="sr-only"> selected</span>}
         </button>
       </div>
+      <p className="sr-only" aria-live="polite">
+        {selectionLabel}
+      </p>
 
       <div className="relative overflow-hidden rounded-sm bg-zinc-950 px-6 pt-5 pb-6 font-mono text-sm text-zinc-300">
         <div className="mb-5 flex items-center justify-between">

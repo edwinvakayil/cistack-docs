@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import { RefreshCcw } from "lucide-react";
 
@@ -49,7 +49,6 @@ export default function TerminalCardMotion({
   const [visibleLines, setVisibleLines] = useState(0);
   const [phase, setPhase] = useState<"typing" | "output" | "done">("typing");
   const [animationKey, setAnimationKey] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
 
   const outputLines = useMemo<OutputLine[]>(() => {
     return [
@@ -224,13 +223,6 @@ export default function TerminalCardMotion({
     return () => window.clearTimeout(timeout);
   }, [visibleLines, phase, outputLines]);
 
-  useEffect(() => {
-    scrollRef.current?.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: "smooth",
-    });
-  }, [typedCommand, visibleLines]);
-
   const handleReplay = () => {
     setTypedCommand("");
     setVisibleLines(0);
@@ -275,7 +267,6 @@ export default function TerminalCardMotion({
         </div>
 
         <div
-          ref={scrollRef}
           className="custom-scrollbar flex-1 overflow-y-auto bg-white p-6 pt-4 font-mono text-[12px] leading-relaxed tracking-tight selection:bg-zinc-900 selection:text-white sm:text-[13px]"
           style={{ fontFamily: "var(--font-mono)" }}
         >
