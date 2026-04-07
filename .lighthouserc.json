@@ -1,0 +1,16 @@
+{
+  "ci": {
+    "collect": {
+      "numberOfRuns": 1,
+      "startServerCommand": "npm run start",
+      "startServerReadyPattern": "Ready",
+      "startServerReadyTimeout": 120000,
+      "url": [
+        "http://localhost:3000/en"
+      ]
+    },
+    "assert": {
+      "preset": "lighthouse:recommended"
+    }
+  }
+}
