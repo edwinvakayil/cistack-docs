@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import TerminalCard from "../components/TerminalCard";
 import { Terminal, Copy, Check, Package, Shield, Globe, Box, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
@@ -9,8 +10,32 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
+import type { Dictionary } from "@/lib/dictionary-types";
 
-const GithubIcon = ({ size = 24, className = "" }) => (
+interface GithubIconProps {
+  size?: number;
+  className?: string;
+}
+
+interface RegistryPackageResponse {
+  version?: string;
+}
+
+interface DownloadStatsResponse {
+  downloads?: number;
+}
+
+const localeOptions = [
+  { code: "en", label: "English" },
+  { code: "fr", label: "Français" },
+  { code: "es", label: "Español" },
+  { code: "pt", label: "Português" },
+  { code: "br", label: "BR (Brasil)" },
+  { code: "de", label: "Deutsch" },
+  { code: "cn", label: "简体中文" },
+] as const;
+
+const GithubIcon = ({ size = 24, className = "" }: GithubIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -27,7 +52,7 @@ const GithubIcon = ({ size = 24, className = "" }) => (
   </svg>
 );
 
-function InstallToggle({ dict }: { dict: any }) {
+function InstallToggle({ dict }: { dict: Dictionary }) {
   const [mode, setMode] = useState<"npx" | "npm">("npx");
   return (
     <div className="flex flex-col gap-4">
@@ -81,33 +106,45 @@ function InstallToggle({ dict }: { dict: any }) {
   );
 }
 
-export default function HomeClient({ dict, lang }: { dict: any; lang: string }) {
+export default function HomeClient({ dict, lang }: { dict: Dictionary; lang: string }) {
   const [copiedLocal, setCopiedLocal] = useState(false);
   const [version, setVersion] = useState("3.0.0");
   const [downloads, setDownloads] = useState("2.4k");
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    fetch("https://registry.npmjs.org/cistack/latest")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.version) setVersion(data.version);
-      })
-      .catch((err) => console.error("Error fetching version:", err));
+    let cancelled = false;
 
-    fetch("https://api.npmjs.org/downloads/point/last-week/cistack")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.downloads) {
-          const count = data.downloads;
-          const formatted = count >= 1000
-            ? (count / 1000).toFixed(1) + "k"
-            : count.toLocaleString();
+    const loadPackageStats = async () => {
+      try {
+        const registryResponse = await fetch("https://registry.npmjs.org/cistack/latest");
+        const registryData = (await registryResponse.json()) as RegistryPackageResponse;
+
+        if (!cancelled && registryData.version) {
+          setVersion(registryData.version);
+        }
+      } catch (error) {
+        console.error("Error fetching version:", error);
+      }
+
+      try {
+        const downloadsResponse = await fetch("https://api.npmjs.org/downloads/point/last-week/cistack");
+        const downloadsData = (await downloadsResponse.json()) as DownloadStatsResponse;
+
+        if (!cancelled && typeof downloadsData.downloads === "number") {
+          const count = downloadsData.downloads;
+          const formatted = count >= 1000 ? `${(count / 1000).toFixed(1)}k` : count.toLocaleString();
           setDownloads(formatted);
         }
-      })
-      .catch((err) => console.error("Error fetching downloads:", err));
+      } catch (error) {
+        console.error("Error fetching downloads:", error);
+      }
+    };
+
+    void loadPackageStats();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const copyToClipboard = (text: string) => {
@@ -115,6 +152,10 @@ export default function HomeClient({ dict, lang }: { dict: any; lang: string }) 
     setCopiedLocal(true);
     setTimeout(() => setCopiedLocal(false), 2000);
   };
+
+  const now = new Date();
+  const manifestStamp = `${now.getFullYear()}_${(now.getMonth() + 1).toString().padStart(2, "0")}`;
+  const currentYear = now.getFullYear();
 
   return (
     <>
@@ -140,7 +181,7 @@ export default function HomeClient({ dict, lang }: { dict: any; lang: string }) 
               "name": "Edwin Vakayil",
               "url": "https://www.edwinvakayil.info/"
             },
-            "featureList": Object.values(dict.docs.capabilities).map((c: any) => c.label),
+            "featureList": Object.values(dict.docs.capabilities).map((capability) => capability.label),
             "keywords": "github actions, automation, ci/cd, devops, workflow generator, nextjs, docker, vercel, aws, firebase"
           })
         }}
@@ -183,38 +224,40 @@ export default function HomeClient({ dict, lang }: { dict: any; lang: string }) 
                 </div>
                 <div className="h-6 w-[1px] bg-zinc-100 mx-2 hidden lg:block" />
                 <div className="hidden lg:flex items-center gap-6 text-[12px] font-bold text-zinc-400">
-                  <a href="https://github.com/edwinvakayil/cistack" target="_blank" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
+                  <a href="https://github.com/edwinvakayil/cistack" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
                     <GithubIcon size={14} className="opacity-40 group-hover:opacity-100 transition-opacity" />
                     {dict.navigation.repository}
                   </a>
-                  <a href="https://www.npmjs.com/package/cistack" target="_blank" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
+                  <a href="https://www.npmjs.com/package/cistack" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-950 transition-colors uppercase tracking-widest flex items-center gap-2 group">
                     <Package size={14} className="opacity-40 group-hover:opacity-100 transition-opacity" />
                     {dict.navigation.registry}
                   </a>
                 </div>
               </div>
               <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                <a href="/en" className={`text-[10px] font-bold tracking-widest uppercase transition-colors px-1.5 py-0.5 rounded-sm border ${lang === 'en' ? 'bg-zinc-950 text-white border-zinc-950' : 'text-zinc-400 hover:text-zinc-950 border-transparent hover:border-zinc-100'}`}>EN</a>
+                <Link href="/en" className={`text-[10px] font-bold tracking-widest uppercase transition-colors px-1.5 py-0.5 rounded-sm border ${lang === "en" ? "bg-zinc-950 text-white border-zinc-950" : "text-zinc-400 hover:text-zinc-950 border-transparent hover:border-zinc-100"}`}>EN</Link>
                 
-                {lang !== 'en' && (
+                {lang !== "en" && (
                   <>
                     <div className="h-3 w-[1px] bg-zinc-100 mx-0.5" />
-                    <a href={`/${lang}`} className="text-[10px] font-bold tracking-widest uppercase transition-colors px-1.5 py-0.5 rounded-sm border bg-zinc-950 text-white border-zinc-950">
+                    <Link href={`/${lang}`} className="text-[10px] font-bold tracking-widest uppercase transition-colors px-1.5 py-0.5 rounded-sm border bg-zinc-950 text-white border-zinc-950">
                       {lang.toUpperCase()}
-                    </a>
+                    </Link>
                   </>
                 )}
 
                 <div className="relative group/lang border-l border-zinc-100 pl-2 ml-1">
                   <Globe size={13} className="text-zinc-300 group-hover/lang:text-zinc-950 transition-colors cursor-pointer" />
                   <div className="absolute right-0 top-full mt-2 w-24 bg-white border border-zinc-100 shadow-xl rounded-sm opacity-0 invisible group-hover/lang:opacity-100 group-hover/lang:visible transition-all z-[100] p-1 flex flex-col gap-1">
-                    <a href="/en" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">English</a>
-                    <a href="/fr" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Français</a>
-                    <a href="/es" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Español</a>
-                    <a href="/pt" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Português</a>
-                    <a href="/br" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">BR (Brasil)</a>
-                    <a href="/de" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">Deutsch</a>
-                    <a href="/cn" className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors">简体中文</a>
+                    {localeOptions.map((locale) => (
+                      <Link
+                        key={locale.code}
+                        href={`/${locale.code}`}
+                        className="text-[10px] font-bold tracking-widest uppercase p-2 hover:bg-zinc-50 rounded-sm text-zinc-500 hover:text-zinc-950 transition-colors"
+                      >
+                        {locale.label}
+                      </Link>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -222,8 +265,8 @@ export default function HomeClient({ dict, lang }: { dict: any; lang: string }) 
 
             {/* System Identification Cell */}
             <div className="md:col-span-3 p-5 md:p-6 flex items-center justify-between md:justify-end gap-6 bg-zinc-50/20">
-              <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-[0.2em]">
-                {dict.navigation.core_manifest} // {mounted ? `${new Date().getFullYear()}_${(new Date().getMonth() + 1).toString().padStart(2, '0')}` : "2026_01"}
+              <span suppressHydrationWarning className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-[0.2em]">
+                {`${dict.navigation.core_manifest} // ${manifestStamp}`}
               </span>
               <button
                 onClick={() => document.getElementById('docs')?.scrollIntoView({ behavior: 'smooth' })}
@@ -398,7 +441,7 @@ export default function HomeClient({ dict, lang }: { dict: any; lang: string }) 
                   <h3 className="text-[18px] font-bold text-zinc-900">{dict.docs.section1_title}</h3>
                 </div>
                 <div className="flex flex-col divide-y divide-zinc-200/40">
-                  {Object.values(dict.docs.capabilities).map((item: any, i) => (
+                  {Object.values(dict.docs.capabilities).map((item, i) => (
                     <div key={i} className="flex items-start gap-3 py-3.5 first:pt-0 last:pb-0">
                       <Checkbox checked readOnly className="mt-0.5 border-zinc-200 data-[state=checked]:bg-zinc-900 data-[state=checked]:border-zinc-900 shrink-0 h-4 w-4" />
                       <div className="flex flex-col">
@@ -669,7 +712,7 @@ export default function HomeClient({ dict, lang }: { dict: any; lang: string }) 
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">{dict.footer.project_origin}</span>
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-[18px] tracking-tighter text-zinc-900">cistack</span>
-                    <span className="text-[9px] font-mono font-bold text-zinc-300 bg-zinc-50 border border-zinc-100 px-1.5 py-0.5 rounded-sm">V_{version} // PRODUCTION</span>
+                    <span className="text-[9px] font-mono font-bold text-zinc-300 bg-zinc-50 border border-zinc-100 px-1.5 py-0.5 rounded-sm">{`V_${version} // PRODUCTION`}</span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
@@ -713,12 +756,12 @@ export default function HomeClient({ dict, lang }: { dict: any; lang: string }) 
 
             {/* Sub-footer detail */}
             <div className="border-t border-zinc-100 p-4 px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <span className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-widest">
-                © {mounted ? new Date().getFullYear() : "2026"} {dict.footer.copyright}
+              <span suppressHydrationWarning className="text-[10px] font-mono text-zinc-300 font-bold uppercase tracking-widest">
+                {`© ${currentYear} ${dict.footer.copyright}`}
               </span>
               <div className="flex items-center gap-6">
-                <a href="https://github.com/edwinvakayil/cistack" target="_blank" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors">Github</a>
-                <a href="https://www.npmjs.com/package/cistack" target="_blank" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors">Npm</a>
+                <a href="https://github.com/edwinvakayil/cistack" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors">Github</a>
+                <a href="https://www.npmjs.com/package/cistack" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors">Npm</a>
                 <button
                   onClick={() => document.getElementById('docs')?.scrollIntoView({ behavior: 'smooth' })}
                   className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors"

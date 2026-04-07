@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Geist_Mono, Fira_Code } from "next/font/google";
 import "../globals.css";
-import { Locale } from "@/lib/dictionaries";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",

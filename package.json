@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "sync-i18n": "node scripts/sync-i18n.js"
+    "sync-i18n": "node scripts/sync-i18n.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",

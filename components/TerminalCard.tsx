@@ -3,8 +3,13 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Copy, Check, RefreshCcw } from "lucide-react";
+import type { Dictionary } from "@/lib/dictionary-types";
 
 const COMMAND = "npx cistack";
+
+interface RegistryPackageResponse {
+  version?: string;
+}
 
 interface OutputLine {
   text: string;
@@ -46,7 +51,7 @@ const CopyButton = () => {
   );
 };
 
-const TerminalCard = ({ dict }: { dict: any }) => {
+const TerminalCard = ({ dict }: { dict: Dictionary["terminal"] }) => {
   const [typedCommand, setTypedCommand] = useState("");
   const [visibleLines, setVisibleLines] = useState<number>(0);
   const [phase, setPhase] = useState<"typing" | "output" | "done">("typing");
@@ -55,12 +60,26 @@ const TerminalCard = ({ dict }: { dict: any }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch("https://registry.npmjs.org/cistack/latest")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.version) setVersion(data.version);
-      })
-      .catch((err) => console.error("Error fetching version:", err));
+    let cancelled = false;
+
+    const loadVersion = async () => {
+      try {
+        const response = await fetch("https://registry.npmjs.org/cistack/latest");
+        const data = (await response.json()) as RegistryPackageResponse;
+
+        if (!cancelled && data.version) {
+          setVersion(data.version);
+        }
+      } catch (error) {
+        console.error("Error fetching version:", error);
+      }
+    };
+
+    void loadVersion();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const OUTPUT_LINES = useMemo((): OutputLine[] => {
@@ -125,8 +144,8 @@ const TerminalCard = ({ dict }: { dict: any }) => {
   useEffect(() => {
     if (phase !== "output") return;
     if (visibleLines >= OUTPUT_LINES.length) {
-      setPhase("done");
-      return;
+      const timeout = setTimeout(() => setPhase("done"), 0);
+      return () => clearTimeout(timeout);
     }
     const currentDelay = OUTPUT_LINES[visibleLines].delay - (visibleLines > 0 ? OUTPUT_LINES[visibleLines - 1].delay : 0);
     const t = setTimeout(() => setVisibleLines((v) => v + 1), Math.max(currentDelay, 30));
