@@ -59,7 +59,7 @@ export default function CopyButton({
       <button
         type="button"
         onClick={handleCopy}
-        className={`text-[11px] font-semibold text-zinc-400 transition-colors hover:text-zinc-900 ${className}`}
+        className={`text-[12px] font-semibold text-zinc-600 transition-colors hover:text-zinc-900 ${className}`}
         aria-label="Copy command"
       >
         {copied ? copyLabels.terminal.success : copyLabels.terminal.idle}
@@ -77,7 +77,7 @@ export default function CopyButton({
       <span className="font-mono font-bold tracking-tight text-emerald-400 transition-colors">
         {text}
       </span>
-      <span className="ml-2 border-l border-zinc-800 pl-6 text-[10px] font-black uppercase tracking-[0.22em] text-zinc-400">
+      <span className="ml-2 border-l border-zinc-800 pl-6 text-[12px] font-black uppercase tracking-[0.18em] text-zinc-300">
         {copied ? copyLabels.hero.success : copyLabels.hero.idle}
       </span>
     </button>

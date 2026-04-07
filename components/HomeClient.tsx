@@ -391,23 +391,26 @@ export default async function HomeClient({
                   </>
                 )}
 
-                <div className="group/lang relative ml-1 border-l border-zinc-100 pl-2">
-                  <Globe
-                    size={13}
-                    className="cursor-pointer text-zinc-300 transition-colors group-hover/lang:text-zinc-950"
-                  />
-                  <div className="invisible absolute top-full right-0 z-[100] mt-2 flex w-24 flex-col gap-1 rounded-sm border border-zinc-100 bg-white p-1 opacity-0 shadow-xl transition-all group-hover/lang:visible group-hover/lang:opacity-100">
+                <details className="group/lang relative ml-1 border-l border-zinc-100 pl-2">
+                  <summary
+                    aria-label="Change language"
+                    className="flex list-none cursor-pointer items-center gap-1 rounded-sm py-1 text-[12px] font-bold tracking-[0.14em] text-zinc-600 uppercase transition-colors hover:text-zinc-950 [&::-webkit-details-marker]:hidden"
+                  >
+                    <Globe size={13} className="text-current" />
+                    Lang
+                  </summary>
+                  <div className="absolute top-full right-0 z-[100] mt-2 flex w-32 flex-col gap-1 rounded-sm border border-zinc-200 bg-white p-1 shadow-xl">
                     {localeOptions.map((locale) => (
                       <Link
                         key={locale.code}
                         href={`/${locale.code}`}
-                        className="rounded-sm p-2 text-[10px] font-bold tracking-widest text-zinc-500 uppercase transition-colors hover:bg-zinc-50 hover:text-zinc-950"
+                        className="rounded-sm p-2 text-[12px] font-bold tracking-[0.12em] text-zinc-700 uppercase transition-colors hover:bg-zinc-50 hover:text-zinc-950"
                       >
                         {locale.label}
                       </Link>
                     ))}
                   </div>
-                </div>
+                </details>
               </div>
             </div>
 

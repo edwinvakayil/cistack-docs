@@ -39,6 +39,8 @@ export default function InstallToggle({ dict }: { dict: Dictionary }) {
         <button
           type="button"
           onClick={() => setMode("npx")}
+          aria-label="Use the recommended npx installation command"
+          aria-pressed={mode === "npx"}
           className={`py-1 pr-4 text-[12px] font-semibold transition-colors ${
             mode === "npx" ? "text-zinc-900" : "text-zinc-400 hover:text-zinc-600"
           }`}
@@ -55,6 +57,8 @@ export default function InstallToggle({ dict }: { dict: Dictionary }) {
         <button
           type="button"
           onClick={() => setMode("npm")}
+          aria-label="Use the global npm installation command"
+          aria-pressed={mode === "npm"}
           className={`py-1 pl-4 text-[12px] font-semibold transition-colors ${
             mode === "npm" ? "text-zinc-900" : "text-zinc-400 hover:text-zinc-600"
           }`}
