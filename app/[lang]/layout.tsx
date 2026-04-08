@@ -1,5 +1,21 @@
 import type { Metadata } from "next";
+import { DM_Sans, Geist_Mono, Fira_Code } from "next/font/google";
 import "../globals.css";
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const firaCode = Fira_Code({
+  variable: "--font-fira-code",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://cistack.edwinvakayil.info"),
@@ -65,11 +81,18 @@ export default async function RootLayout({
 }) {
   const { lang } = await params;
   return (
+<<<<<<< HEAD
     <html lang={lang} className="h-full antialiased">
       <head>
         <link rel="preconnect" href="https://registry.npmjs.org" />
         <link rel="preconnect" href="https://api.npmjs.org" />
       </head>
+=======
+    <html
+      lang={lang}
+      className={`${dmSans.variable} ${geistMono.variable} ${firaCode.variable} h-full antialiased`}
+    >
+>>>>>>> parent of 0e9f037 (ci)
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
